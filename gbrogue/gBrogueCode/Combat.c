@@ -574,8 +574,8 @@ boolean forceWeaponHit(creature *attacker, creature *defender, short distance) {
 
     oldLoc[0] = defender->xLoc;
     oldLoc[1] = defender->yLoc;
-    newLoc[0] = defender->xLoc + clamp(defender->xLoc - attacker->xLoc, -DCOLS, DCOLS);
-    newLoc[1] = defender->yLoc + clamp(defender->yLoc - attacker->yLoc, -DROWS, DROWS);
+    newLoc[0] = defender->xLoc + clamp(defender->xLoc - attacker->xLoc, -1, 1);
+    newLoc[1] = defender->yLoc + clamp(defender->yLoc - attacker->yLoc, -1, 1);
     if (canDirectlySeeMonster(defender)
         && !cellHasTerrainFlag(newLoc[0], newLoc[1], T_OBSTRUCTS_PASSABILITY | T_OBSTRUCTS_VISION)
         && !(pmap[newLoc[0]][newLoc[1]].flags & (HAS_MONSTER | HAS_PLAYER))) {
