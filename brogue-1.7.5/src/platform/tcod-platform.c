@@ -98,7 +98,7 @@ static void tcod_plotChar(uchar inputChar,
 #ifdef USE_UNICODE
 			case FLOOR_CHAR: inputChar = 128 + 0; break;
 			case CHASM_CHAR: inputChar = 128 + 1; break;
-			case TRAP_CHAR: inputChar = 128 + 2; break;
+			//case TRAP_CHAR: inputChar = 128 + 2; break;
 			case FIRE_CHAR: inputChar = 128 + 3; break;
 			case FOLIAGE_CHAR: inputChar = 128 + 4; break;
 			case AMULET_CHAR: inputChar = 128 + 5; break;
@@ -107,7 +107,7 @@ static void tcod_plotChar(uchar inputChar,
 			case WEAPON_CHAR: inputChar = 128 + 8; break;
 			case GEM_CHAR: inputChar = 128 + 9; break;
 			case TOTEM_CHAR: inputChar = 128 + 10; break;
-			case BAD_MAGIC_CHAR: inputChar = 128 + 12; break;
+			//case BAD_MAGIC_CHAR: inputChar = 128 + 12; break;
 			case GOOD_MAGIC_CHAR: inputChar = 128 + 13; break;
 
 			case DOWN_ARROW_CHAR: inputChar = 144 + 1; break;
@@ -118,9 +118,9 @@ static void tcod_plotChar(uchar inputChar,
 			case OMEGA_CHAR: inputChar = 144 + 6; break;
 			case THETA_CHAR: inputChar = 144 + 7; break;
 			case LAMDA_CHAR: inputChar = 144 + 8; break;
-			case KOPPA_CHAR: inputChar = 144 + 9; break; // is this right?
-			case CHARM_CHAR: inputChar = 144 + 9; break;
-			case LOZENGE_CHAR: inputChar = 144 + 10; break;
+			//case KOPPA_CHAR: inputChar = 144 + 9; break; // is this right?
+			//case CHARM_CHAR: inputChar = 144 + 9; break;
+			//case LOZENGE_CHAR: inputChar = 144 + 10; break;
 			case CROSS_PRODUCT_CHAR: inputChar = 144 + 11; break;
 #endif
 			default: inputChar = '?'; break;
