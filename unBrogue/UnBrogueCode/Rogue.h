@@ -39,6 +39,7 @@
 
 // debug macros -- define DEBUGGING as 1 to enable debugging.
 
+#define DEBUGGING						0
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
 #define ITEMS_ENABLED					(!DEBUGGING || 1)
@@ -3200,6 +3201,7 @@ extern "C" {
 	void initializeRogue(unsigned long seed);
 	void gameOver(char *killedBy, boolean useCustomPhrasing);
 	void victory();
+	void notifyEvent(short eventId, int data1, int data2, const char *str1, const char *str2);
 	void enableEasyMode();
 	int rand_range(int lowerBound, int upperBound);
 	unsigned long seedRandomGenerator(unsigned long seed);
@@ -3672,10 +3674,11 @@ extern "C" {
 	void recordMouseClick(short x, short y, boolean controlKey, boolean shiftKey);
 	void OOSCheck(unsigned long x, short numberOfBytes);
 	void RNGCheck();
-	void executePlaybackInput(rogueEvent *recordingInput);
+	boolean executePlaybackInput(rogueEvent *recordingInput);
 	void getAvailableFilePath(char *filePath, const char *defaultPath, const char *suffix);
 	void saveGame();
 	void saveRecording();
+	void saveRecordingNoPrompt();
 	void parseFile();
 	void RNGLog(char *message);
 

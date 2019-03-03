@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 #ifdef BROGUE_TCOD
 		currentConsole = tcodConsole;
 #elif BROGUE_WEB
-                currentConsole = webConsole;
+        currentConsole = webConsole;
 #elif BROGUE_CURSES
 		currentConsole = cursesConsole;
 #endif

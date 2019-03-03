@@ -719,7 +719,7 @@ void pausePlayback() {
 }
 
 // Used to interact with playback -- e.g. changing speed, pausing.
-void executePlaybackInput(rogueEvent *recordingInput) {
+boolean executePlaybackInput(rogueEvent *recordingInput) {
 	uchar key;
 	short newDelay, frameCount, x, y, previousDeepestLevel;
 	unsigned long destinationFrame;
@@ -750,14 +750,14 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 					flashTemporaryAlert(" Slower ", 300);
 				}
 				rogue.playbackDelayPerTurn = newDelay;
-				break;
+				return true;
 			case ACKNOWLEDGE_KEY:
 				if (rogue.playbackOOS && rogue.playbackPaused) {
 					flashTemporaryAlert(" Out of sync ", 2000);
 				} else {
 					pausePlayback();
 				}
-				break;
+				return true;
 			case TAB_KEY:
 				rogue.playbackOmniscience = !rogue.playbackOmniscience;
 				displayLevel();
@@ -900,7 +900,7 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 					}
 				}
 				rogue.playbackMode = true;
-				break;
+				return true;
 			case NEW_GAME_KEY:
 				rogue.playbackMode = false;
 				if (confirm("Close recording and begin a new game?", true)) {
@@ -927,19 +927,19 @@ void executePlaybackInput(rogueEvent *recordingInput) {
                 } else {
                     messageWithColor("Color effects enabled. Press '\\' again to disable.", &teal, false);
                 }
-                break;
+                return true;
 			case SEED_KEY:
 				//rogue.playbackMode = false;
 				//DEBUG {displayMap(safetyMap); displayMoreSign(); displayLevel();}
 				//rogue.playbackMode = true;
 				printSeed();
-				break;
+				return true;
 			default:
 				if (key >= '0' && key <= '9'
 					|| key >= NUMPAD_0 && key <= NUMPAD_9) {
 					promptToAdvanceToLocation(key);
 				}
-				break;
+				return true;
 		}
 	} else if (recordingInput->eventType == MOUSE_UP) {
 		x = recordingInput->param1;
