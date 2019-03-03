@@ -31,6 +31,8 @@
 #include "Rogue.h"
 #include "IncludeGlobals.h"
 
+extern boolean noSaves;
+
 // Populates path[][] with a list of coordinates starting at origin and traversing down the map. Returns the number of steps in the path.
 short getPathOnMap(short path[1000][2], short **map, short originX, short originY) {
 	short dir, x, y, steps;
@@ -1966,6 +1968,7 @@ void nextBrogueEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsD
 	rogueEvent recordingInput;
 	boolean repeatAgain;
 	short pauseDuration;
+	boolean interaction;
 	
 	returnEvent->eventType = EVENT_ERROR;
 	
@@ -1979,8 +1982,8 @@ void nextBrogueEvent(rogueEvent *returnEvent, boolean textInput, boolean colorsD
 				if (pauseDuration && pauseBrogue(pauseDuration)) {
 					// if the player did something during playback
 					nextBrogueEvent(&recordingInput, false, false, true);
-					executePlaybackInput(&recordingInput);
-					repeatAgain = true;
+					interaction = executePlaybackInput(&recordingInput);
+ 					repeatAgain = !rogue.playbackPaused && interaction;
 				}
 			}
 		} while ((rogue.playbackPaused || repeatAgain || rogue.playbackOOS) && !rogue.gameHasEnded);
@@ -2193,6 +2196,9 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 			if (rogue.playbackMode) {
 				return;
 			}
+			if (noSaves) {
+				return;
+			}
 			confirmMessages();
 			if ((rogue.turnNumber < 50 || confirm("End this game and load a saved game?", false))
 				&& dialogChooseFile(path, GAME_SUFFIX, "Open saved game: ")) {
@@ -2207,6 +2213,9 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 			break;
 		case SAVE_GAME_KEY:
 			if (rogue.playbackMode) {
+				return;
+			}
+			if (noSaves) {
 				return;
 			}
 			if (confirm("Suspend this game? (This feature is still in beta.)", false)) {

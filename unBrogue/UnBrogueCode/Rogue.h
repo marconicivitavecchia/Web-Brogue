@@ -39,8 +39,6 @@
 
 // debug macros -- define DEBUGGING as 1 to enable debugging.
 
-#define DEBUGGING						0
-
 #define DEBUG							if (DEBUGGING)
 #define MONSTERS_ENABLED				(!DEBUGGING || 1) // Quest room monsters can be generated regardless.
 #define ITEMS_ENABLED					(!DEBUGGING || 1)
@@ -327,6 +325,14 @@ enum eventTypes {
 	END_OF_RECORDING,
 	EVENT_ERROR,
 	NUMBER_OF_EVENT_TYPES, // unused
+};
+
+enum notificationEventTypes {
+	GAMEOVER_QUIT,
+	GAMEOVER_DEATH,
+	GAMEOVER_VICTORY,
+	GAMEOVER_SUPERVICTORY,
+	GAMEOVER_RECORDING
 };
 
 typedef struct rogueEvent {
@@ -3217,6 +3223,8 @@ extern "C" {
 	void routeTo(short x, short y, char *failureMessage);
 	boolean useStairs(short stairDirection);
 	short passableArcCount(short x, short y);
+        boolean againstAWall(short x, short y);
+
 	void analyzeMap(boolean calculateChokeMap);
 	boolean buildAMachine(enum machineTypes bp,
 						  short originX, short originY,
@@ -3282,7 +3290,9 @@ extern "C" {
 	char nextKeyPress(boolean textInput);
 	void refreshSideBar(short focusX, short focusY, boolean focusedEntityMustGoFirst);
 	void printHelpScreen();
+  void printInstructionsScreen();
 	void printDiscoveriesScreen();
+  void printGameInfoScreen();
 	void printHighScores(boolean hiliteMostRecent);
 	void showWaypoints();
 	void displayMap(short **map);
@@ -3591,6 +3601,8 @@ extern "C" {
 	void demoteMonsterFromLeadership(creature *monst);
 	void toggleMonsterDormancy(creature *monst);
 	void monsterDetails(char buf[], creature *monst);
+  void makeIdle(creature *monst);
+  void generateFellowAdventurer();
 	void makeMonsterDropItem(creature *monst);
 	void throwCommand(item *theItem);
 	void mergeItems(item *theFirstItem, item *theSecondItem);
@@ -3601,6 +3613,7 @@ extern "C" {
 	void identify(item *theItem);
 	void updateIdentifiableItem(item *theItem);
 	void updateIdentifiableItems();
+  void magicMapCell(short x, short y);
 	void readScroll(item *theItem);
 	void updateRingBonuses();
 	void updatePlayerRegenerationDelay();
@@ -3627,6 +3640,8 @@ extern "C" {
 	void deleteItem(item *theItem);
 	void shuffleFlavors();
 	unsigned long itemValue(item *theItem);
+    void causeFear(const char *emitterName, boolean throughWalls, boolean ignoreAllies);
+    void debugWish(char *wishText);
 	short strLenWithoutEscapes(const char *str);
 	void combatMessage(char *theMsg, color *theColor);
 	void displayCombatText();

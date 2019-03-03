@@ -35,6 +35,8 @@
 
 #pragma mark Recording functions
 
+extern boolean noSaves;
+
 void recordChar(unsigned char c) {
 	inputRecordBuffer[locationInRecordingBuffer++] = c;
 	recordingLocation++;
@@ -726,7 +728,7 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 	char path[BROGUE_FILENAME_MAX];
 	
 	if (!rogue.playbackMode) {
-		return;
+		return false;
 	}
 	
 	if (recordingInput->eventType == KEYSTROKE) {
@@ -740,7 +742,7 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 					flashTemporaryAlert(" Faster ", 300);
 				}
 				rogue.playbackDelayPerTurn = newDelay;
-				break;
+				return true;
 			case DOWN_ARROW:
 			case DOWN_KEY:
 				newDelay = min(3000, max(rogue.playbackDelayPerTurn * 1.5, rogue.playbackDelayPerTurn + 1));
@@ -765,7 +767,7 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 				} else {
 					messageWithColor("Omniscience disabled.", &teal, false);
 				}
-				break;
+				return true;
 			case DESCEND_KEY:
 				pauseState = rogue.playbackPaused;
                 previousDeepestLevel = rogue.deepestLevel;
@@ -789,12 +791,12 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 					}
 				}
 				rogue.playbackPaused = pauseState;
-				break;
+				return true;
 			case INVENTORY_KEY:
 				rogue.playbackMode = false;
 				displayInventory(ALL_ITEMS, 0, 0, true, false);
 				rogue.playbackMode = true;
-				break;
+				return true;
 			case RIGHT_KEY:
 			case RIGHT_ARROW:
             case LEFT_KEY:
@@ -851,21 +853,24 @@ void executePlaybackInput(rogueEvent *recordingInput) {
                         }
                     }
                 }
-				break;
+		return true;
 			case HELP_KEY:
 				printPlaybackHelpScreen();
-				break;
+				return true;
 			case DISCOVERIES_KEY:
 				rogue.playbackMode = false;
 				printDiscoveriesScreen();
 				rogue.playbackMode = true;
-				break;
+				return true;
 			case MESSAGE_ARCHIVE_KEY:
 				rogue.playbackMode = false;
 				displayMessageArchive();
 				rogue.playbackMode = true;
-				break;
+				return true;
 			case VIEW_RECORDING_KEY:
+			        if (noSaves) {
+				    return false;
+			        }
 				confirmMessages();
 				rogue.playbackMode = false;
 				if (dialogChooseFile(path, RECORDING_SUFFIX, "View recording: ")) {
@@ -878,8 +883,11 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 					}
 				}
 				rogue.playbackMode = true;
-				break;
+				return true;
 			case LOAD_SAVED_GAME_KEY:
+			        if (noSaves) {
+				    return false;
+			        }
 				confirmMessages();
 				rogue.playbackMode = false;
 				if (dialogChooseFile(path, GAME_SUFFIX, "Open saved game: ")) {
@@ -900,13 +908,16 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 					rogue.gameHasEnded = true;
 				}
 				rogue.playbackMode = true;
-				break;
+				return true;
 			case QUIT_KEY:
 				//freeEverything();
 				rogue.gameHasEnded = true;
 				rogue.playbackOOS = false;
                 rogue.creaturesWillFlashThisTurn = false;
-				break;
+		//Notify the platform that the recording is over
+		notifyEvent(GAMEOVER_RECORDING, 0, 0, "recording ended", "none");
+		return true;
+
             case TRUE_COLORS_KEY:
                 rogue.trueColorMode = !rogue.trueColorMode;
                 displayLevel();
@@ -938,12 +949,15 @@ void executePlaybackInput(rogueEvent *recordingInput) {
 			rogue.playbackMode = false;
 			displayMessageArchive();
 			rogue.playbackMode = true;
+			return true;
 		}
 	} else if (recordingInput->eventType == RIGHT_MOUSE_UP) {
 		rogue.playbackMode = false;
 		displayInventory(ALL_ITEMS, 0, 0, true, false);
 		rogue.playbackMode = true;
+		return true;
 	}
+	return false;
 }
 
 // Pass in defaultPath (the file name WITHOUT suffix), and the suffix.
@@ -992,6 +1006,19 @@ void saveGame() {
 		}
 	} while (askAgain);
 	deleteMessages();
+}
+
+void saveRecordingNoPrompt(char *filePath) {
+
+	if (rogue.playbackMode) {
+		return;
+	}
+
+	getAvailableFilePath(filePath, "Recording", RECORDING_SUFFIX);
+	strcat(filePath, RECORDING_SUFFIX);
+
+	remove(filePath);
+	rename(currentFilePath, filePath);
 }
 
 void saveRecording() {
