@@ -6,7 +6,7 @@ var config = {
     port : {
         HTTP : 8080
     },
-    variants : [ "BROGUEV174", "GBROGUEV1180211", "BROGUEV175" ],
+    variants : [ "BROGUEV174", "GBROGUEV1180211", "BROGUEV175", "UNBROGUEV113" ],
     path : {
         CLIENT_DIR : path.normalize(__dirname + "/../client/"),
         GAME_DATA_DIR : path.normalize(__dirname + "/../game-data/"),
