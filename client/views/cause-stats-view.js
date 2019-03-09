@@ -13,7 +13,8 @@ define([
         events: {
             "click #deaths-by-cause-variant0" : "selectVariant0DeathCauseStats",
             "click #deaths-by-cause-variant1" : "selectVariant1DeathCauseStats",
-            "click #deaths-by-cause-variant2" : "selectVariant2DeathCauseStats"
+            "click #deaths-by-cause-variant2" : "selectVariant2DeathCauseStats",
+            "click #deaths-by-cause-variant3" : "selectVariant3DeathCauseStats"
         },
 
         initialize: function() {
@@ -93,6 +94,14 @@ define([
             event.preventDefault();
 
             this.setDeathCauseStatsForVariant(2);
+            this.refresh();
+        },
+
+        selectVariant3DeathCauseStats: function(event) {
+
+            event.preventDefault();
+
+            this.setDeathCauseStatsForVariant(3);
             this.refresh();
         },
     });

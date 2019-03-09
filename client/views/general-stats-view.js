@@ -13,7 +13,8 @@ define([
         events: {
             "click #general-stats-variant0" : "selectVariant0GeneralStats",
             "click #general-stats-variant1" : "selectVariant1GeneralStats",
-            "click #general-stats-variant2" : "selectVariant2GeneralStats"
+            "click #general-stats-variant2" : "selectVariant2GeneralStats",
+            "click #general-stats-variant3" : "selectVariant3GeneralStats"
         },
 
         initialize: function() {
@@ -60,6 +61,14 @@ define([
             event.preventDefault();
 
             this.setGeneralStatsForVariant(2);
+            this.refresh();
+        },
+
+        selectVariant3GeneralStats: function(event) {
+
+            event.preventDefault();
+
+            this.setGeneralStatsForVariant(3);
             this.refresh();
         }
     });

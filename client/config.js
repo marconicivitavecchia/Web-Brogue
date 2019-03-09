@@ -20,6 +20,11 @@ define([
                 display: "gBrogue v1.18.02.11",
                 consoleColumns: 100,
                 consoleRows: 36 }
+            ,
+            { code: "UNBROGUEV113",
+                display: "unBrogue v1.1.3",
+                consoleColumns: 100,
+                consoleRows: 34 }
             ],
         websocketPort: 8080
     };

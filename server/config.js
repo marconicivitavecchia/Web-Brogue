@@ -14,6 +14,7 @@ var config = {
             BROGUEV174 : path.normalize(__dirname + "/../brogue/bin/brogue"),
             GBROGUEV1180211 : path.normalize(__dirname + "/../gbrogue/bin/brogue"),
             BROGUEV175 : path.normalize(__dirname + "/../brogue-1.7.5/bin/brogue"),
+            UNBROGUEV113 : path.normalize(__dirname + "/../unBrogue/bin/brogue")
         }
     },
     db : {
