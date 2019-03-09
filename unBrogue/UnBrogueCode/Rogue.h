@@ -175,8 +175,9 @@
 #define SCROLL_CHAR		0x266A//'?'		// 0x039E
 #define TOME_CHAR		0x00BF
 //#define RING_CHAR		0x26AA //0xffee
-#define RING_CHAR		0xffee
-#define CHARM_CHAR      0x03DE
+#define RING_CHAR		'o'
+//#define CHARM_CHAR      0x03DE
+#define CHARM_CHAR      0x03DF
 #define TALISMAN_CHAR	'$'
 #define POTION_CHAR		'!'
 #define ELIXIR_CHAR		0x00A1
@@ -202,8 +203,10 @@
 #define OMEGA_CHAR			0x03A9
 #define THETA_CHAR			0x03B8
 #define LAMDA_CHAR			0x03BB
-#define KOPPA_CHAR			0x03DE
-#define LOZENGE_CHAR		0x29EB
+//#define KOPPA_CHAR			0x03DE
+//#define LOZENGE_CHAR		0x29EB
+#define KOPPA_CHAR            0x03DF
+#define LOZENGE_CHAR          0x25C6
 #define CROSS_PRODUCT_CHAR	0x2A2F
 
 #define CHAIN_TOP_LEFT		'\\'

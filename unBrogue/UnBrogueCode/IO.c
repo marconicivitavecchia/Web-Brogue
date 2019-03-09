@@ -32,6 +32,7 @@
 #include "IncludeGlobals.h"
 
 extern boolean noSaves;
+extern boolean noRecording;
 
 // Populates path[][] with a list of coordinates starting at origin and traversing down the map. Returns the number of steps in the path.
 short getPathOnMap(short path[1000][2], short **map, short originX, short originY) {
@@ -198,16 +199,20 @@ short actionMenu(short x, short y, boolean playingBack) {
 		buttons[buttonCount].flags &= ~B_ENABLED;
 		buttonCount++;
 		
-		sprintf(buttons[buttonCount].text, "  %sS: %sSuspend game and quit  ",	yellowColorEscape, whiteColorEscape);
-		buttons[buttonCount].hotkey[0] = SAVE_GAME_KEY;
-		buttonCount++;
-		sprintf(buttons[buttonCount].text, "  %sO: %sOpen suspended game  ",		yellowColorEscape, whiteColorEscape);
-		buttons[buttonCount].hotkey[0] = LOAD_SAVED_GAME_KEY;
+		if(!noSaves) {
+			sprintf(buttons[buttonCount].text, "  %sS: %sSuspend game and quit  ",	yellowColorEscape, whiteColorEscape);
+			buttons[buttonCount].hotkey[0] = SAVE_GAME_KEY;
+			buttonCount++;
+			sprintf(buttons[buttonCount].text, "  %sO: %sOpen suspended game  ",		yellowColorEscape, whiteColorEscape);
+			buttons[buttonCount].hotkey[0] = LOAD_SAVED_GAME_KEY;
+		}
 		
 	}
-	sprintf(buttons[buttonCount].text, "  %sV: %sView saved recording  ",		yellowColorEscape, whiteColorEscape);
-	buttons[buttonCount].hotkey[0] = VIEW_RECORDING_KEY;
-	buttonCount++;
+	if(!noRecording) {
+		sprintf(buttons[buttonCount].text, "  %sV: %sView saved recording  ",		yellowColorEscape, whiteColorEscape);
+		buttons[buttonCount].hotkey[0] = VIEW_RECORDING_KEY;
+		buttonCount++;
+	}
 	sprintf(buttons[buttonCount].text, "    %s---", darkGrayColorEscape);
 	buttons[buttonCount].flags &= ~B_ENABLED;
 	buttonCount++;
@@ -2178,6 +2183,9 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 			break;
 		case VIEW_RECORDING_KEY:
 			if (rogue.playbackMode) {
+				return;
+			}
+			if(noRecording) {
 				return;
 			}
 			confirmMessages();
