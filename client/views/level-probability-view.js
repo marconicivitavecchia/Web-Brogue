@@ -14,7 +14,8 @@ define([
         events: {
             "click #deaths-probability-by-level-variant0" : "selectVariant0DeathsProbabilityStats",
             "click #deaths-probability-by-level-variant1" : "selectVariant1DeathsProbabilityStats",
-            "click #deaths-probability-by-level-variant2" : "selectVariant2DeathsProbabilityStats"
+            "click #deaths-probability-by-level-variant2" : "selectVariant2DeathsProbabilityStats",
+            "click #deaths-probability-by-level-variant3" : "selectVariant3DeathsProbabilityStats"
         },
 
         initialize: function() {
@@ -122,6 +123,14 @@ define([
             event.preventDefault();
 
             this.setDeathsProbabilityStatsForVariant(2);
+            this.refresh();
+        },
+
+        selectVariant3DeathsProbabilityStats: function(event) {
+
+            event.preventDefault();
+
+            this.setDeathsProbabilityStatsForVariant(3);
             this.refresh();
         },
 

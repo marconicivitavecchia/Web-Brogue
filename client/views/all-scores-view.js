@@ -17,6 +17,7 @@ define([
             "click #all-scores-variant0" : "selectVariant0Scores",
             "click #all-scores-variant1" : "selectVariant1Scores",
             "click #all-scores-variant2" : "selectVariant2Scores",
+            "click #all-scores-variant3" : "selectVariant3Scores",
             "click #all-scores-user" : "selectUserScores",
             "click #all-scores-daily" : "selectDailyScores",
             "click #all-scores-all" : "selectAllScores"
@@ -166,6 +167,14 @@ define([
             event.preventDefault();
 
             this.setVariantNoScores(2);
+            this.refresh();
+        },
+
+        selectVariant3Scores: function(event) {
+
+            event.preventDefault();
+
+            this.setVariantNoScores(3);
             this.refresh();
         }
     });
