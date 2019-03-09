@@ -159,7 +159,8 @@
 #define MUD_CHAR		','
 #define WEB_CHAR		':'
 //#define FOLIAGE_CHAR	0x03A8 // lower-case psi
-#define FOLIAGE_CHAR	0x2648 // Aries symbol
+//#define FOLIAGE_CHAR	0x2648 // Aries symbol
+#define FOLIAGE_CHAR 0x03C8
 #define ALTAR_CHAR		'|'
 #define LEVER_CHAR      '/'
 #define LEVER_PULLED_CHAR '\\'
