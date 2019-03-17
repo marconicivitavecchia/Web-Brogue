@@ -27,7 +27,7 @@ define([
             },
             "UNBROGUEV113": {
                 code: "UNBROGUEV113",
-                display: "unBrogue v1.1.3",
+                display: "unBrogue v1.1.6",
                 consoleColumns: 100,
                 consoleRows: 34
             }
