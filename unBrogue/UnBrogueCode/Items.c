@@ -6078,19 +6078,28 @@ void landMonster(short x, short y, creature *landingMonst) {
 		// Make sure we don't get the shooting monster by accident.
 		landingMonst->xLoc = landingMonst->yLoc = -1; // Will be set back to the destination in a moment.
 		monst = monsterAtLoc(x, y);
-		findAlternativeHomeFor(monst, &x2, &y2, true);
-		if (x2 >= 0) {
-			// Found an alternative location.
-			monst->xLoc = x2;
-			monst->yLoc = y2;
-			pmap[x][y].flags &= ~HAS_MONSTER;
-			pmap[x2][y2].flags |= HAS_MONSTER;
-		} else {
+		if(monst == NULL) {
+			//For some reason this seems to happen when the player has a warpike equipped and dars blink (on to it? - unconfirmed)
 			// No alternative location?? Hard to imagine how this could happen.
-			// Just bury the monster and never speak of this incident again.
-			killCreature(monst, true);
+			// Use the no-alternative path. This might have weird side-effects - we will see
+			//killCreature(monst, true);
 			pmap[x][y].flags &= ~HAS_MONSTER;
-			monst = NULL;
+		}
+		else {
+			findAlternativeHomeFor(monst, &x2, &y2, true);
+			if (x2 >= 0) {
+				// Found an alternative location.
+				monst->xLoc = x2;
+				monst->yLoc = y2;
+				pmap[x][y].flags &= ~HAS_MONSTER;
+				pmap[x2][y2].flags |= HAS_MONSTER;
+			} else {
+				// No alternative location?? Hard to imagine how this could happen.
+				// Just bury the monster and never speak of this incident again.
+				killCreature(monst, true);
+				pmap[x][y].flags &= ~HAS_MONSTER;
+				monst = NULL;
+			}
 		}
 	}
 	pmap[x][y].flags |= (landingMonst == &player ? HAS_PLAYER : HAS_MONSTER);
