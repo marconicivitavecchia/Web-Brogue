@@ -52,6 +52,7 @@ define([
 
         showSeedPopup: function(variantIndex) {
             this.showPopup("");
+            $('#seed').focus();
             this.variantIndex = variantIndex;
             return;
         },
