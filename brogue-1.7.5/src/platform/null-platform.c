@@ -41,7 +41,11 @@ static void gameLoop()
 
 
 static void open_logfile() {
-  logfile = fopen ("brogue-web.txt", "a");
+
+  char log_filename[100];
+  snprintf(log_filename, 100, "brogue-%s.log", rogue.nextGamePath);
+
+  logfile = fopen (log_filename, "w");
   if (logfile == NULL) {
     fprintf(stderr, "Logfile not created, errno = %d\n", errno);
   }
