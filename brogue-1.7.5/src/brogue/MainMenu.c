@@ -809,7 +809,11 @@ void mainBrogueJunction() {
 					initializeRogue(0); // Seed argument is ignored because we're in playback.
 					if (!rogue.gameHasEnded) {
 						startLevel(rogue.depthLevel, 1);
+#ifdef NONINTERACTIVE_RECORDING
+                        rogue.playbackPaused = false;
+#else
                         rogue.playbackPaused = true;
+#endif
 						displayAnnotation(); // in case there's an annotation for turn 0
 					}
 					

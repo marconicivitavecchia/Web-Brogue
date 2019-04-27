@@ -87,6 +87,8 @@ int main(int argc, char *argv[])
     currentConsole = webConsole;
 #elif BROGUE_CURSES
 		currentConsole = cursesConsole;
+#elif BROGUE_NULL
+		currentConsole = nullConsole;
 #endif
 
 	rogue.nextGame = NG_NOTHING;

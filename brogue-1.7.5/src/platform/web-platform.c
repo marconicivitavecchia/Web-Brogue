@@ -354,8 +354,7 @@ struct brogueConsole webConsole = {
 	web_plotChar,
 	web_remap,
 	modifier_held,
-	notify_event,
-  notify_event
+	notify_event
 };
 
 #endif

@@ -6,18 +6,6 @@ RELEASENAME=brogue-1.7.4
 LASTTARGET := $(shell ./brogue --target)
 CC ?= gcc
 
-ifeq (${LASTTARGET},both)
-all : both
-else ifeq (${LASTTARGET},curses)
-all : curses
-else ifeq (${LASTTARGET},tcod)
-all : tcod
-else ifeq (${LASTTARGET}, web)
-all : web
-else
-all : both
-endif
-
 %.o : %.c Makefile src/brogue/Rogue.h src/brogue/IncludeGlobals.h
 	$(CC) $(CFLAGS) -g -o $@ -c $< 
 
@@ -42,6 +30,7 @@ BROGUEFILES=src/brogue/Architect.o \
 	src/platform/main.o \
 	src/platform/platformdependent.o \
 	src/platform/curses-platform.o \
+	src/platform/null-platform.o \
 	src/platform/tcod-platform.o \
 	src/platform/term.o \
 	src/platform/web-platform.o
@@ -55,6 +44,9 @@ CURSES_LIB = -lncurses -lm
 
 WEB_DEF = -DBROGUE_WEB
 WEB_LIB = -lm
+
+NULL_DEF = -DBROGUE_NULL -DNONINTERACTIVE_RECORDING
+NULL_LIB = -lm
 
 tcod : DEPENDENCIES += ${TCOD_DEP}
 tcod : DEFINES += ${TCOD_DEF}
@@ -70,34 +62,16 @@ both : LIBRARIES += ${TCOD_LIB} ${CURSES_LIB}
 web : DEFINES += ${WEB_DEF}
 web : LIBRARIES += ${WEB_LIB}
 
-ifeq (${LASTTARGET},both)
-both : bin/brogue
-tcod : clean bin/brogue
-curses : clean bin/brogue
-web : clean bin/brogue
-else ifeq (${LASTTARGET},curses)
-curses : bin/brogue
-tcod : clean bin/brogue
-both : clean bin/brogue
-web : clean bin/brogue
-else ifeq (${LASTTARGET},tcod)
-tcod : bin/brogue
-curses : clean bin/brogue
-both : clean bin/brogue
-web : clean bin/brogue
-else ifeq (${LASTTARGET}, web)
-web : bin/brogue
-tcod : clean bin/brogue
-curses : clean bin/brogue
-both : clean bin/brogue
-else
-both : bin/brogue
-curses : bin/brogue
-tcod : bin/brogue
-web : bin/brogue
-endif
+null : DEFINES += ${NULL_DEF}
+null : LIBRARIES += ${NULL_LIB}
 
-.PHONY : clean both curses tcod web tar
+both : bin/brogue
+tcod : bin/brogue
+curses : bin/brogue
+web : bin/brogue
+null: bin/brogue
+
+.PHONY : clean both curses tcod web tar null
 
 bin/brogue : ${DEPENDENCIES} ${BROGUEFILES}
 	$(CC) -O2 -march=i586 -o bin/brogue ${BROGUEFILES} ${LIBRARIES} -Wl,-rpath,.

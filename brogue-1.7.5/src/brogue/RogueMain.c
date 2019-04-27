@@ -1080,14 +1080,14 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 		}
         strcpy(buf, "You die...");
         if (KEYBOARD_LABELS) {
-            encodeMessageColor(buf, strlen(buf), &veryDarkGray);
+            encodeMessageColor(buf, strlen(buf), &yellow);
             strcat(buf, " (press 'i' to view your inventory)");
         }
         player.currentHP = 0; // So it shows up empty in the side bar.
         refreshSideBar(-1, -1, false);
 		messageWithColor(buf, &badMessageColor, false);
         displayMoreSignWithoutWaitingForAcknowledgment();
-        
+#ifndef NONINTERACTIVE_RECORDING
         do {
             nextBrogueEvent(&theEvent, false, false, false);
             if (theEvent.eventType == KEYSTROKE
@@ -1105,7 +1105,7 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
             }
         } while (!(theEvent.eventType == KEYSTROKE && (theEvent.param1 == ACKNOWLEDGE_KEY || theEvent.param1 == ESCAPE_KEY)
                    || theEvent.eventType == MOUSE_UP));
-        
+#endif
         confirmMessages();
         
 		rogue.playbackMode = playback;
