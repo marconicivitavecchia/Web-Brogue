@@ -32,11 +32,13 @@ def main():
                         help='location of brogue executable (compiled with null headless)')
     parser.add_argument('game_data_path', 
                         help='location of root of path with recordings')
+    parser.add_argument('log_name', 
+                        help='name for the output logfile')
 
     args = parser.parse_args()
 
     logPath = "."
-    logName = "brogue-recording-runner.log"
+    logName = args.log_name
     logging.basicConfig(
         level=logging.INFO,
         format="%(asctime)s %(message)s",

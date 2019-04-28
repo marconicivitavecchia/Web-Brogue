@@ -304,7 +304,7 @@ void playbackPanic() {
         blackOutScreen();
 		displayLevel();
 		refreshSideBar(-1, -1, false);
-		
+#ifndef NONINTERACTIVE_RECORDING
 		confirmMessages();
 		message("Playback is out of sync.", false);
 		
@@ -313,13 +313,15 @@ void playbackPanic() {
 		rogue.playbackMode = false;
 		displayMoreSign();
 		rogue.playbackMode = true;
-		
+
 		overlayDisplayBuffer(rbuf, 0);
 		
 		printf("\n\nPlayback panic at location %li!", recordingLocation - 1);
 		
 		overlayDisplayBuffer(rbuf, 0);
-		
+#else
+		rogue.gameHasEnded = true;
+#endif		
 		mainInputLoop();
 	}
 }
