@@ -7,6 +7,7 @@
 #include <fcntl.h>
 #include <ctype.h>
 #include <errno.h>
+#include <libgen.h>
 #include <sys/un.h>
 #include <sys/socket.h>
 #include "platform.h"
@@ -43,8 +44,30 @@ static void gameLoop()
 static void open_logfile() {
 
   char log_filename[100];
-  snprintf(log_filename, 100, "brogue-%s.log", rogue.nextGamePath);
 
+  const char *filename = basename(rogue.nextGamePath);
+  char filename_no_ext[100];
+  const char *path = dirname(rogue.nextGamePath);
+  const char *last_path_entry;
+
+  int last_slash = strrchr(path, '/');
+
+  if(last_slash == NULL)
+    last_path_entry = path;
+  else
+    last_path_entry = last_slash + 1;
+
+  const char *last_dot = strrchr(filename, '.');
+  if(last_dot == NULL) {
+    strncpy(filename_no_ext, filename, 100);
+  }
+  else {
+    strncpy(filename_no_ext, filename, last_dot - filename);
+    filename_no_ext[last_dot - filename] = '\0';
+  }
+
+  snprintf(log_filename, 100, "brogue-%s-%s.log", last_path_entry, filename_no_ext);
+  //fprintf(stderr, "Creating logfile: %s\n", log_filename);
   logfile = fopen (log_filename, "w");
   if (logfile == NULL) {
     fprintf(stderr, "Logfile not created, errno = %d\n", errno);
