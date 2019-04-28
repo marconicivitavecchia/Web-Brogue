@@ -1070,7 +1070,9 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 		if (rogue.playbackMode) {
 			playback = rogue.playbackMode;
 			rogue.playbackMode = false;
+#ifndef NONINTERACTIVE_RECORDING
 			message("(The player quit at this point.)", true);
+#endif
 			rogue.playbackMode = playback;
 		}
 	} else {

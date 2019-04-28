@@ -485,7 +485,9 @@ void initRecording() {
 			rogue.playbackMode = false;
 			rogue.playbackFastForward = false;
 			sprintf(buf, "This file is from version %s and cannot be opened in version %s.", versionString, BROGUE_VERSION_STRING);
+#ifndef NONINTERACTIVE_RECORDING
 			dialogAlert(buf);
+#endif
 			rogue.playbackMode = true;
 			rogue.playbackPaused = true;
 			rogue.playbackFastForward = false;

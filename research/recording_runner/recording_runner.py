@@ -2,6 +2,7 @@ import argparse
 import os
 import glob
 import subprocess
+import logging
 
 def get_recordings_by_size(recording_path, largest_first):
 
@@ -13,9 +14,17 @@ def get_recordings_by_size(recording_path, largest_first):
 def run_recording(brogue_path, recording_path):
 
     try:
-        return subprocess.call([brogue_path, '--no-restart', '-v', recording_path])
+        output = subprocess.check_output(
+            [brogue_path, '--no-menu', '--no-restart', '-v', recording_path],
+            stderr=subprocess.STDOUT,
+            timeout=5*3600)
+
+        return (0, output)
+    except subprocess.CalledProcessError as exc:                                                                                                   
+        return (exc.returncode, exc.output)
     except Exception as e:
-        print("subprocess error, recording_path {}, {}".format(recording_path, e))
+        logging.error("subprocess error, recording_path {}, {}".format(recording_path, e))
+        return (0, None)
 
 def main():
     parser = argparse.ArgumentParser(description='Run brogue (compiled with null headless) against recording files to try to force crashes.')
@@ -26,12 +35,25 @@ def main():
 
     args = parser.parse_args()
 
+    logPath = "."
+    logName = "brogue-recording-runner.log"
+    logging.basicConfig(
+        level=logging.INFO,
+        format="%(asctime)s %(message)s",
+        handlers=[
+            logging.FileHandler("{0}/{1}.log".format(logPath, logName)),
+            logging.StreamHandler()
+        ])
+
     recordings_by_size = get_recordings_by_size(args.game_data_path, largest_first=False)
 
+    os.environ["ASAN_SYMBOLIZER_PATH"] = "/usr/bin/llvm-symbolizer-3.5"
+
     for recording in recordings_by_size:
-        print("Running recording: {}".format(recording))
-        ret_code = run_recording(args.brogue_path, recording)
-        print("Completed with retcode: {}".format(ret_code))
+        logging.info("Running recording: {}".format(recording))
+        (ret_code, output) = run_recording(args.brogue_path, recording)
+        logging.info(output)
+        logging.info("Completed with retcode: {}".format(ret_code))
 
 if __name__== "__main__":
   main()
