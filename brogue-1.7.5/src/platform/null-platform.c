@@ -45,12 +45,15 @@ static void open_logfile() {
 
   char log_filename[100];
 
-  const char *filename = basename(rogue.nextGamePath);
+  char *dirc = strdup(rogue.nextGamePath);
+  char *basec = strdup(rogue.nextGamePath);
+
+  const char *filename = basename(basec);
   char filename_no_ext[100];
-  const char *path = dirname(rogue.nextGamePath);
+  const char *path = dirname(dirc);
   const char *last_path_entry;
 
-  int last_slash = strrchr(path, '/');
+  const char *last_slash = strrchr(path, '/');
 
   if(last_slash == NULL)
     last_path_entry = path;
@@ -72,6 +75,9 @@ static void open_logfile() {
   if (logfile == NULL) {
     fprintf(stderr, "Logfile not created, errno = %d\n", errno);
   }
+
+  free(dirc);
+  free(basec);
 }
 
 static void close_logfile() {
