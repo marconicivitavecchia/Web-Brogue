@@ -9,7 +9,7 @@ require.config({
         backbonePaginator: "libs/backbone.paginator",
         backgrid: "libs/backgrid",
         backgridPaginator: "libs/backgrid-paginator",
-        io: "libs/socket.io",
+        io: "socket.io/socket.io.js",
         chart: "libs/chart"
     },
     shim: {
