@@ -1217,6 +1217,7 @@ void victory(boolean superVictory) {
 	flushBufferToFile();
 	
 	deleteMessages();
+#ifndef NONINTERACTIVE_RECORDING
     if (superVictory) {
         message(    "Light streams through the portal, and you are teleported out of the dungeon.", false);
         copyDisplayBuffer(dbuf, displayBuffer);
@@ -1238,7 +1239,7 @@ void victory(boolean superVictory) {
         deleteMessages();
         strcpy(displayedMessage[0], "You sell your treasures and live out your days in fame and glory.");
     }
-    
+#endif    
 	printString(displayedMessage[0], mapToWindowX(0), mapToWindowY(-1), &white, &black, dbuf);
 	
 	printString("Gold", mapToWindowX(2), mapToWindowY(1), &white, &black, dbuf);
@@ -1306,7 +1307,9 @@ void victory(boolean superVictory) {
 	
 	isPlayback = rogue.playbackMode;
 	rogue.playbackMode = false;
+#ifndef NONINTERACTIVE_RECORDING
 	displayMoreSign();
+#endif
 	rogue.playbackMode = isPlayback;
 	
 	char recordingFilename[BROGUE_FILENAME_MAX] = {0};
