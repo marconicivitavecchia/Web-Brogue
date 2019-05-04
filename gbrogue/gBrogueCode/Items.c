@@ -6046,6 +6046,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 
                 if ((theItem->category & WEAPON)
                     && hitMonsterWithProjectileWeapon(thrower, monst, theItem)) {
+					deleteItem(theItem);
                     return;
                 }
 
@@ -6057,6 +6058,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                             // Moved incendiary dart handling to here
                             spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DART_EXPLOSION], true, false);
                             exposeCreatureToFire(monst);
+							deleteItem(theItem);
                             return;
                         }
                         else if (theItem->kind == POISON_DART)
@@ -6068,12 +6070,15 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                                     (monst == &player ? "feel" : "looks"),
                                     (monst->status[STATUS_POISONED] * monst->poisonAmount >= monst->currentHP && !player.status[STATUS_HALLUCINATING] ? "fatally" : "very"));
                             combatMessage(buf, messageColorFromVictim(monst));
+							deleteItem(theItem);
                             return;
                         }
                         else if (theItem->kind == TRANQUILIZER_DART)
                         {
-                            if (monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE))
-                                return;
+                            if (monst->info.flags & (MONST_INANIMATE | MONST_INVULNERABLE)) {
+                                deleteItem(theItem);
+								return;
+							}
                             if (canDirectlySeeMonster(monst) && !monst->status[STATUS_PARALYZED]) {
                                 flashMonster(monst, &pink, 100);
                                 monsterName(buf, monst, true);
@@ -6081,9 +6086,10 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
                                 message(buf2, (monst == &player));
                             }
                             monst->status[STATUS_PARALYZED] = monst->maxStatus[STATUS_PARALYZED] = max(monst->status[STATUS_PARALYZED], 10);
-                            return;
+                            deleteItem(theItem);
+							return;
                         }
-
+						deleteItem(theItem);
                         return;
                     }
             }
@@ -6146,6 +6152,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 	{
         exposeTileToFire(x, y, true);
         //spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DART_EXPLOSION], true, false);
+		deleteItem(theItem);
         return;
 	}
 
@@ -6395,7 +6402,7 @@ void throwItem(item *theItem, creature *thrower, short targetLoc[2], short maxDi
 
         // Broken glass -- gsr
         spawnDungeonFeature(x, y, &dungeonFeatureCatalog[DF_DEWAR_GLASS], true, false);
-
+		deleteItem(theItem);
 		return; // potions disappear when they break
 	}
     // moved to above
