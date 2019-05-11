@@ -47,12 +47,16 @@ def main():
             logging.StreamHandler()
         ])
 
-    recordings_by_size = get_recordings_by_size(args.game_data_path, largest_first=False)
+    recordings_by_size = get_recordings_by_size(args.game_data_path, largest_first=True)
 
     os.environ["ASAN_SYMBOLIZER_PATH"] = "/usr/bin/llvm-symbolizer-3.5"
 
-    for recording in recordings_by_size:
+    recordingStep = 1
+    recordings_to_play = recordings_by_size[0::recordingStep]
+
+    for index, recording in enumerate(recordings_to_play):
         logging.info("Running recording: {}".format(recording))
+        logging.info("Recording {} of {}".format(index, len(recordings_to_play)))
         (ret_code, output) = run_recording(args.brogue_path, recording)
         logging.info(output)
         logging.info("Completed with retcode: {}".format(ret_code))
