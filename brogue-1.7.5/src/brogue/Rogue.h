@@ -78,6 +78,8 @@
 #define true					1
 
 #define Fl(N)					(1 << (N))
+
+#define FLOAT_FUDGE 0.00001
 #define FP_BASE 16 // Don't change this without recalculating all of the power tables throughout the code!
 #define FP_FACTOR (1LL << FP_BASE)
 
@@ -2851,9 +2853,9 @@ extern "C" {
 						   boolean passThroughCreatures, boolean setFieldOfView, short theColor[3], short fadeToPercent);
 	void betweenOctant1andN(short *x, short *y, short x0, short y0, short n);
 	
-    void getFOVMask(char grid[DCOLS][DROWS], short xLoc, short yLoc, int64_t maxRadius,
+    void getFOVMask(char grid[DCOLS][DROWS], short xLoc, short yLoc, float maxRadius,
                     unsigned long forbiddenTerrain,	unsigned long forbiddenFlags, boolean cautiousOnWalls);
-    void scanOctantFOV(char grid[DCOLS][DROWS], short xLoc, short yLoc, short octant, int64_t maxRadius,
+    void scanOctantFOV(char grid[DCOLS][DROWS], short xLoc, short yLoc, short octant, float maxRadius,
                        short columnsRightFromOrigin, long startSlope, long endSlope, unsigned long forbiddenTerrain,
                        unsigned long forbiddenFlags, boolean cautiousOnWalls);
 	
