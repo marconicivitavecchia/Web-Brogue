@@ -3,6 +3,9 @@ import os
 import glob
 import subprocess
 import logging
+import datetime
+import time
+from dateutil import parser
 
 def get_recordings_by_size(recording_path, largest_first):
 
@@ -10,6 +13,11 @@ def get_recordings_by_size(recording_path, largest_first):
     print(glob_path)
     recording_list = sorted(glob.glob(glob_path), reverse=largest_first, key=os.path.getsize)
     return recording_list
+
+def filter_recordings(recordings):
+    dt = parser.parse("Jan 1 2019 12:00AM")
+    secondsSinceEpoch = time.mktime(dt.timetuple())
+    return list(filter(lambda f: os.path.getmtime(f) > secondsSinceEpoch, recordings))
 
 def run_recording(brogue_path, recording_path):
 
@@ -48,14 +56,17 @@ def main():
         ])
 
     recordings_by_size = get_recordings_by_size(args.game_data_path, largest_first=True)
+    print("Number of recordings pre filter {}".format(len(recordings_by_size)))
+    recordings_filtered = filter_recordings(recordings_by_size)
+    print("Number of recordings post filter {}".format(len(recordings_filtered)))
 
     os.environ["ASAN_SYMBOLIZER_PATH"] = "/usr/bin/llvm-symbolizer-3.5"
 
     recordingStep = 1
-    recordings_to_play = recordings_by_size[0::recordingStep]
+    recordings_to_play = recordings_filtered[0::recordingStep]
 
     for index, recording in enumerate(recordings_to_play):
-        logging.info("Running recording: {}".format(recording))
+        logging.info("Running recording: {}, date {}".format(recording, datetime.datetime.fromtimestamp(os.path.getmtime(recording)).strftime('%c')))
         logging.info("Recording {} of {}".format(index, len(recordings_to_play)))
         (ret_code, output) = run_recording(args.brogue_path, recording)
         logging.info(output)
