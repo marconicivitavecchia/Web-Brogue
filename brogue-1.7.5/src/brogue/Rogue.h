@@ -2850,12 +2850,12 @@ extern "C" {
     void storeMemories(const short x, const short y);
 	void updateFieldOfViewDisplay(boolean updateDancingTerrain, boolean refreshDisplay);
 	void updateFieldOfView(short xLoc, short yLoc, short radius, boolean paintScent,
-						   boolean passThroughCreatures, boolean setFieldOfView, short theColor[3], short fadeToPercent);
+						   boolean passThroughCreatures, boolean setFieldOfView, short double_tlor[3], short fadeToPercent);
 	void betweenOctant1andN(short *x, short *y, short x0, short y0, short n);
 	
-    void getFOVMask(char grid[DCOLS][DROWS], short xLoc, short yLoc, float maxRadius,
+    void getFOVMask(char grid[DCOLS][DROWS], short xLoc, short yLoc, double maxRadius,
                     unsigned long forbiddenTerrain,	unsigned long forbiddenFlags, boolean cautiousOnWalls);
-    void scanOctantFOV(char grid[DCOLS][DROWS], short xLoc, short yLoc, short octant, float maxRadius,
+    void scanOctantFOV(char grid[DCOLS][DROWS], short xLoc, short yLoc, short octant, double maxRadius,
                        short columnsRightFromOrigin, long startSlope, long endSlope, unsigned long forbiddenTerrain,
                        unsigned long forbiddenFlags, boolean cautiousOnWalls);
 	
