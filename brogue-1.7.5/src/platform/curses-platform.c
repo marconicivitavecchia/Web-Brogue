@@ -54,7 +54,7 @@ static void curses_plotChar(uchar ch,
 	case GEM_CHAR: ch = '+'; break;
 	case TOTEM_CHAR: ch = '0'; break;
 	case BAD_MAGIC_CHAR: ch = '+'; break;
-	case GOOD_MAGIC_CHAR: ch = '$'; break;
+	//case GOOD_MAGIC_CHAR: ch = '$'; break;
 
 	// case UP_ARROW_CHAR: ch = '^'; break; // same as WEAPON_CHAR
 	case DOWN_ARROW_CHAR: ch = 'v'; break;
@@ -69,9 +69,9 @@ static void curses_plotChar(uchar ch,
 	case OMEGA_CHAR: ch = '<'; break;
 	case THETA_CHAR: ch = '0'; break;
 	case LAMDA_CHAR: ch = '^'; break;
-	case KOPPA_CHAR: ch = '0'; break;
+	//case KOPPA_CHAR: ch = '0'; break;
 
-	case LOZENGE_CHAR: ch = 'o'; break;
+	//case LOZENGE_CHAR: ch = 'o'; break;
 	case CROSS_PRODUCT_CHAR: ch = 'x'; break;
 
 	case STATUE_CHAR: ch = '5'; break;
