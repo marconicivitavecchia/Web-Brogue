@@ -4233,6 +4233,13 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
 			applyColorAugment(&monstBackColor, &black, 100);
 		}
 		plotCharWithColor(monstChar, 0, y, &monstForeColor, &monstBackColor);
+
+		//patch to indicate monster is carrying item
+		if(monst->carriedItem) {
+			plotCharWithColor(monst->carriedItem->displayChar, 1, y, &itemColor, &black);
+		}
+		//end patch
+
 		monsterName(monstName, monst, false);
 		upperCase(monstName);
         
@@ -4256,8 +4263,12 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
         
         sprintf(buf, ": %s", monstName);
         
-		printString("                   ", 1, y, &white, &black, 0);
-		printString(buf, 1, y++, (dim ? &gray : &white), &black, 0);
+		//patch to indicate monster is carrying item
+		//printString("                   ", 1, y, &white, &black, 0);
+		//printString(buf, 1, y++, (dim ? &gray : &white), &black, 0);
+		printString("                   ", monst->carriedItem?2:1, y, &white, &black, 0);
+		printString(buf, monst->carriedItem?2:1, y++, (dim ? &gray : &white), &black, 0);
+		//end patch
 	}
     
     // mutation, if any
