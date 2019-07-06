@@ -6,8 +6,9 @@ define([
     "backbone",
     "dispatcher",
     "config",
-    "views/score-table-cells"
-], function ($, _, Backbone, dispatcher, config, TableCells) {
+    "views/score-table-cells",
+    "variantLookup"
+], function ($, _, Backbone, dispatcher, config, TableCells, variantLookup) {
 
     var AllScoresView = Backbone.View.extend({
         el: '#all-scores',
@@ -20,7 +21,9 @@ define([
             "click #all-scores-variant3" : "selectVariant3Scores",
             "click #all-scores-user" : "selectUserScores",
             "click #all-scores-daily" : "selectDailyScores",
-            "click #all-scores-all" : "selectAllScores"
+            "click #all-scores-all" : "selectAllScores",
+            "click #all-scores-options-list" : "selectAllScoresOptions"
+            //"change #all-scores-variant-select" : "selectVariantChange"
         },
 
         initialize: function() {
@@ -86,13 +89,35 @@ define([
                 collection: this.model
             });
 
+            this.$el.html(this.headingTemplate({ username: this.model.username }));
+
+            var firstListItem = this.$("#all-scores-daily-list-item");
+
+            _.each(_.values(variantLookup.variants), function (item) {
+                
+                var itemId = "all-scores-auto-variant-" + item.code.toLowerCase();
+                var itemName = "<li><a id=\"" + itemId + "\" href=\"#" + itemId + "\">All-time Top Scores auto (" + item.display + ")</a></li>";
+                $(itemName).insertAfter(firstListItem);
+            });
+
+            /*var select = this.$el.find("#all-scores-variant-select");
+     
+            _.each(_.values(variantLookup.variants), function (item) {
+                console.log(JSON.stringify(select));
+
+                console.log(JSON.stringify(item));
+                $("<p>Hi</p>").appendTo(select);
+                $("<option/>", {
+                    value: item.code.toLowerCase(),
+                    text: item.display.toLowerCase()
+                }).appendTo(select);
+            });*/
+
             this.setVariantNoScores(0);
             this.refresh();
         },
 
         render: function() {
-
-            this.$el.html(this.headingTemplate({ username: this.model.username }));
 
             $("#all-scores-grid").append(this.grid.render().$el);
             $("#all-scores-paginator").append(this.paginator.render().$el);
@@ -137,6 +162,7 @@ define([
         selectDailyScores: function(event) {
 
             event.preventDefault();
+            console.log("daily scores");
 
             this.model.setDailyTopScores();
             this.refresh();
@@ -176,6 +202,13 @@ define([
 
             this.setVariantNoScores(3);
             this.refresh();
+        },
+
+        selectAllScoresOptions: function(event) {
+            
+            event.preventDefault();
+
+            console.log(event.target.id);
         }
     });
 
