@@ -88,33 +88,21 @@ define([
             this.paginator = new Backgrid.Extension.Paginator({
                 collection: this.model
             });
+         
+            this.setDefaultVariantScores();
+        },
 
+        renderOptions: function() {
             this.$el.html(this.headingTemplate({ username: this.model.username }));
 
             var firstListItem = this.$("#all-scores-daily-list-item");
 
-            _.each(_.values(variantLookup.variants), function (item) {
+            _.each(_.values(variantLookup.variants).reverse(), function (item) {
                 
-                var itemId = "all-scores-auto-variant-" + item.code.toLowerCase();
-                var itemName = "<li><a id=\"" + itemId + "\" href=\"#" + itemId + "\">All-time Top Scores auto (" + item.display + ")</a></li>";
+                var itemId = "all-scores-auto-variant-" + item.code;
+                var itemName = "<li><a id=\"" + itemId + "\" href=\"#" + itemId + "\">All-time Top Scores (" + item.display + ")</a></li>";
                 $(itemName).insertAfter(firstListItem);
             });
-
-            /*var select = this.$el.find("#all-scores-variant-select");
-     
-            _.each(_.values(variantLookup.variants), function (item) {
-                console.log(JSON.stringify(select));
-
-                console.log(JSON.stringify(item));
-                $("<p>Hi</p>").appendTo(select);
-                $("<option/>", {
-                    value: item.code.toLowerCase(),
-                    text: item.display.toLowerCase()
-                }).appendTo(select);
-            });*/
-
-            this.setVariantNoScores(0);
-            this.refresh();
         },
 
         render: function() {
@@ -131,24 +119,30 @@ define([
 
         login: function(userName) {
             this.model.setUserName(userName);
+            this.renderOptions(); //ensure user scores option is shown
 
             this.render();
         },
 
         logout: function() {
             this.model.clearUserName();
+            this.renderOptions(); //ensure user scores option is shown
 
             this.render();
         },
 
         activate: function() {
             //Model may be in an old-state, so refresh
-            this.setVariantNoScores(0);
-            this.refresh();
+            this.setDefaultVariantScores();
         },
 
         quit: function() {
             this.refresh();
+        },
+
+        setDefaultVariantScores: function() {
+            this.model.setVariantTopScores(config.variants[0].code);
+            this.model.fetch();
         },
 
         selectUserScores: function(event) {
@@ -156,59 +150,37 @@ define([
             event.preventDefault();
 
             this.model.setUserTopScores();
-            this.refresh();
+            this.model.fetch();
         },
 
         selectDailyScores: function(event) {
 
             event.preventDefault();
-            console.log("daily scores");
 
             this.model.setDailyTopScores();
-            this.refresh();
-        },
-
-        selectVariant0Scores: function(event) {
-
-            event.preventDefault();
-
-            this.setVariantNoScores(0);
-            this.refresh();
-        },
-
-        setVariantNoScores: function(variantNo) {
-            this.model.setVariantTopScores(config.variants[variantNo].code);
-        },
-
-        selectVariant1Scores: function(event) {
-
-            event.preventDefault();
-
-            this.setVariantNoScores(1);
-            this.refresh();
-        },
-
-        selectVariant2Scores: function(event) {
-
-            event.preventDefault();
-
-            this.setVariantNoScores(2);
-            this.refresh();
-        },
-
-        selectVariant3Scores: function(event) {
-
-            event.preventDefault();
-
-            this.setVariantNoScores(3);
-            this.refresh();
+            this.model.fetch();
         },
 
         selectAllScoresOptions: function(event) {
             
             event.preventDefault();
 
-            console.log(event.target.id);
+            if(!event.target.id) {
+                return;
+            }
+
+            var codeAfterHyphenIndex = event.target.id.lastIndexOf("-")
+            
+            if(codeAfterHyphenIndex == -1) {
+                return;
+            }
+
+            var code = event.target.id.substring(codeAfterHyphenIndex + 1);
+
+            if(code in variantLookup.variants) {
+                this.model.setVariantTopScores(code);
+                this.model.fetch();
+            }
         }
     });
 
