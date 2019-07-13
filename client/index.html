@@ -114,6 +114,9 @@
     <h2>High Scores</h2>
     <ul id="all-scores-options-list">
         <li id="all-scores-daily-list-item"><a id="all-scores-daily" href="#all-scores-daily">Daily Top Scores</a></li>
+        <%_.forEach(variants, function (i) {%>
+        <li><a id="all-scores-variant-<%=i.code%>" href="#all-scores-variant-<%=i.code%>">All-time Top Scores (<%=i.display%>)</a></li>
+        <%})%>
         <% if (username) { %>
         <li><a id="all-scores-user" href="#all-scores-user">My Top Scores (<%= username %>)</a></li>
         <% } %>

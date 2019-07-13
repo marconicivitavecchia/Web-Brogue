@@ -15,15 +15,9 @@ define([
         headingTemplate: _.template($('#all-scores-heading').html()),
 
         events: {
-            "click #all-scores-variant0" : "selectVariant0Scores",
-            "click #all-scores-variant1" : "selectVariant1Scores",
-            "click #all-scores-variant2" : "selectVariant2Scores",
-            "click #all-scores-variant3" : "selectVariant3Scores",
             "click #all-scores-user" : "selectUserScores",
             "click #all-scores-daily" : "selectDailyScores",
-            "click #all-scores-all" : "selectAllScores",
             "click #all-scores-options-list" : "selectAllScoresOptions"
-            //"change #all-scores-variant-select" : "selectVariantChange"
         },
 
         initialize: function() {
@@ -93,16 +87,12 @@ define([
         },
 
         renderOptions: function() {
-            this.$el.html(this.headingTemplate({ username: this.model.username }));
 
-            var firstListItem = this.$("#all-scores-daily-list-item");
+            var variantData = _.values(variantLookup.variants);
 
-            _.each(_.values(variantLookup.variants).reverse(), function (item) {
-                
-                var itemId = "all-scores-auto-variant-" + item.code;
-                var itemName = "<li><a id=\"" + itemId + "\" href=\"#" + itemId + "\">All-time Top Scores (" + item.display + ")</a></li>";
-                $(itemName).insertAfter(firstListItem);
-            });
+            this.$el.html(this.headingTemplate(
+                {   username: this.model.username,
+                    variants: variantData}));
         },
 
         render: function() {
