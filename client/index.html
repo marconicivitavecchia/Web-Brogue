@@ -231,11 +231,10 @@
 
 <script id="level-statistics-template" type="text/template">
     <h3>Deaths by Level</h3>
-    <ul>
-        <li><a id="deaths-by-level-variant0" href="#deaths-by-level-variant0">Deaths for Brogue 1.7.5</a></li>
-        <li><a id="deaths-by-level-variant1" href="#deaths-by-level-variant1">Deaths for Brogue 1.7.4</a></li>
-        <li><a id="deaths-by-level-variant2" href="#deaths-by-level-variant2">Deaths for gBrogue</a></li>
-        <li><a id="deaths-by-level-variant3" href="#deaths-by-level-variant3">Deaths for unBrogue</a></li>
+    <ul id="deaths-by-level-list">
+            <%_.forEach(variants, function (i) {%>
+            <li><a id="deaths-by-level-variant-<%=i.code%>" href="#deaths-by-level-variant-<%=i.code%>">Deaths by level (<%=i.display%>)</a></li>
+            <%})%>
     </ul>
     <p>Number of deaths per level.</p>
     <div id="level-stats-grid" />
@@ -243,11 +242,10 @@
 
 <script id="level-probability-template" type="text/template">
     <h3>Probability of Death by Level</h3>
-    <ul>
-        <li><a id="deaths-probability-by-level-variant0" href="#deaths-probability-by-level-variant0">Deaths for Brogue 1.7.5</a></li>
-        <li><a id="deaths-probability-by-level-variant1" href="#deaths-probability-by-level-variant1">Deaths for Brogue 1.7.4</a></li>
-        <li><a id="deaths-probability-by-level-variant2" href="#deaths-probability-by-level-variant2">Deaths for gBrogue</a></li>
-        <li><a id="deaths-probability-by-level-variant3" href="#deaths-probability-by-level-variant3">Deaths for unBrogue</a></li>
+    <ul id="probability-deaths-by-level-list">
+            <%_.forEach(variants, function (i) {%>
+            <li><a id="deaths-probability-by-level-variant-<%=i.code%>" href="#deaths-probability-by-level-variant-<%=i.code%>">Death probability by level (<%=i.display%>)</a></li>
+            <%})%>
     </ul>
     <p>The probability of dying on a particular level, having reached that level. An analogue of perceived difficulty.</p>
     <div id="level-probability-grid" />
@@ -255,19 +253,18 @@
 
 <script id="general-statistics-template" type="text/template">
     <h3>General Statistics</h3>
-    <ul>
-        <li><a id="general-stats-variant0" href="#general-stats-variant0">Stats for Brogue 1.7.5</a></li>
-        <li><a id="general-stats-variant1" href="#general-stats-variant1">Stats for Brogue 1.7.4</a></li>
-        <li><a id="general-stats-variant2" href="#general-stats-variant2">Stats for gBrogue</a></li>
-        <li><a id="general-stats-variant3" href="#general-stats-variant3">Stats for unBrogue</a></li>
+    <ul id="general-stats-by-level-list">
+            <%_.forEach(variants, function (i) {%>
+            <li><a id="general-stats-by-level-variant-<%=i.code%>" href="#deaths-probability-by-level-variant-<%=i.code%>">Statistics for (<%=i.display%>)</a></li>
+            <%})%>
     </ul>
     <ul>
-        <li>Total games played: <%= totalGames %> (easy mode: <%= totalEasyModeGames %>)</li>
-        <li>Total victories: <%= totalNormalModeVictories %></li>
-        <li>Total masteries: <%= totalNormalModeSuperVictories %></li>
-        <li>Total lumenstones stolen: <%= totalLumenstones %></li>
-        <li>Total levels explored: <%= totalLevels %></li>
-        <li>Last victory: <%= lastVictoryDate %> (by <%= lastVictoryUser %>)</li>
+        <li>Total games played: <%= stats.totalGames %> (easy mode: <%= stats.totalEasyModeGames %>)</li>
+        <li>Total victories: <%= stats.totalNormalModeVictories %></li>
+        <li>Total masteries: <%= stats.totalNormalModeSuperVictories %></li>
+        <li>Total lumenstones stolen: <%= stats.totalLumenstones %></li>
+        <li>Total levels explored: <%= stats.totalLevels %></li>
+        <li>Last victory: <%= stats.lastVictoryDate %> (by <%= stats.lastVictoryUser %>)</li>
         <p>(victories and masteries exclude easy mode)</p>
     </ul>
 </script>

@@ -3,7 +3,8 @@ define([
     "underscore",
     "backbone",
     "config",
-], function ($, _, Backbone, config) {
+    "variantLookup"
+], function ($, _, Backbone, config, variantLookup) {
 
     var GeneralStatsView = Backbone.View.extend({
 
@@ -11,23 +12,26 @@ define([
         headingTemplate: _.template($('#general-statistics-template').html()),
 
         events: {
-            "click #general-stats-variant0" : "selectVariant0GeneralStats",
-            "click #general-stats-variant1" : "selectVariant1GeneralStats",
-            "click #general-stats-variant2" : "selectVariant2GeneralStats",
-            "click #general-stats-variant3" : "selectVariant3GeneralStats"
+            "click #general-stats-by-level-list" : "selectAllStatsOptions"
         },
 
         initialize: function() {
             this.listenTo(this.model, "add", this.render);
             this.listenTo(this.model, "change", this.render);
 
-            this.setGeneralStatsForVariant(0);
+            this.setDefaultGeneralStats();
             this.refresh();
         },
 
         render: function() {
 
-            this.$el.html(this.headingTemplate(this.model.toJSON()));
+            var variantData = _.values(variantLookup.variants);
+
+            this.$el.html(this.headingTemplate(
+                {   stats : this.model.toJSON(),
+                    variants: variantData,
+                }));
+
             return this;
         },
 
@@ -36,40 +40,31 @@ define([
             this.render();
         },
 
-        selectVariant0GeneralStats: function(event) {
-
-            event.preventDefault();
-
-            this.setGeneralStatsForVariant(0);
-            this.refresh();
+        setDefaultGeneralStats: function() {
+            this.model.setVariantGeneralStats(config.variants[0].code);
+            this.model.fetch();
         },
 
-        setGeneralStatsForVariant: function(variantNo) {
-            this.model.setVariantGeneralStats(config.variants[variantNo].code);
-        },
-
-        selectVariant1GeneralStats: function(event) {
-
+        selectAllStatsOptions: function(event) {
+            
             event.preventDefault();
 
-            this.setGeneralStatsForVariant(1);
-            this.refresh();
-        },
+            if(!event.target.id) {
+                return;
+            }
 
-        selectVariant2GeneralStats: function(event) {
+            var codeAfterHyphenIndex = event.target.id.lastIndexOf("-")
+            
+            if(codeAfterHyphenIndex == -1) {
+                return;
+            }
 
-            event.preventDefault();
+            var code = event.target.id.substring(codeAfterHyphenIndex + 1);
 
-            this.setGeneralStatsForVariant(2);
-            this.refresh();
-        },
-
-        selectVariant3GeneralStats: function(event) {
-
-            event.preventDefault();
-
-            this.setGeneralStatsForVariant(3);
-            this.refresh();
+            if(code in variantLookup.variants) {
+                this.model.setVariantGeneralStats(code);
+                this.model.fetch();
+            }
         }
     });
 
