@@ -3,9 +3,8 @@ define([
     "underscore",
     "backbone",
     "chart",
-    "config",
     "variantLookup"
-], function ($, _, Backbone, Chart, config, variantLookup) {
+], function ($, _, Backbone, Chart, variantLookup) {
 
     var LevelProbabilityView = Backbone.View.extend({
 
@@ -109,7 +108,7 @@ define([
         },
 
         setDefaultDeathsProbabilityStats: function() {
-            this.model.setVariantForLevelProbabilityStats(config.variants[0].code);
+            this.model.setVariantForLevelProbabilityStats(_.values(variantLookup.variants)[0].code);
             this.model.fetch();
         },
         

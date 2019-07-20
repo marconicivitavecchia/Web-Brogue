@@ -2,9 +2,8 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    "config",
     "variantLookup"
-], function ($, _, Backbone, config, variantLookup) {
+], function ($, _, Backbone, variantLookup) {
 
     var GeneralStatsView = Backbone.View.extend({
 
@@ -41,7 +40,7 @@ define([
         },
 
         setDefaultGeneralStats: function() {
-            this.model.setVariantGeneralStats(config.variants[0].code);
+            this.model.setVariantGeneralStats(_.values(variantLookup.variants)[0].code);
             this.model.fetch();
         },
 

@@ -3,9 +3,8 @@ define([
     "underscore",
     "backbone",
     "chart",
-    "config",
     "variantLookup"
-], function ($, _, Backbone, Chart, config, variantLookup) {
+], function ($, _, Backbone, Chart, variantLookup) {
 
     var LevelStatisticsView = Backbone.View.extend({
 
@@ -108,7 +107,7 @@ define([
         },
 
         setDefaultDeathsByLevel: function() {
-            this.model.setVariantForLevelStats(config.variants[0].code);
+            this.model.setVariantForLevelStats(_.values(variantLookup.variants)[0].code);
             this.model.fetch();
         },
 

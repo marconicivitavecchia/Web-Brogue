@@ -5,12 +5,12 @@ define([
     "underscore",
     "backbone",
     "dispatcher",
-    "config",
+    "variantLookup",
     'dataIO/send-keypress',
     "views/console-cell-view",
     "models/console-cell",
     "views/view-activation-helpers"
-], function($, _, Backbone, dispatcher, config, sendKeypressEvent, ConsoleCellView, CellModel, activate) {
+], function($, _, Backbone, dispatcher, variantLookup, sendKeypressEvent, ConsoleCellView, CellModel, activate) {
 
     var _MESSAGE_UPDATE_SIZE = 10;
 
@@ -36,16 +36,13 @@ define([
 
         initialiseForNewGame: function(data) {
 
-            var variantIndex = 0;
-            if('variantIndex' in data) {
-                variantIndex = data.variantIndex;
+            var variantCode = _.values(variantLookup.variants)[0].code;
+            if('variant' in data) {
+                variantCode = data.variant;
             }
-            else {
-                variantIndex = _.findIndex(config.variants, {code: data.variant});
-            }
-
-            this.consoleColumns = config.variants[variantIndex].consoleColumns;
-            this.consoleRows = config.variants[variantIndex].consoleRows;
+            
+            this.consoleColumns = variantLookup.variants[variantCode].consoleColumns;
+            this.consoleRows = variantLookup.variants[variantCode].consoleRows;
             this.initializeConsoleCells();
             this.resize();
         },

@@ -18,7 +18,6 @@ define([
         },
         
         template : _.template($('#seed-popup').html()),
-        variantIndex : 0,
         
         initialize : function(){
             _.extend(this.events, PopupView.prototype.events);
@@ -34,7 +33,7 @@ define([
             }
             else if (message.result === "success") {
                 this.closePopup();
-                dispatcher.trigger("startGame", { variantIndex: this.variantIndex });
+                dispatcher.trigger("startGame", { variant: this.variantCode });
 
                 activate.console();
                 dispatcher.trigger("showConsole");
@@ -46,14 +45,14 @@ define([
             var seedValue = $('#seed').val();  
             send("brogue", "start", {
                 seed: seedValue,
-                variant: config.variants[this.variantIndex].code
+                variant: this.variantCode
             });
         },
 
-        showSeedPopup: function(variantIndex) {
+        showSeedPopup: function(variantCode) {
             this.showPopup("");
             $('#seed').focus();
-            this.variantIndex = variantIndex;
+            this.variantCode = variantCode;
             return;
         },
         

@@ -131,7 +131,7 @@ define([
         },
 
         setDefaultVariantScores: function() {
-            this.model.setVariantTopScores(config.variants[0].code);
+            this.model.setVariantTopScores(_.values(variantLookup.variants)[0].code);
             this.model.fetch();
         },
 

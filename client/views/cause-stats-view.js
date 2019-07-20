@@ -2,9 +2,8 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    "config",
     "variantLookup"
-], function ($, _, Backbone, config, variantLookup) {
+], function ($, _, Backbone, variantLookup) {
 
     var CauseStatisticsView = Backbone.View.extend({
 
@@ -75,7 +74,7 @@ define([
         },
 
         setDefaultVariantCauses: function() {
-            this.model.setVariantForCauseStats(config.variants[0].code);
+            this.model.setVariantForCauseStats(_.values(variantLookup.variants)[0].code);
             this.model.fetch();
         },
 
