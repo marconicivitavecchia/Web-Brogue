@@ -6,67 +6,63 @@ define([
     "backbone",
     "config",
     "dispatcher",
+    "variantLookup",
     "dataIO/send-generic",
-    "dataIO/router",
     "views/view-activation-helpers"
-], function ($, _, Backbone, config, dispatcher, send, router, activate) {
+], function ($, _, Backbone, config, dispatcher, variantLookup, send, activate) {
     
     var PlayView = Backbone.View.extend({
         el: "#play",
+        headingTemplate: _.template($('#main-menu-template').html()),
         
         events: {
-            "click #start-brogue-0" : "startBrogue0",
-            "click #start-brogue-seed-0" : "startBrogueSeed0",
-            "click #start-brogue-1" : "startBrogue1",
-            "click #start-brogue-seed-1" : "startBrogueSeed1",
-            "click #start-brogue-2" : "startBrogue2",
-            "click #start-brogue-seed-2" : "startBrogueSeed2",
-            "click #start-brogue-3" : "startBrogue3",
-            "click #start-brogue-seed-3" : "startBrogueSeed3",
+            "click #play-brogue-list" : "playBrogueListClick",
             "click #show-current-games" : "showCurrentGames",
             "click #show-stats" : "showStats",
             "click #show-high-scores" : "showHighScores"
         },
-        startBrogue0: function(event) {
-            event.preventDefault();
-            this.startBrogue(0)
+
+        initialize: function() {
+            this.render();
         },
-        startBrogue1: function(event) {
-            event.preventDefault();
-            this.startBrogue(1)
+
+        render: function() {
+
+            var variantData = _.values(variantLookup.variants);
+
+            this.$el.html(this.headingTemplate(
+                { variants: variantData }));
+
+            return this;
         },
-        startBrogue2: function(event) {
+
+        playBrogueListClick: function(event) {
+            
             event.preventDefault();
-            this.startBrogue(2)
-        },
-        startBrogue3: function(event) {
-            event.preventDefault();
-            this.startBrogue(3)
-        },
-        startBrogue: function(variantIndex){
-            send("brogue", "start", {variant: config.variants[variantIndex].code});
-            dispatcher.trigger("startGame", { variantIndex: variantIndex });
-            this.goToConsole();
-        },
-        startBrogueSeed0: function(event) {
-            event.preventDefault();
-            this.startBrogueSeed(0)
-        },
-        startBrogueSeed1: function(event) {
-            event.preventDefault();
-            this.startBrogueSeed(1)
-        },
-        startBrogueSeed2: function(event) {
-            event.preventDefault();
-            this.startBrogueSeed(2)
-        },
-        startBrogueSeed3: function(event) {
-            event.preventDefault();
-            this.startBrogueSeed(3)
-        },
-        startBrogueSeed: function(variantIndex){
-            event.preventDefault();
-            dispatcher.trigger("showSeedPopup", variantIndex);
+
+            if(!event.target.id) {
+                return;
+            }
+
+            var codeAfterHyphenIndex = event.target.id.lastIndexOf("-")
+            
+            if(codeAfterHyphenIndex == -1) {
+                return;
+            }
+
+            var code = event.target.id.substring(codeAfterHyphenIndex + 1);
+
+            if(code in variantLookup.variants) {
+
+                if(event.target.id.includes("seed")) {
+                    dispatcher.trigger("showSeedPopup", code);
+                }
+                else {    
+                    send("brogue", "start", {variant: code});
+                    dispatcher.trigger("startGame", { variant: code });
+                    this.goToConsole();
+                }
+            }
         },
         showCurrentGames : function(event){
             event.preventDefault();

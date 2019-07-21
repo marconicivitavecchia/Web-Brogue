@@ -2,8 +2,8 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    "config"
-], function ($, _, Backbone, config) {
+    "variantLookup"
+], function ($, _, Backbone, variantLookup) {
 
     var CauseStatisticsView = Backbone.View.extend({
 
@@ -11,10 +11,7 @@ define([
         headingTemplate: _.template($('#cause-statistics-template').html()),
 
         events: {
-            "click #deaths-by-cause-variant0" : "selectVariant0DeathCauseStats",
-            "click #deaths-by-cause-variant1" : "selectVariant1DeathCauseStats",
-            "click #deaths-by-cause-variant2" : "selectVariant2DeathCauseStats",
-            "click #deaths-by-cause-variant3" : "selectVariant3DeathCauseStats"
+            "click #deaths-by-cause-list" : "selectAllCausesOptions"
         },
 
         initialize: function() {
@@ -52,13 +49,21 @@ define([
                 collection: this.model
             });
 
-            this.setDeathCauseStatsForVariant(0);
-            this.refresh();
+            this.renderOptions();
+            this.setDefaultVariantCauses();
         },
 
-        render: function() {
+        renderOptions: function() {
 
-            this.$el.html(this.headingTemplate({}));
+            var variantData = _.values(variantLookup.variants);
+
+            this.$el.html(this.headingTemplate(
+                {   username: this.model.username,
+                    variants: variantData}));
+        },
+
+
+        render: function() {
 
             $("#cause-stats-grid").append(this.grid.render().$el);
             return this;
@@ -66,44 +71,34 @@ define([
 
         refresh: function() {
             this.model.fetch();
-            this.render();
         },
 
-        selectVariant0DeathCauseStats: function(event) {
+        setDefaultVariantCauses: function() {
+            this.model.setVariantForCauseStats(_.values(variantLookup.variants)[0].code);
+            this.model.fetch();
+        },
 
+        selectAllCausesOptions: function(event) {
+            
             event.preventDefault();
 
-            this.setDeathCauseStatsForVariant(0);
-            this.refresh();
-        },
+            if(!event.target.id) {
+                return;
+            }
 
-        setDeathCauseStatsForVariant: function(variantNo) {
-            this.model.setVariantForCauseStats(config.variants[variantNo].code);
-        },
+            var codeAfterHyphenIndex = event.target.id.lastIndexOf("-")
+            
+            if(codeAfterHyphenIndex == -1) {
+                return;
+            }
 
-        selectVariant1DeathCauseStats: function(event) {
+            var code = event.target.id.substring(codeAfterHyphenIndex + 1);
 
-            event.preventDefault();
-
-            this.setDeathCauseStatsForVariant(1);
-            this.refresh();
-        },
-
-        selectVariant2DeathCauseStats: function(event) {
-
-            event.preventDefault();
-
-            this.setDeathCauseStatsForVariant(2);
-            this.refresh();
-        },
-
-        selectVariant3DeathCauseStats: function(event) {
-
-            event.preventDefault();
-
-            this.setDeathCauseStatsForVariant(3);
-            this.refresh();
-        },
+            if(code in variantLookup.variants) {
+                this.model.setVariantForCauseStats(code);
+                this.model.fetch();
+            }
+        }
     });
 
     return CauseStatisticsView;

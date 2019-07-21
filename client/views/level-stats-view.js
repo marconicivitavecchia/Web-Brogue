@@ -3,8 +3,8 @@ define([
     "underscore",
     "backbone",
     "chart",
-    "config"
-], function ($, _, Backbone, Chart, config) {
+    "variantLookup"
+], function ($, _, Backbone, Chart, variantLookup) {
 
     var LevelStatisticsView = Backbone.View.extend({
 
@@ -12,10 +12,7 @@ define([
         headingTemplate: _.template($('#level-statistics-template').html()),
 
         events: {
-            "click #deaths-by-level-variant0" : "selectVariant0DeathsPerLevelStats",
-            "click #deaths-by-level-variant1" : "selectVariant1DeathsPerLevelStats",
-            "click #deaths-by-level-variant2" : "selectVariant2DeathsPerLevelStats",
-            "click #deaths-by-level-variant3" : "selectVariant3DeathsPerLevelStats"
+            "click #deaths-by-level-list" : "selectAllLevelsOptions"
         },
 
         initialize: function() {
@@ -41,13 +38,20 @@ define([
                 collection: this.model
             });
 
-            this.setDeathsByLevelStatsForVariant(0);
-            this.refresh();
+            this.renderOptions();
+            this.setDefaultDeathsByLevel();
+        },
+
+        renderOptions: function() {
+
+            var variantData = _.values(variantLookup.variants);
+
+            this.$el.html(this.headingTemplate(
+                {   username: this.model.username,
+                    variants: variantData}));
         },
 
         render: function() {
-
-            this.$el.html(this.headingTemplate({}));
 
             $("#level-stats-grid").append(this.grid.render().$el);
 
@@ -102,40 +106,31 @@ define([
             this.render();
         },
 
-        selectVariant0DeathsPerLevelStats: function(event) {
-
-            event.preventDefault();
-
-            this.setDeathsByLevelStatsForVariant(0);
-            this.refresh();
+        setDefaultDeathsByLevel: function() {
+            this.model.setVariantForLevelStats(_.values(variantLookup.variants)[0].code);
+            this.model.fetch();
         },
 
-        setDeathsByLevelStatsForVariant: function(variantNo) {
-            this.model.setVariantForLevelStats(config.variants[variantNo].code);
-        },
-
-        selectVariant1DeathsPerLevelStats: function(event) {
-
+        selectAllLevelsOptions: function(event) {
+            
             event.preventDefault();
 
-            this.setDeathsByLevelStatsForVariant(1);
-            this.refresh();
-        },
+            if(!event.target.id) {
+                return;
+            }
 
-        selectVariant2DeathsPerLevelStats: function(event) {
+            var codeAfterHyphenIndex = event.target.id.lastIndexOf("-")
+            
+            if(codeAfterHyphenIndex == -1) {
+                return;
+            }
 
-            event.preventDefault();
+            var code = event.target.id.substring(codeAfterHyphenIndex + 1);
 
-            this.setDeathsByLevelStatsForVariant(2);
-            this.refresh();
-        },
-
-        selectVariant3DeathsPerLevelStats: function(event) {
-
-            event.preventDefault();
-
-            this.setDeathsByLevelStatsForVariant(3);
-            this.refresh();
+            if(code in variantLookup.variants) {
+                this.model.setVariantForLevelStats(code);
+                this.model.fetch();
+            }
         }
     });
 

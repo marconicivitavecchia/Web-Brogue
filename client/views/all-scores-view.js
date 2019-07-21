@@ -6,21 +6,18 @@ define([
     "backbone",
     "dispatcher",
     "config",
-    "views/score-table-cells"
-], function ($, _, Backbone, dispatcher, config, TableCells) {
+    "views/score-table-cells",
+    "variantLookup"
+], function ($, _, Backbone, dispatcher, config, TableCells, variantLookup) {
 
     var AllScoresView = Backbone.View.extend({
         el: '#all-scores',
         headingTemplate: _.template($('#all-scores-heading').html()),
 
         events: {
-            "click #all-scores-variant0" : "selectVariant0Scores",
-            "click #all-scores-variant1" : "selectVariant1Scores",
-            "click #all-scores-variant2" : "selectVariant2Scores",
-            "click #all-scores-variant3" : "selectVariant3Scores",
             "click #all-scores-user" : "selectUserScores",
             "click #all-scores-daily" : "selectDailyScores",
-            "click #all-scores-all" : "selectAllScores"
+            "click #all-scores-options-list" : "selectAllScoresOptions"
         },
 
         initialize: function() {
@@ -85,14 +82,20 @@ define([
             this.paginator = new Backgrid.Extension.Paginator({
                 collection: this.model
             });
+         
+            this.setDefaultVariantScores();
+        },
 
-            this.setVariantNoScores(0);
-            this.refresh();
+        renderOptions: function() {
+
+            var variantData = _.values(variantLookup.variants);
+
+            this.$el.html(this.headingTemplate(
+                {   username: this.model.username,
+                    variants: variantData}));
         },
 
         render: function() {
-
-            this.$el.html(this.headingTemplate({ username: this.model.username }));
 
             $("#all-scores-grid").append(this.grid.render().$el);
             $("#all-scores-paginator").append(this.paginator.render().$el);
@@ -106,24 +109,30 @@ define([
 
         login: function(userName) {
             this.model.setUserName(userName);
+            this.renderOptions(); //ensure user scores option is shown
 
             this.render();
         },
 
         logout: function() {
             this.model.clearUserName();
+            this.renderOptions(); //ensure user scores option is shown
 
             this.render();
         },
 
         activate: function() {
             //Model may be in an old-state, so refresh
-            this.setVariantNoScores(0);
-            this.refresh();
+            this.setDefaultVariantScores();
         },
 
         quit: function() {
             this.refresh();
+        },
+
+        setDefaultVariantScores: function() {
+            this.model.setVariantTopScores(_.values(variantLookup.variants)[0].code);
+            this.model.fetch();
         },
 
         selectUserScores: function(event) {
@@ -131,7 +140,7 @@ define([
             event.preventDefault();
 
             this.model.setUserTopScores();
-            this.refresh();
+            this.model.fetch();
         },
 
         selectDailyScores: function(event) {
@@ -139,43 +148,29 @@ define([
             event.preventDefault();
 
             this.model.setDailyTopScores();
-            this.refresh();
+            this.model.fetch();
         },
 
-        selectVariant0Scores: function(event) {
-
+        selectAllScoresOptions: function(event) {
+            
             event.preventDefault();
 
-            this.setVariantNoScores(0);
-            this.refresh();
-        },
+            if(!event.target.id) {
+                return;
+            }
 
-        setVariantNoScores: function(variantNo) {
-            this.model.setVariantTopScores(config.variants[variantNo].code);
-        },
+            var codeAfterHyphenIndex = event.target.id.lastIndexOf("-")
+            
+            if(codeAfterHyphenIndex == -1) {
+                return;
+            }
 
-        selectVariant1Scores: function(event) {
+            var code = event.target.id.substring(codeAfterHyphenIndex + 1);
 
-            event.preventDefault();
-
-            this.setVariantNoScores(1);
-            this.refresh();
-        },
-
-        selectVariant2Scores: function(event) {
-
-            event.preventDefault();
-
-            this.setVariantNoScores(2);
-            this.refresh();
-        },
-
-        selectVariant3Scores: function(event) {
-
-            event.preventDefault();
-
-            this.setVariantNoScores(3);
-            this.refresh();
+            if(code in variantLookup.variants) {
+                this.model.setVariantTopScores(code);
+                this.model.fetch();
+            }
         }
     });
 

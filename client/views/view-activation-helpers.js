@@ -15,12 +15,12 @@ define(['jquery'], function($){
         },
 
         statistics : function(){
-            $('#saved-games, #current-games, #mini-scores, #all-scores, #site-news').addClass('inactive');
+            $('#current-games, #mini-scores, #all-scores, #site-news').addClass('inactive');
             $('#server-statistics').removeClass('inactive');
         },
 
         highScores : function(){
-            $('#saved-games, #current-games, #mini-scores, #server-statistics, #site-news').addClass('inactive');
+            $('#current-games, #mini-scores, #server-statistics, #site-news').addClass('inactive');
             $('#all-scores, #chat').removeClass('inactive');
         },
         
@@ -41,7 +41,7 @@ define(['jquery'], function($){
         },
         
         resetAll: function(){
-            $('#play, #saved-games, #all-scores, #console-holder, #server-statistics').addClass("inactive");
+            $('#play, #all-scores, #console-holder, #server-statistics').addClass("inactive");
             $('#lobby, #auth, #current-games, #mini-scores').removeClass("inactive");
         }
     };

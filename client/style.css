@@ -85,7 +85,6 @@ button {
 .about,
 .lobby-chat,
 .current-games,
-.saved-games,
 .mini-scores,
 .site-news,
 .all-scores,
@@ -140,14 +139,12 @@ button {
 }
 
 .current-games,
-.saved-games,
 .mini-scores,
 .all-scores {
     width: 100%;
 }
 
 .current-games table,
-.saved-games table,
 .mini-scores table,
 .all-scores table {
     width: 100%;
@@ -159,8 +156,6 @@ button {
 
 .current-games th,
 .current-games td,
-.saved-games th,
-.saved-games td,
 .mini-scores th,
 .mini-scores td,
 .all-scores th,
@@ -197,7 +192,6 @@ button {
     }
 
     .current-games,
-    .saved-games,
     .mini-scores,
     .site-news,
     .all-scores {
