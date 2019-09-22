@@ -74,7 +74,7 @@ define([
         },
 
         setDefaultVariantCauses: function() {
-            this.model.setVariantForCauseStats(_.values(variantLookup.variants)[0].code);
+            this.model.setVariantForCauseStats(_.findWhere(_.values(variantLookup.variants), {default: true}).code);
             this.model.fetch();
         },
 

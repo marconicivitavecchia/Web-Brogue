@@ -36,7 +36,7 @@ define([
 
         initialiseForNewGame: function(data) {
 
-            var variantCode = _.values(variantLookup.variants)[0].code;
+            var variantCode = _.findWhere(_.values(variantLookup.variants), {default: true}).code;
             if('variant' in data) {
                 variantCode = data.variant;
             }

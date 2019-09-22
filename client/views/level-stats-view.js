@@ -107,7 +107,7 @@ define([
         },
 
         setDefaultDeathsByLevel: function() {
-            this.model.setVariantForLevelStats(_.values(variantLookup.variants)[0].code);
+            this.model.setVariantForLevelStats(_.findWhere(_.values(variantLookup.variants), {default: true}).code);
             this.model.fetch();
         },
 

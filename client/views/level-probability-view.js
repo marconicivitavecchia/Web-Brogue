@@ -108,7 +108,7 @@ define([
         },
 
         setDefaultDeathsProbabilityStats: function() {
-            this.model.setVariantForLevelProbabilityStats(_.values(variantLookup.variants)[0].code);
+            this.model.setVariantForLevelProbabilityStats(_.findWhere(_.values(variantLookup.variants), {default: true}).code);
             this.model.fetch();
         },
         

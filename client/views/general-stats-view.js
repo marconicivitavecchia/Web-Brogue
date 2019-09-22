@@ -40,7 +40,7 @@ define([
         },
 
         setDefaultGeneralStats: function() {
-            this.model.setVariantGeneralStats(_.values(variantLookup.variants)[0].code);
+            this.model.setVariantGeneralStats(_.findWhere(_.values(variantLookup.variants), {default: true}).code);
             this.model.fetch();
         },
 
