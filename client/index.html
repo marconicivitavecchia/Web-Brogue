@@ -54,7 +54,8 @@
     <h2>Play Brogue!</h2>
     <ul id="play-brogue-list">
         <%_.forEach(variants, function (i) {%>
-        <li>
+        <%if(!i.disabled) {%>
+            <li>
         <%if(i.default) {%>
             <strong><%=i.display%></strong>
         <%} else {%>
@@ -63,7 +64,7 @@
             <a id="start-brogue-<%=i.code%>" href="#start-brogue-<%=i.code%>">(play)</a>
             <a id="start-brogue-seed-<%=i.code%>" href="#start-broge-seed-<%=i.code%>">(seed)</a>
         </li>
-        <%})%>
+        <%}})%>
         <li><a id="show-current-games" href="#show-current-games">Current Games </a></li>
         <li><a id="show-high-scores" href="#show-high-scores">High Scores</a></li>
         <li><a id="show-stats" href="#show-stats">Game Statistics</a></li>
