@@ -2464,6 +2464,7 @@ boolean specificallyValidBoltTarget(creature *caster, creature *target, enum bol
                 // (Players should never be intentionally targeted by discord. It's just a fact of monster psychology.)
                 return false;
             }
+			break;
         case BE_NEGATION:
             if (monstersAreEnemies(caster, target)) {
                 if (target->status[STATUS_HASTED] || target->status[STATUS_TELEPATHIC] || target->status[STATUS_SHIELDED]) {
