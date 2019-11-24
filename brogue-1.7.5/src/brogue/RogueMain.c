@@ -226,7 +226,7 @@ void initializeRogue(unsigned long seed) {
 	playbackPaused = rogue.playbackPaused;
 	playbackFF = rogue.playbackFastForward;
 	memset((void *) &rogue, 0, sizeof( playerCharacter )); // the flood
-	rogue.warningPauseMode = false;
+	rogue.warningPauseMode = true;
 	rogue.playbackMode = playingback;
 	rogue.playbackPaused = playbackPaused;
 	rogue.playbackFastForward = playbackFF;
