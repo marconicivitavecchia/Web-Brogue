@@ -2520,7 +2520,9 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
             exploreKey(controlKey);
 			break;
 		case AUTOPLAY_KEY:
-			autoPlayLevel(controlKey);
+			if (confirm("Really use autoplay (dangerous!)?", false)) {
+				autoPlayLevel(controlKey);
+			}
 			break;
 		case MESSAGE_ARCHIVE_KEY:
 			displayMessageArchive();
