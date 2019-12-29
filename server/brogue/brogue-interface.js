@@ -187,6 +187,10 @@ BrogueInterface.prototype.newBrogueProcess = function(data, mode) {
     else {
         args = ["--no-menu", "--no-recording", "--no-scores", "--no-saves"];
 
+        if(this.variant === "BROGUECEV18") {
+            args = ["--server-mode"];
+        }
+
         //Input has been sanity checked in the controller. Any errors from brogue should be caught by the usual handlers
 
         if (data) {

@@ -7,19 +7,24 @@ define([
     //Includes all historical variants, so the API response can be prettified
     var VariantLookup = {
         variants: {
+            "BROGUECEV18": {
+                code: "BROGUECEV18",
+                display: "BrogueCE 1.8",
+                consoleColumns: 100,
+                consoleRows: 34,
+                default: true
+            },
             "BROGUEV175": {
                 code: "BROGUEV175",
                 display: "Brogue 1.7.5",
                 consoleColumns: 100,
-                consoleRows: 34,
-                default: true
+                consoleRows: 34
             },
             "BROGUEV174": {
                 code: "BROGUEV174",
                 display: "Brogue 1.7.4 [early 2019]",
                 consoleColumns: 100,
-                consoleRows: 34,
-                disabled: true
+                consoleRows: 34
             },
             "BROGUEV174DISCORD": {
                 code: "BROGUEV174DISCORD",
