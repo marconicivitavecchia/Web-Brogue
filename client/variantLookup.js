@@ -24,7 +24,8 @@ define([
                 code: "BROGUEV174",
                 display: "Brogue 1.7.4 [early 2019]",
                 consoleColumns: 100,
-                consoleRows: 34
+                consoleRows: 34,
+                disabled: true
             },
             "BROGUEV174DISCORD": {
                 code: "BROGUEV174DISCORD",

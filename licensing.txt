@@ -1,0 +1,15 @@
+This repository contains the web-brogue server and a number of
+versions of brogue.
+
+The web-brogue server can be used independently of brogue and will
+support any console game using the web-brogue protocol and networking.
+
+The different components have different licences, which is indicated
+by the licensing files in each subdirectory.
+
+web-brogue, LICENCE, GPL-v2
+brogue CE v1.8, AGPL-v3, source available at: https://github.com/tmewett/BrogueCE [source not currently in this repo]
+brogue v1.7.5, brogue-1.7.5/agpl.txt, AGPL-v3
+brogue v1.7.4, brogue/agpl.txt, AGPL-v3
+gBrogue, gbrogue/agpl.txt, AGPL-v3
+unBrogue, unBrogue/license-agpl.txt, AGPL-v3
