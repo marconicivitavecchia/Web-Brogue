@@ -181,6 +181,10 @@ BrogueInterface.prototype.newBrogueProcess = function(data, mode) {
     if(mode == brogueMode.RECORDING) {
         args = ["--no-menu", "--no-saves"];
 
+        if(this.variant === "BROGUECEV18") {
+            args = ["--server-mode"];
+        }
+
         args.push("-v");
         args.push(data.recordingPath);
     }
