@@ -83,11 +83,10 @@ define([
                     break;
             }
             
-            if (returnCode){
+            if (returnCode) {
                 event.preventDefault();
+                sendKeypressEvent(KEYPRESS_EVENT_CHAR, returnCode, ctrlKey, shiftKey);
             }
-            
-            sendKeypressEvent(KEYPRESS_EVENT_CHAR, returnCode, ctrlKey, shiftKey);
         },
         
         // input event fires after keydown is fired
