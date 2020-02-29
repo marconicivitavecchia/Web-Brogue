@@ -35,7 +35,20 @@ define([
             var inputHadFocus = $(this.inputElement).is(':focus');
             var currentInput = $(this.inputElement).val();
 
-            this.$el.html(this.template({messageListItems: messagesList}));
+            if(this.model.getChatShown()) {
+                chatHiddenStatus = "inactive";
+                chatShownStatus = "";
+            }
+            else {
+                chatHiddenStatus = "";
+                chatShownStatus = "inactive";
+            }
+
+            this.$el.html(this.template({
+                "messageListItems": messagesList,
+                "chatHiddenStatus": chatHiddenStatus,
+                "chatShownStatus": chatShownStatus
+            }));
 
             $(this.inputElement).val(currentInput);
             $(this.listElement).scrollTop(1E10);
@@ -78,14 +91,13 @@ define([
             $(this.inputElement).focus();
         },
         chatHide: function() {
-            $('#console-chat-inner').addClass("inactive");
-            $('#console-chat-hide-button').addClass("inactive");
-            $('#console-chat-show-button').removeClass("inactive");
+            this.model.setChatShown(false);
+            this.render();
+            
         },
         chatShow: function() {
-            $('#console-chat-inner').removeClass("inactive");
-            $('#console-chat-hide-button').removeClass("inactive");
-            $('#console-chat-show-button').addClass("inactive");
+            this.model.setChatShown(true);
+            this.render();
         },
         login : function(username) {
             this.model.setUsername(username);

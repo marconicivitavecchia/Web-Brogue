@@ -108,9 +108,9 @@
 </script>
 
 <script id="console-chat-template" type="text/template">
-    <button id="console-chat-show-button" class="console-chat-buttons inactive">Show Chat</button>
-    <button id="console-chat-hide-button" class="console-chat-buttons">Hide Chat</button>
-    <div id="console-chat-inner" class="console-chat-inner">
+    <button id="console-chat-show-button" class="console-chat-buttons <%=chatHiddenStatus%>">Show Chat</button>
+    <button id="console-chat-hide-button" class="console-chat-buttons <%=chatShownStatus%>">Hide Chat</button>
+    <div id="console-chat-inner" class="console-chat-inner <%=chatShownStatus%>">
         <h2>Chat</h2>
         <ul id="console-chat-messages" class="console-chat-messages"><%= messageListItems %></ul>
         <form action="">
