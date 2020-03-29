@@ -25,11 +25,82 @@ define([
     var _consoleCellCharPaddingPx;
     var _consoleCellAspectRatio = 0.53;  //TODO: we may eventually want this to be adjustable
 
+    // See BrogueCode/rogue.h for all brogue event definitions
+    var KEYPRESS_EVENT_CHAR = 0;
+
     var Console = Backbone.View.extend({
         el: "#console",
         events: {
-            'focus' : 'giveKeyboardFocus'
+            //'focus' : 'giveKeyboardFocus'
+            'keyup' : 'keyupHandler'
         },
+
+        // keydown event fires before input is fired
+        keyupHandler : function(event){            
+            var eventKey = event.key;
+            var ctrlKey = event.ctrlKey;
+            var shiftKey = event.shiftKey;
+            
+            var returnCode;
+
+            //Special keys
+
+            switch (eventKey) {
+                case "Clear": //centre (5)
+                    returnCode = 53;
+                    break;
+                case "Enter": //enter
+                    returnCode = 13;
+                    break;
+                case "Escape": //esc
+                    returnCode = 27;
+                    break;
+                case "Backspace": // backspace
+                    returnCode = 127; // map to DELETE_KEY
+                    break;
+                case "Tab": // tab
+                    returnCode = 9;
+                    break;
+                case "Delete": // delete
+                    returnCode = 127;
+                    break;
+                case "PageUp": //page up (9)
+                    returnCode = 117; // map to u
+                    break;
+                case "PageDown": //page_down (3)
+                    returnCode = 110; // map to n
+                    break;
+                case "End": //end (1)
+                    returnCode = 98; // map to b
+                    break;
+                case "Home": //home (7)
+                    returnCode = 121; // map to y
+                    break;
+                case "ArrowLeft": //left-arrow (4)
+                    returnCode = 63234;
+                    break;
+                case "ArrowUp": //up-arrow(8)
+                    returnCode = 63232;
+                    break;
+                case "ArrowRight": //right-arrow(6)
+                    returnCode = 63235;
+                    break;
+                case "ArrowDown": //down-arrow(2)
+                    returnCode = 63233;
+                    break;
+            }
+
+            //Alphanumerics
+            if(!returnCode) {
+               returnCode = eventKey.charCodeAt(0);
+            }
+
+            if (returnCode) {
+                event.preventDefault();
+                sendKeypressEvent(KEYPRESS_EVENT_CHAR, returnCode, ctrlKey, shiftKey);
+            }
+        },
+
         initialize: function() {
             this.$el.addClass("full-height");
         },

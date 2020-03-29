@@ -15,7 +15,7 @@ define([
         el : '#console-keyboard',
         model : new ConsoleKeyboardModel(),
         events : {
-            'keydown' : 'keydownHandler',
+           // 'keydown' : 'keydownHandler',
             'input' : 'inputHandler'
         },
         
