@@ -32,37 +32,22 @@ define([
         el: "#console",
         events: {
             //'focus' : 'giveKeyboardFocus'
+            'keydown' : 'keydownHandler',
             'keyup' : 'keyupHandler'
         },
 
-        // keydown event fires before input is fired
-        keyupHandler : function(event){            
+        keydownHandler: function(event) {
+
+            //Acknowledge direction keys on keydown which includes key repeat
             var eventKey = event.key;
             var ctrlKey = event.ctrlKey;
             var shiftKey = event.shiftKey;
-            
-            var returnCode;
 
             //Special keys
 
             switch (eventKey) {
                 case "Clear": //centre (5)
                     returnCode = 53;
-                    break;
-                case "Enter": //enter
-                    returnCode = 13;
-                    break;
-                case "Escape": //esc
-                    returnCode = 27;
-                    break;
-                case "Backspace": // backspace
-                    returnCode = 127; // map to DELETE_KEY
-                    break;
-                case "Tab": // tab
-                    returnCode = 9;
-                    break;
-                case "Delete": // delete
-                    returnCode = 127;
                     break;
                 case "PageUp": //page up (9)
                     returnCode = 117; // map to u
@@ -88,6 +73,59 @@ define([
                 case "ArrowDown": //down-arrow(2)
                     returnCode = 63233;
                     break;
+            }
+
+            if (returnCode) {
+                event.preventDefault();
+                sendKeypressEvent(KEYPRESS_EVENT_CHAR, returnCode, ctrlKey, shiftKey);
+            }
+        },
+
+        keyupHandler : function(event){            
+            
+            //Acknowledge non-direction keys on keyup (no repeat)
+            var eventKey = event.key;
+            var ctrlKey = event.ctrlKey;
+            var shiftKey = event.shiftKey;
+            
+            var returnCode;
+
+            //Special keys - return early if handled by keydown
+
+            switch (eventKey) {
+                case "Enter": //enter
+                    returnCode = 13;
+                    break;
+                case "Escape": //esc
+                    returnCode = 27;
+                    break;
+                case "Backspace": // backspace
+                    returnCode = 127; // map to DELETE_KEY
+                    break;
+                case "Tab": // tab
+                    returnCode = 9;
+                    break;
+                case "Delete": // delete
+                    returnCode = 127;
+                    break;
+                case "Clear": //centre (5)
+                    return;
+                case "PageUp": //page up (9)
+                    return;
+                case "PageDown": //page_down (3)
+                    return;
+                case "End": //end (1)
+                    return;
+                case "Home": //home (7)
+                    return;
+                case "ArrowLeft": //left-arrow (4)
+                    return;
+                case "ArrowUp": //up-arrow(8)
+                    return;
+                case "ArrowRight": //right-arrow(6)
+                    return;
+                case "ArrowDown": //down-arrow(2)
+                    return;
             }
 
             //Alphanumerics
