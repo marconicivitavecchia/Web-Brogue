@@ -57,6 +57,9 @@ define([
         },
         
         handleClick : function(event){
+            
+            event.preventDefault();
+            
             sendMouseEvent(
                 MOUSE_DOWN_EVENT_CHAR, 
                 this.model.get("x"), 
