@@ -38,10 +38,14 @@ define([
 
         keydownHandler: function(event) {
 
+            event.preventDefault();
+
             //Acknowledge direction keys on keydown which includes key repeat
             var eventKey = event.key;
             var ctrlKey = event.ctrlKey;
             var shiftKey = event.shiftKey;
+
+            var returnCode;
 
             //Special keys
 
@@ -76,13 +80,14 @@ define([
             }
 
             if (returnCode) {
-                event.preventDefault();
                 sendKeypressEvent(KEYPRESS_EVENT_CHAR, returnCode, ctrlKey, shiftKey);
             }
         },
 
         keyupHandler : function(event){            
             
+            event.preventDefault();
+
             //Acknowledge non-direction keys on keyup (no repeat)
             var eventKey = event.key;
             var ctrlKey = event.ctrlKey;
@@ -134,7 +139,6 @@ define([
             }
 
             if (returnCode) {
-                event.preventDefault();
                 sendKeypressEvent(KEYPRESS_EVENT_CHAR, returnCode, ctrlKey, shiftKey);
             }
         },
