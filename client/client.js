@@ -85,7 +85,7 @@ require([
     var generalStatsView = new GeneralStatsView({model: new GeneralStatsModel()});
     var levelProbabilityView = new LevelProbabilityView({model: new LevelProbabilityModel()});
     var siteNewsView = new SiteNewsView({model: new SiteNewsModel() });
-    var consoleKeyboardView = new ConsoleKeyProcessingView();
+    //var consoleKeyboardView = new ConsoleKeyProcessingView();
     var popups = {
         seedView : new SeedPopupView(),
     };
@@ -145,8 +145,6 @@ require([
 
     dispatcher.on("reconnect", authView.requestLogin, authView);
     dispatcher.on("reconnect", consoleView.exitToLobby, consoleView);
-
-    dispatcher.on("focusConsole", consoleView.giveKeyboardFocus, consoleView);
 
     dispatcher.on("showSeedPopup", popups.seedView.showSeedPopup, popups.seedView);
     // set up routes for the messages from the websocket connection (only)

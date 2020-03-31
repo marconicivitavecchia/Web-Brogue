@@ -59,7 +59,7 @@ define([
         handleClick : function(event){
             
             event.preventDefault();
-            
+           
             sendMouseEvent(
                 MOUSE_DOWN_EVENT_CHAR, 
                 this.model.get("x"), 
@@ -77,6 +77,8 @@ define([
         },
         
         handleMouseover : function(event){
+
+            event.preventDefault();
 
             var sendMouseOverEvent = function(x, y, ctrlKey, shiftKey) {
 
@@ -110,8 +112,6 @@ define([
                 var delay = ConsoleCellShared.lastMouseOver + MOUSEOVER_SIDEBAR_RATE_LIMIT_MS - timeNow;
                 ConsoleCellShared.mouseOverDelayedSend = setTimeout(sendMouseOverEvent, delay, x, y, event.ctrlKey, event.shiftKey);
             }
-
-            dispatcher.trigger("focusConsole");
         }
     });
 

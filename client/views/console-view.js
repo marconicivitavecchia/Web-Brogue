@@ -31,7 +31,6 @@ define([
     var Console = Backbone.View.extend({
         el: "#console",
         events: {
-            //'focus' : 'giveKeyboardFocus'
             'keydown' : 'keydownHandler',
             'keyup' : 'keyupHandler'
         },
@@ -316,10 +315,6 @@ define([
                     _consoleCells[i][j].render();
                 }
             }
-        },
-        
-        giveKeyboardFocus : function(){
-            $('#console-keyboard').focus();
         },
         
         exitToLobby : function(message){
