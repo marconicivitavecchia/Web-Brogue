@@ -85,7 +85,7 @@ require([
     var generalStatsView = new GeneralStatsView({model: new GeneralStatsModel()});
     var levelProbabilityView = new LevelProbabilityView({model: new LevelProbabilityModel()});
     var siteNewsView = new SiteNewsView({model: new SiteNewsModel() });
-    //var consoleKeyboardView = new ConsoleKeyProcessingView();
+    var consoleKeyboardView = new ConsoleKeyProcessingView();
     var popups = {
         seedView : new SeedPopupView(),
     };
@@ -147,7 +147,7 @@ require([
     dispatcher.on("reconnect", consoleView.exitToLobby, consoleView);
 
     dispatcher.on("focusConsole", consoleView.giveKeyboardFocus, consoleView);
-    
+
     dispatcher.on("showSeedPopup", popups.seedView.showSeedPopup, popups.seedView);
     // set up routes for the messages from the websocket connection (only)
     router.registerHandlers({
@@ -180,11 +180,15 @@ require([
     let visualViewport = window.visualViewport;
 
     // Center the emoji!
-    let offsetLeft = visualViewport.offsetLeft + visualViewport.width/2 - (emojiRect.width)/2;
+    let offsetLeft = visualViewport.offsetLeft;// - (emojiRect.width)/2;
 
     // Align it to bottom. We need to use scale to calculate correct bottom offset
     // Also does not work without setting the correct transform-origin.
-    let offsetTop = visualViewport.offsetTop + visualViewport.height - emojiRect.height/ visualViewport.scale;
+    let offsetTop = visualViewport.offsetTop;
+
+
+    console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width);
+    console.log("offsetLeft: " + offsetLeft + " offsetTop:" + offsetTop);
 
     emoji.style.left = 0;
     emoji.style.top = 0;

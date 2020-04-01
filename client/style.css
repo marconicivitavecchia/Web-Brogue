@@ -242,8 +242,7 @@ button {
     outline: none;
     overflow: hidden;
     z-index: 5000;
-    transform: translate(-50%, 0) scale(1);
-    transform-origin: 50% 0;
+    transform-origin: 0 0;
 }
 
 .console-cell {
