@@ -236,11 +236,14 @@ button {
 /*hidden in the corner so we can still give it focus*/
 .console-keyboard {
     position:fixed;
-    width: 1px;
-    height: 1px;
+    width: 100px;
+    height: 10px;
     border: none;
     outline: none;
     overflow: hidden;
+    z-index: 5000;
+    transform: translate(-50%, 0) scale(1);
+    transform-origin: 50% 0;
 }
 
 .console-cell {

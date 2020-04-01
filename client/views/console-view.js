@@ -32,8 +32,13 @@ define([
         el: "#console",
         events: {
             'keydown' : 'keydownHandler',
-            'keyup' : 'keyupHandler'
+            'keyup' : 'keyupHandler',
+            'focus' : 'giveKeyboardFocus'
         },
+
+        giveKeyboardFocus : function(){
+            $('#console-keyboard').focus();
+        },  
 
         keydownHandler: function(event) {
 

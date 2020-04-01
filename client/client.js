@@ -146,6 +146,8 @@ require([
     dispatcher.on("reconnect", authView.requestLogin, authView);
     dispatcher.on("reconnect", consoleView.exitToLobby, consoleView);
 
+    dispatcher.on("focusConsole", consoleView.giveKeyboardFocus, consoleView);
+    
     dispatcher.on("showSeedPopup", popups.seedView.showSeedPopup, popups.seedView);
     // set up routes for the messages from the websocket connection (only)
     router.registerHandlers({
@@ -171,5 +173,30 @@ require([
         }, 100);
     $(window).resize(throttledResize);
     
+    let emoji = document.getElementById('console-keyboard');
+    let emojiRect = emoji.getBoundingClientRect();
+
+  function viewportHandler() {
+    let visualViewport = window.visualViewport;
+
+    // Center the emoji!
+    let offsetLeft = visualViewport.offsetLeft + visualViewport.width/2 - (emojiRect.width)/2;
+
+    // Align it to bottom. We need to use scale to calculate correct bottom offset
+    // Also does not work without setting the correct transform-origin.
+    let offsetTop = visualViewport.offsetTop + visualViewport.height - emojiRect.height/ visualViewport.scale;
+
+    emoji.style.left = 0;
+    emoji.style.top = 0;
+    emoji.style.bottom = "auto";
+    emoji.style.transform = 'translate(' +  offsetLeft + 'px,' + offsetTop + 'px) scale(' + 1 / visualViewport.scale + ')';
+  }
+
+  if(window.visualViewport) {
+    window.visualViewport.addEventListener('scroll', viewportHandler);
+    window.visualViewport.addEventListener('resize', viewportHandler);
+    window.addEventListener('scroll', viewportHandler);
+  } 
+
     activate.endLoading();
 });
