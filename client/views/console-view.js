@@ -25,11 +25,128 @@ define([
     var _consoleCellCharPaddingPx;
     var _consoleCellAspectRatio = 0.53;  //TODO: we may eventually want this to be adjustable
 
+    // See BrogueCode/rogue.h for all brogue event definitions
+    var KEYPRESS_EVENT_CHAR = 0;
+
     var Console = Backbone.View.extend({
         el: "#console",
         events: {
+            'keydown' : 'keydownHandler',
+            'keyup' : 'keyupHandler',
             'focus' : 'giveKeyboardFocus'
         },
+
+        giveKeyboardFocus : function(){
+            $('#console-keyboard').focus();
+        },  
+
+        keydownHandler: function(event) {
+
+            event.preventDefault();
+
+            //Acknowledge direction keys on keydown which includes key repeat
+            var eventKey = event.key;
+            var ctrlKey = event.ctrlKey;
+            var shiftKey = event.shiftKey;
+
+            var returnCode;
+
+            //Special keys
+
+            switch (eventKey) {
+                case "Clear": //centre (5)
+                    returnCode = 53;
+                    break;
+                case "PageUp": //page up (9)
+                    returnCode = 117; // map to u
+                    break;
+                case "PageDown": //page_down (3)
+                    returnCode = 110; // map to n
+                    break;
+                case "End": //end (1)
+                    returnCode = 98; // map to b
+                    break;
+                case "Home": //home (7)
+                    returnCode = 121; // map to y
+                    break;
+                case "ArrowLeft": //left-arrow (4)
+                    returnCode = 63234;
+                    break;
+                case "ArrowUp": //up-arrow(8)
+                    returnCode = 63232;
+                    break;
+                case "ArrowRight": //right-arrow(6)
+                    returnCode = 63235;
+                    break;
+                case "ArrowDown": //down-arrow(2)
+                    returnCode = 63233;
+                    break;
+            }
+
+            if (returnCode) {
+                sendKeypressEvent(KEYPRESS_EVENT_CHAR, returnCode, ctrlKey, shiftKey);
+            }
+        },
+
+        keyupHandler : function(event){            
+            
+            event.preventDefault();
+
+            //Acknowledge non-direction keys on keyup (no repeat)
+            var eventKey = event.key;
+            var ctrlKey = event.ctrlKey;
+            var shiftKey = event.shiftKey;
+            
+            var returnCode;
+
+            //Special keys - return early if handled by keydown
+
+            switch (eventKey) {
+                case "Enter": //enter
+                    returnCode = 13;
+                    break;
+                case "Escape": //esc
+                    returnCode = 27;
+                    break;
+                case "Backspace": // backspace
+                    returnCode = 127; // map to DELETE_KEY
+                    break;
+                case "Tab": // tab
+                    returnCode = 9;
+                    break;
+                case "Delete": // delete
+                    returnCode = 127;
+                    break;
+                case "Clear": //centre (5)
+                    return;
+                case "PageUp": //page up (9)
+                    return;
+                case "PageDown": //page_down (3)
+                    return;
+                case "End": //end (1)
+                    return;
+                case "Home": //home (7)
+                    return;
+                case "ArrowLeft": //left-arrow (4)
+                    return;
+                case "ArrowUp": //up-arrow(8)
+                    return;
+                case "ArrowRight": //right-arrow(6)
+                    return;
+                case "ArrowDown": //down-arrow(2)
+                    return;
+            }
+
+            //Alphanumerics
+            if(!returnCode) {
+               returnCode = eventKey.charCodeAt(0);
+            }
+
+            if (returnCode) {
+                sendKeypressEvent(KEYPRESS_EVENT_CHAR, returnCode, ctrlKey, shiftKey);
+            }
+        },
+
         initialize: function() {
             this.$el.addClass("full-height");
         },
@@ -203,10 +320,6 @@ define([
                     _consoleCells[i][j].render();
                 }
             }
-        },
-        
-        giveKeyboardFocus : function(){
-            $('#console-keyboard').focus();
         },
         
         exitToLobby : function(message){
