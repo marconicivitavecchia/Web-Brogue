@@ -173,19 +173,29 @@ require([
         }, 100);
     $(window).resize(throttledResize);
     
-    let emoji = document.getElementById('console-keyboard');
+    let emoji = document.getElementById('console-up');
     let emojiRect = emoji.getBoundingClientRect();
-
+ 
   function viewportHandler() {
     let visualViewport = window.visualViewport;
 
-    // Center the emoji!
-    let offsetLeft = visualViewport.offsetLeft;// - (emojiRect.width)/2;
+    let buttonCentreLeftOffsetPerc = 10;
+    let buttonCentreTopOffsetPerc = 90;
+
+    let buttonToCentreLeftOffsetPerc = 5;
+    let buttonToCentreTopOffsetPerc = 5;
+
+    // Buttons centre
+    let buttonCentreTopOffset = buttonCentreLeftOffsetPerc * visualViewport.width;
+    let buttonCentreLeftOffset = buttonCentreTopOffsetPerc * visualViewport.height;
+
+    // Button up
+
+    let buttonUpLeftOffset = visualViewport.offsetLeft + visualViewport.width / 10 - (emojiRect.width)/2;
 
     // Align it to bottom. We need to use scale to calculate correct bottom offset
     // Also does not work without setting the correct transform-origin.
     let offsetTop = visualViewport.offsetTop;
-
 
     console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width);
     console.log("offsetLeft: " + offsetLeft + " offsetTop:" + offsetTop);
