@@ -9,7 +9,7 @@ define([
         variants: {
             "BROGUECEV18": {
                 code: "BROGUECEV18",
-                display: "BrogueCE 1.8.1",
+                display: "BrogueCE 1.8.2",
                 consoleColumns: 100,
                 consoleRows: 34,
                 default: true
