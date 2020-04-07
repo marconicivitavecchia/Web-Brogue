@@ -51,6 +51,11 @@ define([
 
             var returnCode;
 
+            //Ignore keydown of modifiers
+            if(eventKey === "Shift" || eventKey === "Control" || eventKey === "Alt") {
+                return;
+            }
+
             //Special keys
 
             switch (eventKey) {
@@ -98,6 +103,11 @@ define([
             var shiftKey = event.shiftKey;
             
             var returnCode;
+
+            //Ignore keyup of modifiers
+            if(eventKey === "Shift" || eventKey === "Control" || eventKey === "Alt") {
+                return;
+            }
 
             //Special keys - return early if handled by keydown
 
