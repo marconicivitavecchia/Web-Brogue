@@ -256,7 +256,8 @@ button {
     padding: 1rem;
     background: #000;
     border-radius: 3rem 3rem 0 0;
-    transform-origin: 50% 50%;
+    /* The scaling must happen about the TL corner otherwise the subsequent translation is offset by (1 - 1 / scale) * centre-origin / 2 */
+    transform-origin: 0% 0%;
     text-align: center;
 }
 

@@ -189,12 +189,12 @@ require([
     let buttonCentreLeftOffset = visualViewport.offsetLeft;// + 10 / visualViewport.scale ;//buttonCentreLeftOffsetPerc * visualViewport.width;// * 1 / visualViewport.scale;
     let buttonCentreTopOffset = visualViewport.offsetTop;// + 10 / visualViewport.scale ;//buttonCentreTopOffsetPerc * visualViewport.height;// * 1 / visualViewport.scale;
  
-    let emoji = document.getElementById('console-up');
-    let emojiRect = emoji.getBoundingClientRect();
- 
     // Button up
     let transformXOffset = ( 1 - 1 / visualViewport.scale) * 76.125 / 2; //emojiRect.width / 2;
     let transformYOffset = ( 1 - 1 / visualViewport.scale) * 100 / 2;//emojiRect.height / 2;
+    transformXOffset = 0;
+    transformYOffset = 0;
+
     let buttonUpLeftOffset = buttonCentreLeftOffset - transformXOffset;// + buttonToCentreLeftOffsetPerc;// * visualViewport.width - emojiRect.width / 2;
     let buttonUpTopOffset = buttonCentreTopOffset - transformYOffset;// + buttonToCentreTopOffsetPerc;// * visualViewport.height - emojiRect.height / 2;
 
