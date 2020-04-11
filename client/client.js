@@ -172,38 +172,44 @@ require([
             consoleView.resize();
         }, 100);
     $(window).resize(throttledResize);
+
     
-    let emoji = document.getElementById('console-up');
-    let emojiRect = emoji.getBoundingClientRect();
- 
   function viewportHandler() {
     let visualViewport = window.visualViewport;
 
-    let buttonCentreLeftOffsetPerc = 10;
-    let buttonCentreTopOffsetPerc = 90;
 
-    let buttonToCentreLeftOffsetPerc = 5;
-    let buttonToCentreTopOffsetPerc = 5;
+
+    let buttonCentreLeftOffsetPerc = 0.1;
+    let buttonCentreTopOffsetPerc = 0.9;
+
+    let buttonToCentreLeftOffsetPerc = 0;
+    let buttonToCentreTopOffsetPerc = -0.05;
 
     // Buttons centre
-    let buttonCentreTopOffset = buttonCentreLeftOffsetPerc * visualViewport.width;
-    let buttonCentreLeftOffset = buttonCentreTopOffsetPerc * visualViewport.height;
-
+    let buttonCentreLeftOffset = visualViewport.offsetLeft;// + 10 / visualViewport.scale ;//buttonCentreLeftOffsetPerc * visualViewport.width;// * 1 / visualViewport.scale;
+    let buttonCentreTopOffset = visualViewport.offsetTop;// + 10 / visualViewport.scale ;//buttonCentreTopOffsetPerc * visualViewport.height;// * 1 / visualViewport.scale;
+ 
+    let emoji = document.getElementById('console-up');
+    let emojiRect = emoji.getBoundingClientRect();
+ 
     // Button up
-
-    let buttonUpLeftOffset = visualViewport.offsetLeft + visualViewport.width / 10 - (emojiRect.width)/2;
-
-    // Align it to bottom. We need to use scale to calculate correct bottom offset
-    // Also does not work without setting the correct transform-origin.
-    let offsetTop = visualViewport.offsetTop;
-
-    console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width);
-    console.log("offsetLeft: " + offsetLeft + " offsetTop:" + offsetTop);
+    let transformXOffset = ( 1 - 1 / visualViewport.scale) * 76.125 / 2; //emojiRect.width / 2;
+    let transformYOffset = ( 1 - 1 / visualViewport.scale) * 100 / 2;//emojiRect.height / 2;
+    let buttonUpLeftOffset = buttonCentreLeftOffset - transformXOffset;// + buttonToCentreLeftOffsetPerc;// * visualViewport.width - emojiRect.width / 2;
+    let buttonUpTopOffset = buttonCentreTopOffset - transformYOffset;// + buttonToCentreTopOffsetPerc;// * visualViewport.height - emojiRect.height / 2;
 
     emoji.style.left = 0;
     emoji.style.top = 0;
     emoji.style.bottom = "auto";
-    emoji.style.transform = 'translate(' +  offsetLeft + 'px,' + offsetTop + 'px) scale(' + 1 / visualViewport.scale + ')';
+    emoji.style.transform = 'translate(' +  buttonUpLeftOffset + 'px,' + buttonUpTopOffset + 'px) scale(' + 1 / visualViewport.scale + ')'; //this stops it 'working'
+
+    console.log("emoji width: " + emojiRect.width + " height: " + emojiRect.height);
+
+    console.log("transformXOffset: " + transformXOffset + " transformYOffset: " + transformYOffset);
+    console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width + " scale: " + visualViewport.scale);
+    console.log("buttonUpLeftOffset: " + buttonUpLeftOffset + " buttonUpTopOffset:" + buttonUpTopOffset);
+    console.log("buttonUpLeftOffsetDelta: " + (buttonUpLeftOffset - visualViewport.offsetLeft) + " buttonUpTopOffsetDelta:" + (buttonUpTopOffset - visualViewport.offsetTop));
+
   }
 
   if(window.visualViewport) {
