@@ -196,40 +196,45 @@ require([
 
   function viewportHandler() {
     
-    function convertRemToPixels(rem) {    
-        return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
-    };
-
-    function translateDPadButton(dPadButtonElement, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, buttonToCentreLeftOffsetPerc, buttonToCentreTopOffsetPerc) {
-        // Buttons centre
-        let buttonCentreLeftOffset = visualViewport.offsetLeft + buttonCentreLeftOffsetPerc * visualViewport.width;
-        let buttonCentreTopOffset = visualViewport.offsetTop + buttonCentreTopOffsetPerc * visualViewport.height;
-    
-        // Specific button
-        let buttonUpLeftOffset = buttonToCentreLeftOffsetPerc * visualViewport.width;
-        let buttonUpTopOffset = buttonToCentreTopOffsetPerc * visualViewport.height;
-
-        let translateX = buttonCentreLeftOffset + buttonUpLeftOffset;
-        let translateY = buttonCentreTopOffset + buttonUpTopOffset;
+    function translateDPadButton(dPadButtonElement, dPadLeftCentre, dPadTopCentre, buttonLeftOffset, buttonTopOffset) {
+        
+        let translateX = visualViewport.offsetLeft + dPadLeftCentre + buttonLeftOffset;
+        let translateY = visualViewport.offsetTop + dPadTopCentre + buttonTopOffset;
 
         dPadButtonElement.style.transform = 'translate(' +  translateX + 'px,' + translateY + 'px) scale(' + 1 / visualViewport.scale + ')';
     };
     
     let visualViewport = window.visualViewport;
 
-    let buttonCentreLeftOffsetPerc = 0.1;
-    let buttonCentreTopOffsetPerc = 0.7;
+    // D-pad is about 10 rem x 10 rem
 
-    let buttonCardinalOffset = 0.05;
+    let buttonRect = consoleUpDPadButton.getBoundingClientRect();
 
-    translateDPadButton(consoleUpDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, 0, -buttonCardinalOffset);
-    translateDPadButton(consoleUpRightDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, buttonCardinalOffset, -buttonCardinalOffset);
-    translateDPadButton(consoleRightDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, buttonCardinalOffset, 0);
-    translateDPadButton(consoleDownRightDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, buttonCardinalOffset, buttonCardinalOffset);
-    translateDPadButton(consoleDownDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, 0, buttonCardinalOffset);
-    translateDPadButton(consoleDownLeftDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, -buttonCardinalOffset, buttonCardinalOffset);
-    translateDPadButton(consoleLeftDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, -buttonCardinalOffset, 0);
-    translateDPadButton(consoleUpLeftDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, -buttonCardinalOffset, -buttonCardinalOffset);
+    let dPadWidth = buttonRect.width; 
+    let dPadHeight = buttonRect.height;
+    let dPadOffsetBotRatio = 0.2;
+    let dPadOffsetLeftRatio = 0.1;
+
+    let dPadButtonOffset = dPadWidth * 1.3;
+
+    let dPadBotOffset = (visualViewport.height - dPadHeight) * dPadOffsetBotRatio;
+    let dPadTopOffset = visualViewport.height - dPadBotOffset - dPadHeight;
+
+    let dPadLeftOffset = (visualViewport.height - dPadWidth) * dPadOffsetLeftRatio;
+
+    let dPadLeftCentre = dPadLeftOffset + dPadWidth / 2;
+    let dPadTopCentre = dPadTopOffset + dPadHeight / 2;
+
+    let buttonCardinalOffset = dPadButtonOffset;
+
+    translateDPadButton(consoleUpDPadButton, dPadLeftCentre, dPadTopCentre, 0, -buttonCardinalOffset);
+    translateDPadButton(consoleUpRightDPadButton, dPadLeftCentre, dPadTopCentre, buttonCardinalOffset, -buttonCardinalOffset);
+    translateDPadButton(consoleRightDPadButton, dPadLeftCentre, dPadTopCentre, buttonCardinalOffset, 0);
+    translateDPadButton(consoleDownRightDPadButton, dPadLeftCentre, dPadTopCentre, buttonCardinalOffset, buttonCardinalOffset);
+    translateDPadButton(consoleDownDPadButton, dPadLeftCentre, dPadTopCentre, 0, buttonCardinalOffset);
+    translateDPadButton(consoleDownLeftDPadButton, dPadLeftCentre, dPadTopCentre, -buttonCardinalOffset, buttonCardinalOffset);
+    translateDPadButton(consoleLeftDPadButton, dPadLeftCentre, dPadTopCentre, -buttonCardinalOffset, 0);
+    translateDPadButton(consoleUpLeftDPadButton, dPadLeftCentre, dPadTopCentre, -buttonCardinalOffset, -buttonCardinalOffset);
 
     //console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width + " scale: " + visualViewport.scale);
     //console.log("buttonUpLeftOffset: " + buttonUpLeftOffset + " buttonUpTopOffset:" + buttonUpTopOffset);
