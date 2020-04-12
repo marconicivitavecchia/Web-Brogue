@@ -210,12 +210,13 @@ require([
 
     let buttonRect = consoleUpDPadButton.getBoundingClientRect();
 
-    let dPadWidth = buttonRect.width; 
-    let dPadHeight = buttonRect.height;
+    let dPadWidth = buttonRect.width * 3;
+    let dPadHeight = buttonRect.height * 3;
     let dPadOffsetBotRatio = 0.2;
     let dPadOffsetLeftRatio = 0.1;
 
-    let dPadButtonOffset = dPadWidth * 1.3;
+    let dPadButtonOffsetX = buttonRect.width;
+    let dPadButtonOffsetY = buttonRect.height;
 
     let dPadBotOffset = (visualViewport.height - dPadHeight) * dPadOffsetBotRatio;
     let dPadTopOffset = visualViewport.height - dPadBotOffset - dPadHeight;
@@ -225,16 +226,14 @@ require([
     let dPadLeftCentre = dPadLeftOffset + dPadWidth / 2;
     let dPadTopCentre = dPadTopOffset + dPadHeight / 2;
 
-    let buttonCardinalOffset = dPadButtonOffset;
-
-    translateDPadButton(consoleUpDPadButton, dPadLeftCentre, dPadTopCentre, 0, -buttonCardinalOffset);
-    translateDPadButton(consoleUpRightDPadButton, dPadLeftCentre, dPadTopCentre, buttonCardinalOffset, -buttonCardinalOffset);
-    translateDPadButton(consoleRightDPadButton, dPadLeftCentre, dPadTopCentre, buttonCardinalOffset, 0);
-    translateDPadButton(consoleDownRightDPadButton, dPadLeftCentre, dPadTopCentre, buttonCardinalOffset, buttonCardinalOffset);
-    translateDPadButton(consoleDownDPadButton, dPadLeftCentre, dPadTopCentre, 0, buttonCardinalOffset);
-    translateDPadButton(consoleDownLeftDPadButton, dPadLeftCentre, dPadTopCentre, -buttonCardinalOffset, buttonCardinalOffset);
-    translateDPadButton(consoleLeftDPadButton, dPadLeftCentre, dPadTopCentre, -buttonCardinalOffset, 0);
-    translateDPadButton(consoleUpLeftDPadButton, dPadLeftCentre, dPadTopCentre, -buttonCardinalOffset, -buttonCardinalOffset);
+    translateDPadButton(consoleUpDPadButton, dPadLeftCentre, dPadTopCentre, 0, -dPadButtonOffsetY);
+    translateDPadButton(consoleUpRightDPadButton, dPadLeftCentre, dPadTopCentre, dPadButtonOffsetX, -dPadButtonOffsetY);
+    translateDPadButton(consoleRightDPadButton, dPadLeftCentre, dPadTopCentre, dPadButtonOffsetX, 0);
+    translateDPadButton(consoleDownRightDPadButton, dPadLeftCentre, dPadTopCentre, dPadButtonOffsetX, dPadButtonOffsetY);
+    translateDPadButton(consoleDownDPadButton, dPadLeftCentre, dPadTopCentre, 0, dPadButtonOffsetY);
+    translateDPadButton(consoleDownLeftDPadButton, dPadLeftCentre, dPadTopCentre, -dPadButtonOffsetX, dPadButtonOffsetY);
+    translateDPadButton(consoleLeftDPadButton, dPadLeftCentre, dPadTopCentre, -dPadButtonOffsetX, 0);
+    translateDPadButton(consoleUpLeftDPadButton, dPadLeftCentre, dPadTopCentre, -dPadButtonOffsetX, -dPadButtonOffsetY);
 
     //console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width + " scale: " + visualViewport.scale);
     //console.log("buttonUpLeftOffset: " + buttonUpLeftOffset + " buttonUpTopOffset:" + buttonUpTopOffset);
