@@ -101,6 +101,10 @@ require([
     var downLeftArrowView = new DPadButtonView({el: "#console-down-left", model: new DPadButtonModel({ keyToSend: 98 })});
     var leftArrowView = new DPadButtonView({el: "#console-left", model: new DPadButtonModel({ keyToSend: 63234 })});
     var upLeftArrowView = new DPadButtonView({el: "#console-up-left", model: new DPadButtonModel({ keyToSend: 121 })});
+    var centreArrowView = new DPadButtonView({el: "#console-centre", model: new DPadButtonModel({ keyToSend: 53 })});
+    var upRightRightIView = new DPadButtonView({el: "#console-up-right-right", model: new DPadButtonModel({ keyToSend: "i".charCodeAt(0) })});
+    var rightRightXView = new DPadButtonView({el: "#console-right-right", model: new DPadButtonModel({ keyToSend: "x".charCodeAt(0) })});
+    var downRightRightZView = new DPadButtonView({el: "#console-right-right", model: new DPadButtonModel({ keyToSend: "z".charCodeAt(0) })});
 
     var highScoresModel = new HighScoresModel();
     highScoresModel.fetch();
@@ -185,6 +189,7 @@ require([
         }, 100);
     $(window).resize(throttledResize);
 
+    let consoleCentreDPadButton = document.getElementById('console-centre');
     let consoleUpDPadButton = document.getElementById('console-up');
     let consoleDownDPadButton = document.getElementById('console-down');
     let consoleLeftDPadButton = document.getElementById('console-left');
@@ -193,6 +198,9 @@ require([
     let consoleUpRightDPadButton = document.getElementById('console-up-right');
     let consoleUpLeftDPadButton = document.getElementById('console-up-left');
     let consoleDownLeftDPadButton = document.getElementById('console-down-left');
+    let consoleUpRightRightDPadButton = document.getElementById('console-up-right-right');
+    let consoleRightRightDPadButton = document.getElementById('console-right-right');
+    let consoleDownRightRightDPadButton = document.getElementById('console-down-right-right');
 
   function viewportHandler() {
     
@@ -206,11 +214,9 @@ require([
     
     let visualViewport = window.visualViewport;
 
-    // D-pad is about 10 rem x 10 rem
-
     let buttonRect = consoleUpDPadButton.getBoundingClientRect();
 
-    let dPadWidth = buttonRect.width * 3;
+    let dPadWidth = buttonRect.width * 4
     let dPadHeight = buttonRect.height * 3;
     let dPadOffsetBotRatio = 0.2;
     let dPadOffsetLeftRatio = 0.1;
@@ -234,6 +240,12 @@ require([
     translateDPadButton(consoleDownLeftDPadButton, dPadLeftCentre, dPadTopCentre, -dPadButtonOffsetX, dPadButtonOffsetY);
     translateDPadButton(consoleLeftDPadButton, dPadLeftCentre, dPadTopCentre, -dPadButtonOffsetX, 0);
     translateDPadButton(consoleUpLeftDPadButton, dPadLeftCentre, dPadTopCentre, -dPadButtonOffsetX, -dPadButtonOffsetY);
+
+    translateDPadButton(consoleCentreDPadButton, dPadLeftCentre, dPadTopCentre, 0, 0);
+
+    translateDPadButton(consoleUpRightRightDPadButton, dPadLeftCentre, dPadTopCentre, 2 * dPadButtonOffsetX, -dPadButtonOffsetY);
+    translateDPadButton(consoleRightRightDPadButton, dPadLeftCentre, dPadTopCentre, 2 * dPadButtonOffsetX, 0);
+    translateDPadButton(consoleDownRightRightDPadButton, dPadLeftCentre, dPadTopCentre, 2 * dPadButtonOffsetX, dPadButtonOffsetY);
 
     //console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width + " scale: " + visualViewport.scale);
     //console.log("buttonUpLeftOffset: " + buttonUpLeftOffset + " buttonUpTopOffset:" + buttonUpTopOffset);
