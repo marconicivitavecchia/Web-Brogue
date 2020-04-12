@@ -48,6 +48,7 @@ require([
     "models/level-stats-model",
     "models/general-stats-model",
     "models/level-probability-model",
+    "models/dpad-button",
     "views/view-activation-helpers",
     "views/auth-view",
     "views/chat-view",
@@ -65,8 +66,9 @@ require([
     "views/level-stats-view",
     "views/general-stats-view",
     "views/cause-stats-view",
-    "views/level-probability-view"
-], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView, ConsoleView, ConsoleKeyProcessingView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView){
+    "views/level-probability-view",
+    "views/dpad-button-view"
+], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView, ConsoleView, ConsoleKeyProcessingView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView, DPadButtonView){
     
     // If you want to enable debug mode, uncomment this function
     debugMode();
@@ -89,6 +91,9 @@ require([
     var popups = {
         seedView : new SeedPopupView(),
     };
+
+    //DPad
+    var upArrowView = new DPadButtonView({el: "#console-up", model: new DPadButtonModel({ keyToSend: 63232 })});
 
     var highScoresModel = new HighScoresModel();
     highScoresModel.fetch();
@@ -173,39 +178,31 @@ require([
         }, 100);
     $(window).resize(throttledResize);
 
+    let emoji = document.getElementById('console-up');
+
     
   function viewportHandler() {
     let visualViewport = window.visualViewport;
 
-
-
     let buttonCentreLeftOffsetPerc = 0.1;
-    let buttonCentreTopOffsetPerc = 0.9;
+    let buttonCentreTopOffsetPerc = 0.7;
 
     let buttonToCentreLeftOffsetPerc = 0;
     let buttonToCentreTopOffsetPerc = -0.05;
 
     // Buttons centre
-    let buttonCentreLeftOffset = visualViewport.offsetLeft;// + 10 / visualViewport.scale ;//buttonCentreLeftOffsetPerc * visualViewport.width;// * 1 / visualViewport.scale;
-    let buttonCentreTopOffset = visualViewport.offsetTop;// + 10 / visualViewport.scale ;//buttonCentreTopOffsetPerc * visualViewport.height;// * 1 / visualViewport.scale;
+    let buttonCentreLeftOffset = visualViewport.offsetLeft + buttonCentreLeftOffsetPerc * visualViewport.width;
+    let buttonCentreTopOffset = visualViewport.offsetTop + buttonCentreTopOffsetPerc * visualViewport.height;
  
     // Button up
-    let transformXOffset = ( 1 - 1 / visualViewport.scale) * 76.125 / 2; //emojiRect.width / 2;
-    let transformYOffset = ( 1 - 1 / visualViewport.scale) * 100 / 2;//emojiRect.height / 2;
-    transformXOffset = 0;
-    transformYOffset = 0;
-
-    let buttonUpLeftOffset = buttonCentreLeftOffset - transformXOffset;// + buttonToCentreLeftOffsetPerc;// * visualViewport.width - emojiRect.width / 2;
-    let buttonUpTopOffset = buttonCentreTopOffset - transformYOffset;// + buttonToCentreTopOffsetPerc;// * visualViewport.height - emojiRect.height / 2;
+    let buttonUpLeftOffset = buttonCentreLeftOffset + buttonToCentreLeftOffsetPerc * visualViewport.width;
+    let buttonUpTopOffset = buttonCentreTopOffset + buttonToCentreTopOffsetPerc * visualViewport.height;
 
     emoji.style.left = 0;
     emoji.style.top = 0;
     emoji.style.bottom = "auto";
-    emoji.style.transform = 'translate(' +  buttonUpLeftOffset + 'px,' + buttonUpTopOffset + 'px) scale(' + 1 / visualViewport.scale + ')'; //this stops it 'working'
+    emoji.style.transform = 'translate(' +  buttonUpLeftOffset + 'px,' + buttonUpTopOffset + 'px) scale(' + 1 / visualViewport.scale + ')';
 
-    console.log("emoji width: " + emojiRect.width + " height: " + emojiRect.height);
-
-    console.log("transformXOffset: " + transformXOffset + " transformYOffset: " + transformYOffset);
     console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width + " scale: " + visualViewport.scale);
     console.log("buttonUpLeftOffset: " + buttonUpLeftOffset + " buttonUpTopOffset:" + buttonUpTopOffset);
     console.log("buttonUpLeftOffsetDelta: " + (buttonUpLeftOffset - visualViewport.offsetLeft) + " buttonUpTopOffsetDelta:" + (buttonUpTopOffset - visualViewport.offsetTop));
