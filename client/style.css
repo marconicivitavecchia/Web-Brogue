@@ -249,8 +249,9 @@ button {
     z-index: 5000;
     color: #fff;
     position: fixed;
-    bottom: 0;
+    bottom: "auto";
     left: 0;
+    top: 0;
     font-size: 3rem;
     line-height: 1;
     padding: 1rem;

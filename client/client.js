@@ -94,6 +94,13 @@ require([
 
     //DPad
     var upArrowView = new DPadButtonView({el: "#console-up", model: new DPadButtonModel({ keyToSend: 63232 })});
+    var upRightArrowView = new DPadButtonView({el: "#console-up-right", model: new DPadButtonModel({ keyToSend: 117 })});
+    var rightArrowView = new DPadButtonView({el: "#console-right", model: new DPadButtonModel({ keyToSend: 63235 })});
+    var downRightArrowView = new DPadButtonView({el: "#console-down-right", model: new DPadButtonModel({ keyToSend: 110 })});
+    var downArrowView = new DPadButtonView({el: "#console-down", model: new DPadButtonModel({ keyToSend: 63233 })});
+    var downLeftArrowView = new DPadButtonView({el: "#console-down-left", model: new DPadButtonModel({ keyToSend: 98 })});
+    var leftArrowView = new DPadButtonView({el: "#console-left", model: new DPadButtonModel({ keyToSend: 63234 })});
+    var upLeftArrowView = new DPadButtonView({el: "#console-up-left", model: new DPadButtonModel({ keyToSend: 121 })});
 
     var highScoresModel = new HighScoresModel();
     highScoresModel.fetch();
@@ -178,34 +185,55 @@ require([
         }, 100);
     $(window).resize(throttledResize);
 
-    let emoji = document.getElementById('console-up');
+    let consoleUpDPadButton = document.getElementById('console-up');
+    let consoleDownDPadButton = document.getElementById('console-down');
+    let consoleLeftDPadButton = document.getElementById('console-left');
+    let consoleRightDPadButton = document.getElementById('console-right');
+    let consoleDownRightDPadButton = document.getElementById('console-down-right');
+    let consoleUpRightDPadButton = document.getElementById('console-up-right');
+    let consoleUpLeftDPadButton = document.getElementById('console-up-left');
+    let consoleDownLeftDPadButton = document.getElementById('console-down-left');
 
-    
   function viewportHandler() {
+    
+    function convertRemToPixels(rem) {    
+        return rem * parseFloat(getComputedStyle(document.documentElement).fontSize);
+    };
+
+    function translateDPadButton(dPadButtonElement, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, buttonToCentreLeftOffsetPerc, buttonToCentreTopOffsetPerc) {
+        // Buttons centre
+        let buttonCentreLeftOffset = visualViewport.offsetLeft + buttonCentreLeftOffsetPerc * visualViewport.width;
+        let buttonCentreTopOffset = visualViewport.offsetTop + buttonCentreTopOffsetPerc * visualViewport.height;
+    
+        // Specific button
+        let buttonUpLeftOffset = buttonToCentreLeftOffsetPerc * visualViewport.width;
+        let buttonUpTopOffset = buttonToCentreTopOffsetPerc * visualViewport.height;
+
+        let translateX = buttonCentreLeftOffset + buttonUpLeftOffset;
+        let translateY = buttonCentreTopOffset + buttonUpTopOffset;
+
+        dPadButtonElement.style.transform = 'translate(' +  translateX + 'px,' + translateY + 'px) scale(' + 1 / visualViewport.scale + ')';
+    };
+    
     let visualViewport = window.visualViewport;
 
     let buttonCentreLeftOffsetPerc = 0.1;
     let buttonCentreTopOffsetPerc = 0.7;
 
-    let buttonToCentreLeftOffsetPerc = 0;
-    let buttonToCentreTopOffsetPerc = -0.05;
+    let buttonCardinalOffset = 0.05;
 
-    // Buttons centre
-    let buttonCentreLeftOffset = visualViewport.offsetLeft + buttonCentreLeftOffsetPerc * visualViewport.width;
-    let buttonCentreTopOffset = visualViewport.offsetTop + buttonCentreTopOffsetPerc * visualViewport.height;
- 
-    // Button up
-    let buttonUpLeftOffset = buttonCentreLeftOffset + buttonToCentreLeftOffsetPerc * visualViewport.width;
-    let buttonUpTopOffset = buttonCentreTopOffset + buttonToCentreTopOffsetPerc * visualViewport.height;
+    translateDPadButton(consoleUpDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, 0, -buttonCardinalOffset);
+    translateDPadButton(consoleUpRightDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, buttonCardinalOffset, -buttonCardinalOffset);
+    translateDPadButton(consoleRightDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, buttonCardinalOffset, 0);
+    translateDPadButton(consoleDownRightDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, buttonCardinalOffset, buttonCardinalOffset);
+    translateDPadButton(consoleDownDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, 0, buttonCardinalOffset);
+    translateDPadButton(consoleDownLeftDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, -buttonCardinalOffset, buttonCardinalOffset);
+    translateDPadButton(consoleLeftDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, -buttonCardinalOffset, 0);
+    translateDPadButton(consoleUpLeftDPadButton, buttonCentreLeftOffsetPerc, buttonCentreTopOffsetPerc, -buttonCardinalOffset, -buttonCardinalOffset);
 
-    emoji.style.left = 0;
-    emoji.style.top = 0;
-    emoji.style.bottom = "auto";
-    emoji.style.transform = 'translate(' +  buttonUpLeftOffset + 'px,' + buttonUpTopOffset + 'px) scale(' + 1 / visualViewport.scale + ')';
-
-    console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width + " scale: " + visualViewport.scale);
-    console.log("buttonUpLeftOffset: " + buttonUpLeftOffset + " buttonUpTopOffset:" + buttonUpTopOffset);
-    console.log("buttonUpLeftOffsetDelta: " + (buttonUpLeftOffset - visualViewport.offsetLeft) + " buttonUpTopOffsetDelta:" + (buttonUpTopOffset - visualViewport.offsetTop));
+    //console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width + " scale: " + visualViewport.scale);
+    //console.log("buttonUpLeftOffset: " + buttonUpLeftOffset + " buttonUpTopOffset:" + buttonUpTopOffset);
+    //console.log("buttonUpLeftOffsetDelta: " + (buttonUpLeftOffset - visualViewport.offsetLeft) + " buttonUpTopOffsetDelta:" + (buttonUpTopOffset - visualViewport.offsetTop));
 
   }
 
