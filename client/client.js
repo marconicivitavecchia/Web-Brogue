@@ -87,7 +87,7 @@ require([
     var generalStatsView = new GeneralStatsView({model: new GeneralStatsModel()});
     var levelProbabilityView = new LevelProbabilityView({model: new LevelProbabilityModel()});
     var siteNewsView = new SiteNewsView({model: new SiteNewsModel() });
-    var consoleKeyboardView = new ConsoleKeyProcessingView();
+    //var consoleKeyboardView = new ConsoleKeyProcessingView();
     var popups = {
         seedView : new SeedPopupView(),
     };
@@ -104,7 +104,7 @@ require([
     var centreArrowView = new DPadButtonView({el: "#console-centre", model: new DPadButtonModel({ keyToSend: 53 })});
     var upRightRightIView = new DPadButtonView({el: "#console-up-right-right", model: new DPadButtonModel({ keyToSend: "i".charCodeAt(0) })});
     var rightRightXView = new DPadButtonView({el: "#console-right-right", model: new DPadButtonModel({ keyToSend: "x".charCodeAt(0) })});
-    var downRightRightZView = new DPadButtonView({el: "#console-right-right", model: new DPadButtonModel({ keyToSend: "z".charCodeAt(0) })});
+    var downRightRightZView = new DPadButtonView({el: "#console-down-right-right", model: new DPadButtonModel({ keyToSend: "Z".charCodeAt(0) })});
 
     var highScoresModel = new HighScoresModel();
     highScoresModel.fetch();

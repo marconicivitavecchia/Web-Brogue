@@ -33,7 +33,7 @@ define([
         events: {
             'keydown' : 'keydownHandler',
             'keyup' : 'keyupHandler',
-            'focus' : 'giveKeyboardFocus'
+            //'focus' : 'giveKeyboardFocus'
         },
 
         giveKeyboardFocus : function(){
