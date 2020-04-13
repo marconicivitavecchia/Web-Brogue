@@ -253,7 +253,23 @@ button {
     bottom: "auto";
     left: 0;
     top: 0;
-    font-size: 2rem;
+    font-size: 3rem;
+    line-height: 1;
+    padding: 1rem;
+    border-radius: 0 0 0 0;
+    /* The scaling must happen about the TL corner otherwise the subsequent translation is offset by (1 - 1 / scale) * centre-origin / 2 */
+    transform-origin: 0% 0%;
+    text-align: center;
+}
+
+.console-button-dpad {
+    z-index: 5000;
+    color: #fff;
+    position: fixed;
+    bottom: "auto";
+    left: 0;
+    top: 0;
+    font-size: 1rem;
     line-height: 1;
     padding: 1rem;
     border-radius: 0 0 0 0;
