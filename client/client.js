@@ -204,10 +204,10 @@ require([
 
   function viewportHandler() {
     
-    function translateDPadButton(dPadButtonElement, dPadLeftCentre, dPadTopCentre, buttonLeftOffset, buttonTopOffset) {
+    function translateDPadButton(dPadButtonElement, dPadLeftOffset, dPadTopOffset, buttonLeftOffset, buttonTopOffset) {
         
-        let translateX = visualViewport.offsetLeft + dPadLeftCentre + buttonLeftOffset;
-        let translateY = visualViewport.offsetTop + dPadTopCentre + buttonTopOffset;
+        let translateX = visualViewport.offsetLeft + dPadLeftOffset + buttonLeftOffset;
+        let translateY = visualViewport.offsetTop + dPadTopOffset + buttonTopOffset;
 
         dPadButtonElement.style.transform = 'translate(' +  translateX + 'px,' + translateY + 'px) scale(' + 1 / visualViewport.scale + ')';
     };
@@ -229,23 +229,20 @@ require([
 
     let dPadLeftOffset = Math.max(0, (visualViewport.width - dPadWidth) * dPadOffsetLeftRatio);
 
-    let dPadLeftCentre = dPadLeftOffset + dPadWidth / 2;
-    let dPadTopCentre = dPadTopOffset + dPadHeight / 2;
+    translateDPadButton(consoleUpDPadButton, dPadLeftOffset, dPadTopOffset, dPadButtonOffsetX, 0);
+    translateDPadButton(consoleUpRightDPadButton, dPadLeftOffset, dPadTopOffset, 2 * dPadButtonOffsetX, 0);
+    translateDPadButton(consoleRightDPadButton, dPadLeftOffset, dPadTopOffset, 2 * dPadButtonOffsetX, dPadButtonOffsetY);
+    translateDPadButton(consoleDownRightDPadButton, dPadLeftOffset, dPadTopOffset, 2 * dPadButtonOffsetX, 2 * dPadButtonOffsetY);
+    translateDPadButton(consoleDownDPadButton, dPadLeftOffset, dPadTopOffset, dPadButtonOffsetX, 2 * dPadButtonOffsetY);
+    translateDPadButton(consoleDownLeftDPadButton, dPadLeftOffset, dPadTopOffset, 0, 2 * dPadButtonOffsetY);
+    translateDPadButton(consoleLeftDPadButton, dPadLeftOffset, dPadTopOffset, 0, dPadButtonOffsetY);
+    translateDPadButton(consoleUpLeftDPadButton, dPadLeftOffset, dPadTopOffset, 0, 0);
 
-    translateDPadButton(consoleUpDPadButton, dPadLeftCentre, dPadTopCentre, 0, -dPadButtonOffsetY);
-    translateDPadButton(consoleUpRightDPadButton, dPadLeftCentre, dPadTopCentre, dPadButtonOffsetX, -dPadButtonOffsetY);
-    translateDPadButton(consoleRightDPadButton, dPadLeftCentre, dPadTopCentre, dPadButtonOffsetX, 0);
-    translateDPadButton(consoleDownRightDPadButton, dPadLeftCentre, dPadTopCentre, dPadButtonOffsetX, dPadButtonOffsetY);
-    translateDPadButton(consoleDownDPadButton, dPadLeftCentre, dPadTopCentre, 0, dPadButtonOffsetY);
-    translateDPadButton(consoleDownLeftDPadButton, dPadLeftCentre, dPadTopCentre, -dPadButtonOffsetX, dPadButtonOffsetY);
-    translateDPadButton(consoleLeftDPadButton, dPadLeftCentre, dPadTopCentre, -dPadButtonOffsetX, 0);
-    translateDPadButton(consoleUpLeftDPadButton, dPadLeftCentre, dPadTopCentre, -dPadButtonOffsetX, -dPadButtonOffsetY);
+    translateDPadButton(consoleCentreDPadButton, dPadLeftOffset, dPadTopOffset, dPadButtonOffsetX, dPadButtonOffsetY);
 
-    translateDPadButton(consoleCentreDPadButton, dPadLeftCentre, dPadTopCentre, 0, 0);
-
-    translateDPadButton(consoleUpRightRightDPadButton, dPadLeftCentre, dPadTopCentre, 2 * dPadButtonOffsetX, -dPadButtonOffsetY);
-    translateDPadButton(consoleRightRightDPadButton, dPadLeftCentre, dPadTopCentre, 2 * dPadButtonOffsetX, 0);
-    translateDPadButton(consoleDownRightRightDPadButton, dPadLeftCentre, dPadTopCentre, 2 * dPadButtonOffsetX, dPadButtonOffsetY);
+    translateDPadButton(consoleUpRightRightDPadButton, dPadLeftOffset, dPadTopOffset, 3 * dPadButtonOffsetX, 0);
+    translateDPadButton(consoleRightRightDPadButton, dPadLeftOffset, dPadTopOffset, 3 * dPadButtonOffsetX, dPadButtonOffsetY);
+    translateDPadButton(consoleDownRightRightDPadButton, dPadLeftOffset, dPadTopOffset, 3 * dPadButtonOffsetX, 2 * dPadButtonOffsetY);
 
     //console.log("visualviewport offsetLeft " + visualViewport.offsetLeft + " offsetTop " + visualViewport.offsetTop + " height: " + visualViewport.height + " width: " + visualViewport.width + " scale: " + visualViewport.scale);
     //console.log("buttonUpLeftOffset: " + buttonUpLeftOffset + " buttonUpTopOffset:" + buttonUpTopOffset);
