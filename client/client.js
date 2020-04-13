@@ -224,10 +224,10 @@ require([
     let dPadButtonOffsetX = buttonRect.width;
     let dPadButtonOffsetY = buttonRect.height;
 
-    let dPadBotOffset = (visualViewport.height - dPadHeight) * dPadOffsetBotRatio;
-    let dPadTopOffset = visualViewport.height - dPadBotOffset - dPadHeight;
+    let dPadBotOffset = Math.max(0, (visualViewport.height - dPadHeight) * dPadOffsetBotRatio);
+    let dPadTopOffset = Math.max(0, visualViewport.height - dPadBotOffset - dPadHeight);
 
-    let dPadLeftOffset = (visualViewport.height - dPadWidth) * dPadOffsetLeftRatio;
+    let dPadLeftOffset = Math.max(0, (visualViewport.width - dPadWidth) * dPadOffsetLeftRatio);
 
     let dPadLeftCentre = dPadLeftOffset + dPadWidth / 2;
     let dPadTopCentre = dPadTopOffset + dPadHeight / 2;

@@ -222,6 +222,7 @@ button {
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
+    outline: none;
 }
 
 .console-holder {
@@ -252,10 +253,10 @@ button {
     bottom: "auto";
     left: 0;
     top: 0;
-    font-size: 3rem;
+    font-size: 2rem;
     line-height: 1;
     padding: 1rem;
-    border-radius: 3rem 3rem 0 0;
+    border-radius: 0 0 0 0;
     /* The scaling must happen about the TL corner otherwise the subsequent translation is offset by (1 - 1 / scale) * centre-origin / 2 */
     transform-origin: 0% 0%;
     text-align: center;
