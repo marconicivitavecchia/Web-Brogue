@@ -21,7 +21,6 @@ define([
         handleClick : function(event){
         
             event.preventDefault();
-        
             sendKeypressEvent(KEYPRESS_EVENT_CHAR, this.model.get("keyToSend"), false, false);
         }
     });
