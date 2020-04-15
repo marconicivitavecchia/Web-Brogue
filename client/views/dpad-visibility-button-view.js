@@ -60,8 +60,8 @@ define([
         
             let dPadWidth = buttonRect.width * 5;
             let dPadHeight = buttonRect.height * 3;
-            let dPadOffsetBotRatio = 0.2;
-            let dPadOffsetLeftRatio = 0.05;
+            let dPadOffsetBotRatio = 0.1;
+            let dPadOffsetLeftRatio = 0.02;
         
             let dPadButtonOffsetX = buttonRect.width;
             let dPadButtonOffsetY = buttonRect.height;
