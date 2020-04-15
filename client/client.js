@@ -48,6 +48,7 @@ require([
     "models/level-stats-model",
     "models/general-stats-model",
     "models/level-probability-model",
+    "models/dpad-button",
     "views/view-activation-helpers",
     "views/auth-view",
     "views/chat-view",
@@ -59,14 +60,15 @@ require([
     "views/all-scores-view",
     "views/site-news-view",
     "views/console-view",
-    "views/console-keystroke-processing-view",
     "views/popups/seed-popup-view",
     "views/statistics-view",
     "views/level-stats-view",
     "views/general-stats-view",
     "views/cause-stats-view",
-    "views/level-probability-view"
-], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView, ConsoleView, ConsoleKeyProcessingView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView){
+    "views/level-probability-view",
+    "views/dpad-button-view",
+    "views/dpad-visibility-button-view"
+], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView, ConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView, DPadButtonView, DPadButtonVisibilityView){
     
     // If you want to enable debug mode, uncomment this function
     debugMode();
@@ -85,10 +87,24 @@ require([
     var generalStatsView = new GeneralStatsView({model: new GeneralStatsModel()});
     var levelProbabilityView = new LevelProbabilityView({model: new LevelProbabilityModel()});
     var siteNewsView = new SiteNewsView({model: new SiteNewsModel() });
-    var consoleKeyboardView = new ConsoleKeyProcessingView();
     var popups = {
         seedView : new SeedPopupView(),
     };
+
+    //DPad
+    var dPadVisibilityButton = new DPadButtonVisibilityView();
+    var upArrowView = new DPadButtonView({el: "#console-up", model: new DPadButtonModel({ keyToSend: 63232 })});
+    var upRightArrowView = new DPadButtonView({el: "#console-up-right", model: new DPadButtonModel({ keyToSend: 117 })});
+    var rightArrowView = new DPadButtonView({el: "#console-right", model: new DPadButtonModel({ keyToSend: 63235 })});
+    var downRightArrowView = new DPadButtonView({el: "#console-down-right", model: new DPadButtonModel({ keyToSend: 110 })});
+    var downArrowView = new DPadButtonView({el: "#console-down", model: new DPadButtonModel({ keyToSend: 63233 })});
+    var downLeftArrowView = new DPadButtonView({el: "#console-down-left", model: new DPadButtonModel({ keyToSend: 98 })});
+    var leftArrowView = new DPadButtonView({el: "#console-left", model: new DPadButtonModel({ keyToSend: 63234 })});
+    var upLeftArrowView = new DPadButtonView({el: "#console-up-left", model: new DPadButtonModel({ keyToSend: 121 })});
+    var centreArrowView = new DPadButtonView({el: "#console-centre", model: new DPadButtonModel({ keyToSend: 53 })});
+    var upRightRightIView = new DPadButtonView({el: "#console-up-right-right", model: new DPadButtonModel({ keyToSend: "i".charCodeAt(0) })});
+    var rightRightXView = new DPadButtonView({el: "#console-right-right", model: new DPadButtonModel({ keyToSend: "x".charCodeAt(0) })});
+    var downRightRightZView = new DPadButtonView({el: "#console-down-right-right", model: new DPadButtonModel({ keyToSend: "Z".charCodeAt(0) })});
 
     var highScoresModel = new HighScoresModel();
     highScoresModel.fetch();
@@ -148,6 +164,8 @@ require([
 
     dispatcher.on("focusConsole", consoleView.giveKeyboardFocus, consoleView);
 
+    dispatcher.on("translateDpad", upArrowView.viewportHandler, upArrowView);
+
     dispatcher.on("showSeedPopup", popups.seedView.showSeedPopup, popups.seedView);
     // set up routes for the messages from the websocket connection (only)
     router.registerHandlers({
@@ -172,6 +190,13 @@ require([
             consoleView.resize();
         }, 100);
     $(window).resize(throttledResize);
-    
+
+    // dpad translation and scaling
+    if(window.visualViewport) {
+        window.visualViewport.addEventListener('scroll', dPadVisibilityButton.positionDPad);
+        window.visualViewport.addEventListener('resize', dPadVisibilityButton.positionDPad);
+        window.addEventListener('scroll', dPadVisibilityButton.positionDPad);
+    } 
+
     activate.endLoading();
 });
