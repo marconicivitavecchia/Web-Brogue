@@ -60,7 +60,6 @@ require([
     "views/all-scores-view",
     "views/site-news-view",
     "views/console-view",
-    "views/console-keystroke-processing-view",
     "views/popups/seed-popup-view",
     "views/statistics-view",
     "views/level-stats-view",
@@ -69,7 +68,7 @@ require([
     "views/level-probability-view",
     "views/dpad-button-view",
     "views/dpad-visibility-button-view"
-], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView, ConsoleView, ConsoleKeyProcessingView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView, DPadButtonView, DPadButtonVisibilityView){
+], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView, ConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView, DPadButtonView, DPadButtonVisibilityView){
     
     // If you want to enable debug mode, uncomment this function
     debugMode();
@@ -88,7 +87,6 @@ require([
     var generalStatsView = new GeneralStatsView({model: new GeneralStatsModel()});
     var levelProbabilityView = new LevelProbabilityView({model: new LevelProbabilityModel()});
     var siteNewsView = new SiteNewsView({model: new SiteNewsModel() });
-    //var consoleKeyboardView = new ConsoleKeyProcessingView();
     var popups = {
         seedView : new SeedPopupView(),
     };
