@@ -250,7 +250,6 @@ describe("api/games filtering by previousdays", function(){
             .query({ previousdays: 2 })
             .end(function(err, res) {
                 var resText = JSON.parse(res.text);
-                console.log(resText);
                 var gameData = resText.data;
                 expect(gameData).to.have.length.of(2);
                 expect(gameData[0]).to.have.deep.property('score', 1);

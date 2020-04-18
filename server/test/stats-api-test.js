@@ -191,29 +191,112 @@ describe("stats/general", function(){
 
         var gameRecord1 = {
             username: "xxx",
-            date: new Date("2011-06-26T07:56:00.123Z"),
+            date: new Date("2012-06-26T07:56:00.123Z"),
             score: 100,
             seed: 200,
             level: 26,
             result: brogueConstants.gameOver.GAMEOVER_VICTORY,
             easyMode: false,
             description: "Escaped the Dungeons of Doom!",
-            recording: "file1"
+            recording: "file1",
+            variant: "BROGUE"
         };
 
         var gameRecord2 = {
             username: "yyy",
-            date: new Date("2011-05-26T07:56:00.123Z"),
+            date: new Date("2011-06-28T07:56:00.123Z"),
             score: 150,
             seed: 250,
             level: 40,
             result: brogueConstants.gameOver.GAMEOVER_SUPERVICTORY,
             easyMode: false,
             description: "Mastered the Dungeons of Doom!",
-            recording: "file2"
+            recording: "file2",
+            variant: "BROGUE"
         };
 
-        gameRecord.create([gameRecord1, gameRecord2], function() {
+        var gameRecord3 = {
+            username: "yyy",
+            date: new Date("2011-05-27T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.gameOver.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Mastered the Dungeons of Doom!",
+            recording: "file3",
+            variant: "BROGUE"
+        };
+
+        var gameRecord4 = {
+            username: "yyy",
+            date: new Date("2011-05-26T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly",
+            recording: "file4",
+            variant: "BROGUE"
+        };
+
+
+        var gameRecord5 = {
+            username: "yyy",
+            date: new Date("2011-05-25T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.gameOver.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Mastered the Dungeons of Doom!",
+            recording: "file5",
+            variant: "BROGUE"
+        };
+
+        var gameRecord6 = {
+            username: "xxx",
+            date: new Date("2010-05-27T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly",
+            recording: "file6",
+            variant: "BROGUE"
+        };
+
+
+        var gameRecord7 = {
+            username: "xxx",
+            date: new Date("2010-05-26T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.gameOver.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Mastered the Dungeons of Doom!",
+            recording: "file7",
+            variant: "BROGUE"
+        };
+
+        var gameRecord8 = {
+            username: "xxx",
+            date: new Date("2010-05-25T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.gameOver.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Mastered the Dungeons of Doom!",
+            recording: "file8",
+            variant: "BROGUE"
+        };
+
+
+        gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4, gameRecord5, gameRecord6, gameRecord7, gameRecord8], function() {
             done();
         });
     });
@@ -231,14 +314,151 @@ describe("stats/general", function(){
             .set('Accept', 'application/json')
             .end(function(err, res) {
                 var bodyObj = JSON.parse(res.text);
-                expect(bodyObj).to.have.deep.property('lastVictory.date', "2011-06-26T07:56:00.123Z");
+                expect(bodyObj).to.have.deep.property('lastVictory.date', "2012-06-26T07:56:00.123Z");
                 expect(bodyObj).to.have.deep.property('lastVictory.username', "xxx");
+                done();
+            });
+    });
+
+    it("last streak is the most recent, longest set of consecutive victories and supervictories", function(done) {
+        request(server)
+            .get("/api/stats/general")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var bodyObj = JSON.parse(res.text);
+                expect(bodyObj).to.have.deep.property('lastStreak.date', "2011-06-28T07:56:00.123Z");
+                expect(bodyObj).to.have.deep.property('lastStreak.length', 2);
+                expect(bodyObj).to.have.deep.property('lastStreak.username', "yyy");
                 done();
             });
     });
 });
 
 describe("stats/general", function(){
+
+    beforeEach(function(done) {
+
+        var gameRecord1 = {
+            username: "xxx",
+            date: new Date("2012-06-26T07:56:00.123Z"),
+            score: 100,
+            seed: 200,
+            level: 26,
+            result: brogueConstants.gameOver.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped the Dungeons of Doom!",
+            recording: "file1",
+            variant: "BROGUE"
+        };
+
+        var gameRecord2 = {
+            username: "xxx",
+            date: new Date("2012-06-25T07:56:00.123Z"),
+            score: 100,
+            seed: 200,
+            level: 26,
+            result: brogueConstants.gameOver.GAMEOVER_QUIT,
+            easyMode: false,
+            description: "Died!",
+            recording: "file2",
+            variant: "BROGUE"
+        };
+
+        gameRecord.create([gameRecord1], function() {
+            done();
+        });
+    });
+
+    afterEach(function(done) {
+
+        gameRecord.remove({}, function() {
+            done();
+        });
+    });
+
+    it("last streak is 1 if there is only 1 consecutive victory", function(done) {
+        request(server)
+            .get("/api/stats/general")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var bodyObj = JSON.parse(res.text);
+                expect(bodyObj).to.have.deep.property('lastStreak.date', "2012-06-26T07:56:00.123Z");
+                expect(bodyObj).to.have.deep.property('lastStreak.length', 1);
+                expect(bodyObj).to.have.deep.property('lastStreak.username', "xxx");
+                done();
+            });
+    });
+});
+
+describe("stats/general", function(){
+
+    it("last victory is 'Never' if no games recorded", function(done) {
+        request(server)
+            .get("/api/stats/general")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var bodyObj = JSON.parse(res.text);
+                expect(bodyObj).to.have.deep.property('lastVictory.date', 'Never');
+                expect(bodyObj).to.have.deep.property('lastVictory.username', 'No-one');
+                done();
+            });
+    });
+
+    it("longest streak is 'Never' if no games recorded", function(done) {
+        request(server)
+            .get("/api/stats/general")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var bodyObj = JSON.parse(res.text);
+                expect(bodyObj).to.have.deep.property('lastStreak.date', "Never");
+                expect(bodyObj).to.have.deep.property('lastStreak.length', 0);
+                expect(bodyObj).to.have.deep.property('lastStreak.username', "No-one");
+                done();
+            });
+    });
+});
+
+describe("stats/general", function(){
+
+    beforeEach(function(done) {
+
+        var gameRecord1 = {
+            username: "yyy",
+            date: new Date("2012-06-26T07:56:00.123Z"),
+            score: 100,
+            seed: 200,
+            level: 26,
+            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly!",
+            recording: "file1",
+            variant: "BROGUE"
+        };
+
+        var gameRecord2 = {
+            username: "xxx",
+            date: new Date("2012-06-25T07:56:00.123Z"),
+            score: 100,
+            seed: 200,
+            level: 26,
+            result: brogueConstants.gameOver.GAMEOVER_QUIT,
+            easyMode: false,
+            description: "Quit on depth 26!",
+            recording: "file2",
+            variant: "BROGUE"
+        };
+
+        gameRecord.create([gameRecord1], function() {
+            done();
+        });
+    });
+
+    afterEach(function(done) {
+
+        gameRecord.remove({}, function() {
+            done();
+        });
+    });
 
     it("last victory is 'Never' if no victories recorded", function(done) {
         request(server)
@@ -248,6 +468,19 @@ describe("stats/general", function(){
                 var bodyObj = JSON.parse(res.text);
                 expect(bodyObj).to.have.deep.property('lastVictory.date', 'Never');
                 expect(bodyObj).to.have.deep.property('lastVictory.username', 'No-one');
+                done();
+            });
+    });
+
+    it("longest streak is 'Never' if there are no victories", function(done) {
+        request(server)
+            .get("/api/stats/general")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var bodyObj = JSON.parse(res.text);
+                expect(bodyObj).to.have.deep.property('lastStreak.date', "Never");
+                expect(bodyObj).to.have.deep.property('lastStreak.length', 0);
+                expect(bodyObj).to.have.deep.property('lastStreak.username', "No-one");
                 done();
             });
     });

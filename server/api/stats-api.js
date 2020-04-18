@@ -218,6 +218,7 @@ module.exports = function(app, config) {
 
                     var allVictories = allNormalModeVictories.concat(allNormalModeSuperVictories);
                     var allVictoriesSortedByDate = _.sortBy(allVictories, 'date');
+                    
                     var lastVictory = _.last(allVictoriesSortedByDate);
                     var lastVictoryData;
                     if(!lastVictory) {
@@ -227,6 +228,55 @@ module.exports = function(app, config) {
                         lastVictoryData = { date: lastVictory.date, username: lastVictory.username };
                     }
 
+                    var normalModeGamesByUser = _.groupBy(allNormalModeGames, 'username');
+                    //console.log("victories by user");
+                    //console.log(JSON.stringify(normalModeGamesByUser));
+                    var victoryStreaksByUser = _.map(normalModeGamesByUser, function (victories, username) {
+                        var longestStreakLastVictory;
+                        var streakCounter = 0;
+                        var longestStreakCounter = 0;
+
+                        var usersVictories = _.sortBy(victories, 'date');
+                        //console.log(username);
+                        _.each(usersVictories, function(v, index) {
+                            if(v.result === brogueConstants.gameOver.GAMEOVER_SUPERVICTORY || v.result === brogueConstants.gameOver.GAMEOVER_VICTORY) {
+                                streakCounter++;
+                                //console.log(streakCounter);
+                                //console.log(JSON.stringify(v));
+                                if(streakCounter >= longestStreakCounter) {
+                                    longestStreakCounter = streakCounter;
+                                    longestStreakLastVictory = v;
+                                }
+                            }
+                            else {
+                                streakCounter = 0;
+                            }
+                        });
+                        
+                        return { username: username, longestStreak: longestStreakCounter, lastVictory: longestStreakLastVictory }
+                    });
+
+                    var lastStreakData;
+
+                    //console.log("victory streaks by user");
+                    //console.log(JSON.stringify(victoryStreaksByUser));
+
+                    //Sort by longestStreak then date
+                    var streakData = _.filter(victoryStreaksByUser, function(v) { return v.longestStreak > 0 });
+                    //console.log("victory streaks by user filtered");
+                    //console.log(JSON.stringify(streakData));
+                    if(streakData.length > 0) {
+                        var longestStreaks = _.sortBy( _.sortBy(streakData, function (v) { v.lastVictory.date } ), 'longestStreak');
+                        var longestStreak = _.last(longestStreaks);
+    
+                        lastStreakData = { date: longestStreak.lastVictory.date, username: longestStreak.lastVictory.username, length: longestStreak.longestStreak };
+                        //console.log("longestStreak");
+                        //console.log(JSON.stringify(longestStreak));
+                    }
+                    else {
+                        lastStreakData = { date: "Never", username: "No-one", length: 0 };
+                    }
+                    
                     var statsSummary = {};
 
                     statsSummary.totalGames = filteredGames.length;
@@ -248,6 +298,7 @@ module.exports = function(app, config) {
                     statsSummary.totalLevels = totalLevels;
 
                     statsSummary.lastVictory = lastVictoryData;
+                    statsSummary.lastStreak = lastStreakData;
 
                     res.json(statsSummary);
                 });
