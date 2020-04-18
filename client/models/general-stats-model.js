@@ -16,7 +16,10 @@ define([
                 totalLumenstones: 0,
                 totalLevels: 0,
                 lastVictoryDate: '',
-                lastVictoryUser: ''
+                lastVictoryUser: '',
+                lastStreakDate: '',
+                lastStreakLength: '',
+                lastStreakUser: ''
             }
         },
         parse: function (data) {
@@ -30,6 +33,17 @@ define([
             }
 
             parsedData.lastVictoryUser = data.lastVictory.username;
+
+            if(data.lastStreak.date !== 'Never') {
+                parsedData.lastStreakDate = Moment(data.lastStreak.date).format('MMMM Do YYYY, h:mm:ss a');
+                parsedData.lastStreakUser = data.lastStreak.username;
+                parsedData.lastStreakLength = data.lastStreak.length;
+            }
+            else {
+                parsedData.lastStreakDate = data.lastStreak.date;
+                parsedData.lastStreakUser = data.lastStreak.username;
+                parsedData.lastStreakLength = "None";
+            }
 
             return parsedData;
         },
