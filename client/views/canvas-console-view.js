@@ -8,11 +8,16 @@ define([
     "dispatcher",
     "variantLookup",
     'dataIO/send-keypress',
+    'dataIO/send-mouse',
     "models/console-canvas-cell",
     "views/view-activation-helpers"
-], function($, _, Backbone, ROT, dispatcher, variantLookup, sendKeypressEvent, ConsoleCanvasCellModel, activate) {
+], function($, _, Backbone, ROT, dispatcher, variantLookup, sendKeypressEvent, sendMouseEvent, ConsoleCanvasCellModel, activate) {
 
     var _MESSAGE_UPDATE_SIZE = 10;
+    var MOUSE_UP_EVENT_CHAR = 1;
+    var MOUSE_DOWN_EVENT_CHAR = 2;
+    var MOUSE_HOVER_EVENT_CHAR = 5;
+    var MOUSEOVER_SIDEBAR_RATE_LIMIT_MS = 200;
 
     var _consoleCells = []; //really should be in the model
     var d; //ROT display
@@ -25,6 +30,8 @@ define([
     var _consoleCellCharSizePx;
     var _consoleCellCharPaddingPx;
     var _consoleCellAspectRatio = 0.53;  //TODO: we may eventually want this to be adjustable
+    var lastMouseOver = 0;
+    var mouseOverDelayedSend = 0;
 
     // See BrogueCode/rogue.h for all brogue event definitions
     var KEYPRESS_EVENT_CHAR = 0;
@@ -34,6 +41,8 @@ define([
         events: {
             'keydown' : 'keydownHandler',
             'keyup' : 'keyupHandler',
+            "click" : "handleClick",
+            "mouseover" : "handleMouseover"
         },
 
         keydownHandler: function(event) {
@@ -150,6 +159,68 @@ define([
 
             if (returnCode) {
                 sendKeypressEvent(KEYPRESS_EVENT_CHAR, returnCode, ctrlKey, shiftKey);
+            }
+        },
+
+        handleClick : function(event){
+            
+            event.preventDefault();
+
+            var clickCoords = this.d.eventToPosition(event);
+           
+            sendMouseEvent(
+                MOUSE_DOWN_EVENT_CHAR, 
+                clickCoords[0], 
+                clickCoords[1], 
+                event.ctrlKey, 
+                event.shiftKey
+            );
+            sendMouseEvent(
+                MOUSE_UP_EVENT_CHAR, 
+                clickCoords[0], 
+                clickCoords[1], 
+                event.ctrlKey, 
+                event.shiftKey
+            );
+        },
+        
+        handleMouseover : function(event){
+
+            event.preventDefault();
+
+            var sendMouseOverEvent = function(x, y, ctrlKey, shiftKey) {
+
+                sendMouseEvent(
+                    MOUSE_HOVER_EVENT_CHAR,
+                    x,
+                    y,
+                    ctrlKey,
+                    shiftKey
+                );
+            };
+
+            var d = new Date();
+            var timeNow = d.getTime();
+
+            var clickCoords = this.d.eventToPosition(event);
+
+            var x = clickCoords[0];
+            var y = clickCoords[1];
+
+            //Rate limit mouseOvers in the sidebar since the game will always re-render fully.
+            //Allow all other mouseOvers at full rate
+            if(x >= 20 ||
+                timeNow > this.lastMouseOver + MOUSEOVER_SIDEBAR_RATE_LIMIT_MS) {
+
+                clearTimeout(this.mouseOverDelayedSend);
+                sendMouseOverEvent(x, y, event.ctrlKey, event.shiftKey);
+                this.lastMouseOver = d.getTime();
+            }
+            else {
+                //Otherwise set a timeOut for this event to fire at the rate limit
+                clearTimeout(this.mouseOverDelayedSend);
+                var delay = this.lastMouseOver + MOUSEOVER_SIDEBAR_RATE_LIMIT_MS - timeNow;
+                this.mouseOverDelayedSend = setTimeout(sendMouseOverEvent, delay, x, y, event.ctrlKey, event.shiftKey);
             }
         },
 
