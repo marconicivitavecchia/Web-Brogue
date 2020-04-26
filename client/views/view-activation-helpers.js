@@ -27,7 +27,8 @@ define(['jquery'], function($){
         console : function(){
             $('#lobby').addClass("inactive");
             $("#console-holder").removeClass("inactive");
-            $("#console").focus();
+            //$("#console").focus(); //testing
+            $("#canvas-console").focus();
         },
         
         lobby: function(){

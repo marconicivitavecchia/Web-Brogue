@@ -10,7 +10,8 @@ require.config({
         backgrid: "libs/backgrid",
         backgridPaginator: "libs/backgrid-paginator",
         io: "socket.io/socket.io.js",
-        chart: "libs/chart"
+        chart: "libs/chart",
+        rot: "libs/rot.js"
     },
     shim: {
         'backbone': {
@@ -37,6 +38,7 @@ require([
     "backbonePaginator",
     "backgrid",
     "backgridPaginator",
+    "rot",
     "dispatcher",
     "tests/debug-mode",
     "dataIO/socket",
@@ -68,7 +70,7 @@ require([
     "views/level-probability-view",
     "views/dpad-button-view",
     "views/dpad-visibility-button-view"
-], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView, ConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView, DPadButtonView, DPadButtonVisibilityView){
+], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, ROT, dispatcher, debugMode, socket, router, HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView, ConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView, DPadButtonView, DPadButtonVisibilityView){
     
     // If you want to enable debug mode, uncomment this function
     debugMode();
@@ -91,6 +93,9 @@ require([
         seedView : new SeedPopupView(),
     };
 
+    //Canvas console
+    var consoleCanvasView = new ConsoleCanvasView();
+    
     //DPad
     var dPadVisibilityButton = new DPadButtonVisibilityView();
     var upArrowView = new DPadButtonView({el: "#console-up", model: new DPadButtonModel({ keyToSend: 63232 })});
