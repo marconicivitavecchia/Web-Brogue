@@ -155,7 +155,8 @@ define([
 
         initialize: function() {
             this.d = new ROT.Display({ width: 10, height: 10});
-            this.$el.append(this.d.getContainer());
+            var canvas = this.d.getContainer();
+            this.$el.append(canvas);
         },
 
         initialiseForNewGame: function(data) {
