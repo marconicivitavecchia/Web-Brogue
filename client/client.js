@@ -11,7 +11,7 @@ require.config({
         backgridPaginator: "libs/backgrid-paginator",
         io: "socket.io/socket.io.js",
         chart: "libs/chart",
-        rot: "libs/rot.js"
+        rot: "libs/rot"
     },
     shim: {
         'backbone': {
@@ -38,7 +38,6 @@ require([
     "backbonePaginator",
     "backgrid",
     "backgridPaginator",
-    "rot",
     "dispatcher",
     "tests/debug-mode",
     "dataIO/socket",
@@ -62,6 +61,7 @@ require([
     "views/all-scores-view",
     "views/site-news-view",
     "views/console-view",
+    "views/canvas-console-view",
     "views/popups/seed-popup-view",
     "views/statistics-view",
     "views/level-stats-view",
@@ -70,7 +70,11 @@ require([
     "views/level-probability-view",
     "views/dpad-button-view",
     "views/dpad-visibility-button-view"
-], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, ROT, dispatcher, debugMode, socket, router, HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView, ConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView, DPadButtonView, DPadButtonVisibilityView){
+], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router,
+     HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel,
+     activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
+     ConsoleView, CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
+     DPadButtonView, DPadButtonVisibilityView){
     
     // If you want to enable debug mode, uncomment this function
     debugMode();
@@ -94,7 +98,7 @@ require([
     };
 
     //Canvas console
-    var consoleCanvasView = new ConsoleCanvasView();
+    var consoleCanvasView = new CanvasConsoleView();
     
     //DPad
     var dPadVisibilityButton = new DPadButtonVisibilityView();
@@ -122,11 +126,14 @@ require([
     var allScoresView = new AllScoresView({model: allScoresModel});
 
     // use dispatcher to co-ordinate multi-view actions on routed commands
+
+    //For now diverting all events from consoleView to consoleCanvasView
+
     dispatcher.on("quit", highScoresView.quit, highScoresView);
-    dispatcher.on("quit", consoleView.exitToLobby, consoleView);
+    dispatcher.on("quit", consoleCanvasView.exitToLobby, consoleCanvasView);
 
     dispatcher.on("fail", highScoresView.quit, highScoresView);
-    dispatcher.on("fail", consoleView.exitToLobby, consoleView);
+    dispatcher.on("fail", consoleCanvasView.exitToLobby, consoleCanvasView);
 
     dispatcher.on("login", headerView.login, headerView);
     dispatcher.on("login", highScoresView.login, highScoresView);
@@ -151,32 +158,33 @@ require([
     dispatcher.on("chat", chatView.chatMessage, chatView);
     dispatcher.on("chat", consoleChatView.chatMessage, consoleChatView);
 
-    dispatcher.on("showConsole", consoleView.resize, consoleView);
+    dispatcher.on("showConsole", consoleCanvasView.resize, consoleCanvasView);
 
     dispatcher.on("startGame", headerView.startGame, headerView);
-    dispatcher.on("startGame", consoleView.initialiseForNewGame, consoleView);
+    dispatcher.on("startGame", consoleCanvasView.initialiseForNewGame, consoleCanvasView);
 
     dispatcher.on("observeGame", headerView.observeGame, headerView);
-    dispatcher.on("observeGame", consoleView.initialiseForNewGame, consoleView);
+    dispatcher.on("observeGame", consoleCanvasView.initialiseForNewGame, consoleCanvasView);
 
     dispatcher.on("recordingGame", headerView.recordingGame, headerView);
-    dispatcher.on("recordingGame", consoleView.initialiseForNewGame, consoleView);
+    dispatcher.on("recordingGame", consoleCanvasView.initialiseForNewGame, consoleCanvasView);
 
     dispatcher.on("leaveGame", headerView.leaveGame, headerView);
 
     dispatcher.on("reconnect", authView.requestLogin, authView);
-    dispatcher.on("reconnect", consoleView.exitToLobby, consoleView);
+    dispatcher.on("reconnect", consoleCanvasView.exitToLobby, consoleCanvasView);
 
-    dispatcher.on("focusConsole", consoleView.giveKeyboardFocus, consoleView);
+    dispatcher.on("focusConsole", consoleCanvasView.giveKeyboardFocus, consoleCanvasView);
 
     dispatcher.on("translateDpad", upArrowView.viewportHandler, upArrowView);
 
     dispatcher.on("showSeedPopup", popups.seedView.showSeedPopup, popups.seedView);
+    
     // set up routes for the messages from the websocket connection (only)
     router.registerHandlers({
         //Must bind 'this' to the scope of the view so we can use the internal view functions
         "error" : console.error.bind(console),
-        "brogue" : consoleView.queueUpdateCellModelData.bind(consoleView),
+        "brogue" : consoleCanvasView.queueUpdateCellModelData.bind(consoleCanvasView),
         "quit" : function(data) { dispatcher.trigger("quit", data) },
         "lobby" : currentGamesView.updateRowModelData.bind(currentGamesView),
         "chat": function(data) { dispatcher.trigger("chat", data) },
@@ -192,7 +200,7 @@ require([
     
     // responsive resizing
     var throttledResize = _.debounce(function(){
-            consoleView.resize();
+            consoleCanvasView.resize();
         }, 100);
     $(window).resize(throttledResize);
 

@@ -8,8 +8,9 @@ define([
     "dispatcher",
     "variantLookup",
     'dataIO/send-keypress',
+    "models/console-canvas-cell",
     "views/view-activation-helpers"
-], function($, _, Backbone, ROT, dispatcher, variantLookup, sendKeypressEvent, activate) {
+], function($, _, Backbone, ROT, dispatcher, variantLookup, sendKeypressEvent, ConsoleCanvasCellModel, activate) {
 
     var _MESSAGE_UPDATE_SIZE = 10;
 
@@ -154,7 +155,7 @@ define([
 
         initialize: function() {
             this.d = new ROT.Display({ width: 10, height: 10});
-            $el.appendChild(d.getContainer());
+            this.$el.append(this.d.getContainer());
         },
 
         initialiseForNewGame: function(data) {
@@ -170,6 +171,7 @@ define([
             //Create consoleCells models
             var consoleCells = [];
             for (var i=0; i<this.consoleColumns; i++) {
+                consoleCells[i] = [];
                 for (var j=0; j<this.consoleRows; j++) {
                     consoleCells[i][j] = new ConsoleCanvasCellModel();
                 }
@@ -181,7 +183,7 @@ define([
             this.d.setOptions({
                 width: this.consoleColumns, 
                 height: this.consoleRows,
-                fontSize: 8});
+                fontSize: 30});
 
             this.resize();
         },
@@ -200,7 +202,7 @@ define([
                 cell.get("backgroundGreen") + "," +
                 cell.get("backgroundBlue") + ")";
 
-            d.draw(x, y, cellCharacter, rgbForegroundString, rgbBackgroundString);
+            this.d.draw(x, y, cellCharacter, rgbForegroundString, rgbBackgroundString);
         },
 
         render: function() {
@@ -253,7 +255,7 @@ define([
                 //Don't set the model, just draw all updates directly on the console
                 //Only disadvantage is we need to ask the server for a full redraw on resize
 
-                _consoleCells[dataXCoord][dataYCoord].set({
+                this._consoleCells[dataXCoord][dataYCoord].set({
                     char: combinedUTF16Char,
                     foregroundRed: dataArray[dIndex++],
                     foregroundGreen: dataArray[dIndex++],
