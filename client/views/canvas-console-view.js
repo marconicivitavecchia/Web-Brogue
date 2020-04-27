@@ -32,6 +32,7 @@ define([
     var _consoleCellAspectRatio = 0.53;  //TODO: we may eventually want this to be adjustable
     var lastMouseOver = 0;
     var mouseOverDelayedSend = 0;
+    var lastMouseDestCoords = [];
 
     // See BrogueCode/rogue.h for all brogue event definitions
     var KEYPRESS_EVENT_CHAR = 0;
@@ -42,7 +43,7 @@ define([
             'keydown' : 'keydownHandler',
             'keyup' : 'keyupHandler',
             "click" : "handleClick",
-            "mouseover" : "handleMouseover"
+            "mousemove" : "handleMousemove"
         },
 
         keydownHandler: function(event) {
@@ -184,7 +185,7 @@ define([
             );
         },
         
-        handleMouseover : function(event){
+        handleMousemove : function(event){
 
             event.preventDefault();
 
@@ -202,30 +203,30 @@ define([
             var d = new Date();
             var timeNow = d.getTime();
 
-            var clickCoords = this.d.eventToPosition(event);
+            var mouseDestCoords = this.d.eventToPosition(event);
 
-            var x = clickCoords[0];
-            var y = clickCoords[1];
-
-            //Rate limit mouseOvers in the sidebar since the game will always re-render fully.
-            //Allow all other mouseOvers at full rate
-            if(x >= 20 ||
+            //Rate limit mouseMoves in the sidebar since the game will always re-render fully.
+            //Allow all other mouseMoves at full rate, providing they enter a new cell
+            if(mouseDestCoords[0] >= 20 ||
                 timeNow > this.lastMouseOver + MOUSEOVER_SIDEBAR_RATE_LIMIT_MS) {
 
-                clearTimeout(this.mouseOverDelayedSend);
-                sendMouseOverEvent(x, y, event.ctrlKey, event.shiftKey);
-                this.lastMouseOver = d.getTime();
+                if(!_.isEqual(mouseDestCoords, this.lastMouseDestCoords)) {
+                    clearTimeout(this.mouseOverDelayedSend);
+                    sendMouseOverEvent(mouseDestCoords[0], mouseDestCoords[1], event.ctrlKey, event.shiftKey);
+                    this.lastMouseOver = d.getTime();
+                    this.lastMouseDestCoords = mouseDestCoords;
+                }
             }
             else {
                 //Otherwise set a timeOut for this event to fire at the rate limit
                 clearTimeout(this.mouseOverDelayedSend);
                 var delay = this.lastMouseOver + MOUSEOVER_SIDEBAR_RATE_LIMIT_MS - timeNow;
-                this.mouseOverDelayedSend = setTimeout(sendMouseOverEvent, delay, x, y, event.ctrlKey, event.shiftKey);
+                this.mouseOverDelayedSend = setTimeout(sendMouseOverEvent, delay, mouseDestCoords[0], mouseDestCoords[1], event.ctrlKey, event.shiftKey);
             }
         },
 
         initialize: function() {
-            this.d = new ROT.Display({ width: 10, height: 10});
+            this.d = new ROT.Display({ width: 10, height: 10, fontFamily: "Source Code Pro", spacing: 1.5, fontSize: 25});
             var canvas = this.d.getContainer();
             this.$el.append(canvas);
         },
@@ -254,8 +255,8 @@ define([
             //Setup display
             this.d.setOptions({
                 width: this.consoleColumns, 
-                height: this.consoleRows,
-                fontSize: 30});
+                height: this.consoleRows
+            });
 
             this.resize();
         },
@@ -345,8 +346,8 @@ define([
         clearConsole : function(){
             for (var i = 0; i < this.consoleColumns; i++) {
                 for (var j = 0; j < this.consoleRows; j++) {
-                    _consoleCells[i][j].model.clear();
-                    _consoleCells[i][j].render();
+                    this._consoleCells[i][j].model.clear();
+                    this._consoleCells[i][j].render();
                 }
             }
         },

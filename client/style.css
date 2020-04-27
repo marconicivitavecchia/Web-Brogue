@@ -225,6 +225,18 @@ button {
     outline: none;
 }
 
+.console-canvas {
+    position : relative;
+    box-sizing : border-box;
+    -moz-box-sizing: border-box;
+    overflow : hidden;
+    font-family: Source Code Pro, monospace;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    outline: none;
+}
+
 .console-holder {
     height: 95vh;
     width: 100%;
