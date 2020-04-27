@@ -280,14 +280,23 @@ define([
 
         render: function() {
             //Render entire screen from buffer (only should be used after resize etc.)
-            for (var i=0; i<this.consoleColumns; i++) {
-                for (var j=0; j<this.consoleRows; j++) {
+            for (var i = 0; i < this.consoleColumns; i++) {
+                for (var j = 0; j < this.consoleRows; j++) {
                     this.renderCell(i, j);
                 }
             }
         },
 
         resize: function() {
+            //Be slightly more conservative than rot.js
+            var maxFontSize = this.d.computeFontSize(window.innerWidth, window.innerHeight) - 1;
+
+            this.d.setOptions({
+                fontSize: maxFontSize, 
+            });
+
+            console.log("innerWidth: " + innerWidth + " innterHeight: " + innerHeight + " fontSize " + maxFontSize);
+            
             this.render();
         },
         
