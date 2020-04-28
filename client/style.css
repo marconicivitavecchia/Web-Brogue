@@ -213,22 +213,25 @@ button {
  * 2.0 Console
  *===================================*/
 
-.console {
+.console-wrapper {
     position : relative;
     box-sizing : border-box;
     -moz-box-sizing: border-box;
     overflow : hidden;
-    font-family: Source Code Pro, monospace;
     -moz-user-select: none;
     -webkit-user-select: none;
     -ms-user-select: none;
     outline: none;
+    height: 95vh;
 }
 
 .console-canvas {
-    position : relative;
+    position : absolute;
     box-sizing : border-box;
     -moz-box-sizing: border-box;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
     overflow : hidden;
     font-family: Source Code Pro, monospace;
     -moz-user-select: none;
@@ -244,18 +247,6 @@ button {
 
 .console.full-height {
     height : 100%;
-}
-
-/*hidden in the corner so we can still give it focus*/
-.console-keyboard {
-    position:fixed;
-    width: 100px;
-    height: 10px;
-    border: none;
-    outline: none;
-    overflow: hidden;
-    z-index: 5000;
-    transform-origin: 0 0;
 }
 
 .console-button {

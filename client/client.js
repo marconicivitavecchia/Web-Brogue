@@ -159,6 +159,8 @@ require([
     dispatcher.on("chat", consoleChatView.chatMessage, consoleChatView);
 
     dispatcher.on("showConsole", consoleCanvasView.resize, consoleCanvasView);
+    dispatcher.on("showChat", consoleCanvasView.resize, consoleCanvasView);
+    dispatcher.on("hideChat", consoleCanvasView.resize, consoleCanvasView);
 
     dispatcher.on("startGame", headerView.startGame, headerView);
     dispatcher.on("startGame", consoleCanvasView.initialiseForNewGame, consoleCanvasView);
@@ -175,8 +177,6 @@ require([
     dispatcher.on("reconnect", consoleCanvasView.exitToLobby, consoleCanvasView);
 
     dispatcher.on("focusConsole", consoleCanvasView.giveKeyboardFocus, consoleCanvasView);
-
-    dispatcher.on("translateDpad", upArrowView.viewportHandler, upArrowView);
 
     dispatcher.on("showSeedPopup", popups.seedView.showSeedPopup, popups.seedView);
     

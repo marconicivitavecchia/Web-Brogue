@@ -92,12 +92,13 @@ define([
         },
         chatHide: function() {
             this.model.setChatShown(false);
-            this.render();
-            
+            this.render();            
+            dispatcher.trigger("hideChat");
         },
         chatShow: function() {
             this.model.setChatShown(true);
             this.render();
+            dispatcher.trigger("showChat");
         },
         login : function(username) {
             this.model.setUsername(username);

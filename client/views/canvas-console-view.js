@@ -289,14 +289,14 @@ define([
 
         resize: function() {
             //Be slightly more conservative than rot.js
-            var maxFontSize = this.d.computeFontSize(window.innerWidth, window.innerHeight) - 1;
+            var wrapperWidth = document.getElementById("console-wrapper").offsetWidth;
+            var wrapperHeight = document.getElementById("console-wrapper").offsetHeight;
+            var maxFontSize = this.d.computeFontSize(wrapperWidth, wrapperHeight);
 
             this.d.setOptions({
                 fontSize: maxFontSize, 
             });
-
-            console.log("innerWidth: " + innerWidth + " innterHeight: " + innerHeight + " fontSize " + maxFontSize);
-            
+           
             this.render();
         },
         
