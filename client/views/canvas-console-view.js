@@ -383,7 +383,7 @@ define([
             this.$el.append(canvas);
 
             //load tiles
-            this.useTiles = true;
+            this.useTiles = false;
             if(this.useTiles) {
                 this.tileSet = document.createElement("img");
                 this.tileSet.src = "tiles.png";
