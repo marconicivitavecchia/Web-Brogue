@@ -168,6 +168,7 @@ define([
     const U_CIRCLE_BARS = '\u25C6';
     const U_FILLED_CIRCLE_BARS = '\u25C7';
 
+    //Where are these variables actually defined?
     var _consoleCells = []; //really should be in the model
     var d; //ROT display
     var _consoleWidth;
@@ -375,9 +376,18 @@ define([
         },
 
         initialize: function() {
+            
+            
             this.d = new ROT.Display({ width: 10, height: 10, fontFamily: "Source Code Pro", spacing: 1.5, fontSize: 25});
             var canvas = this.d.getContainer();
             this.$el.append(canvas);
+
+            //load tiles
+            this.useTiles = true;
+            if(this.useTiles) {
+                this.tileSet = document.createElement("img");
+                this.tileSet.src = "tiles.png";
+            }
         },
 
         initialiseForNewGame: function(data) {
@@ -407,6 +417,10 @@ define([
                 width: this.consoleColumns, 
                 height: this.consoleRows
             });
+
+            if(this.useTiles) {
+                this.setupTileMapping();
+            }
 
             this.resize();
         },
@@ -438,16 +452,19 @@ define([
         },
 
         resize: function() {
-            //Be slightly more conservative than rot.js
-            var wrapperWidth = document.getElementById("console-wrapper").offsetWidth;
-            var wrapperHeight = document.getElementById("console-wrapper").offsetHeight;
-            var maxFontSize = this.d.computeFontSize(wrapperWidth, wrapperHeight);
+            
+            if(!this.useTiles) {
+                //Be slightly more conservative than rot.js
+                var wrapperWidth = document.getElementById("console-wrapper").offsetWidth;
+                var wrapperHeight = document.getElementById("console-wrapper").offsetHeight;
+                var maxFontSize = this.d.computeFontSize(wrapperWidth, wrapperHeight);
 
-            this.d.setOptions({
-                fontSize: maxFontSize, 
-            });
-           
-            this.render();
+                this.d.setOptions({
+                    fontSize: maxFontSize, 
+                });
+            
+                this.render();
+            }
         },
         
         queueUpdateCellModelData : function(data){
@@ -485,9 +502,12 @@ define([
                 }
 
                 var charToDraw = String.fromCharCode(combinedUTF16Char);
-                if(this.remapGlyphs) {
-                    charToDraw = this.remapBrogueGlyphs(combinedUTF16Char);
+                if(this.useTiles) {
+                    charToDraw = combinedUTF16Char;
                 }
+                else if(this.remapGlyphs) {
+                    charToDraw = this.remapBrogueGlyphs(combinedUTF16Char);
+                }               
                 
                 this._consoleCells[dataXCoord][dataYCoord].set({
                     char: charToDraw,
@@ -654,7 +674,36 @@ define([
             var tileHeight = 33;
 
             var tileMap = {};
+
+            //32 -> 127 are 7-bit ASCII
+            //128 -> 255 are the tiles
+            //Locations in G_*, offset by 2
+            //G_POTION = 130, but in 128 position on tilemap
+
+            for(i = 32; i < 128; i++) {
+                //var mapChar = String.fromCharCode(i);
+                var tileLocation = [i % 16 * tileWidth, i / 16 * tileHeight];
+                tileMap[i] = tileLocation;
+            }
+
+            for (i = 130; i < 255; i++) {
+                var tileLocation = [(i - 2) % 16 * tileWidth, (i - 2) / 16 * tileHeight];
+                tileMap[i] = tileLocation;
+            }
+
+            this.d.setOptions({
+                layout: "tile",
+                bg: "transparent",
+                tileWidth: tileWidth,
+                tileHeight: tileHeight,
+                tileMap: tileMap,
+                tileSet: this.tileSet,
+                tileColorize: true
+            });
+
+
             /*
+
             //Map 
 
             var options = {
