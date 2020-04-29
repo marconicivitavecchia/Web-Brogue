@@ -377,16 +377,31 @@ define([
 
         initialize: function() {
             
-            
-            this.d = new ROT.Display({ width: 10, height: 10, fontFamily: "Source Code Pro", spacing: 1.5, fontSize: 25});
-            var canvas = this.d.getContainer();
-            this.$el.append(canvas);
-
-            //load tiles
-            this.useTiles = false;
+            this.useTiles = true;
             if(this.useTiles) {
                 this.tileSet = document.createElement("img");
                 this.tileSet.src = "tiles.png";
+
+                this.setupTileMapping();
+
+                this.d = new ROT.Display({ 
+                        layout: "tile",
+                        bg: "transparent",
+                        tileWidth: this.tileWidth,
+                        tileHeight: this.tileHeight,
+                        tileMap: this.tileMap,
+                        tileSet: this.tileSet,
+                        tileColorize: true,
+                        width: 10,
+                        height: 10
+                    });
+                var canvas = this.d.getContainer();
+                this.$el.append(canvas);
+            }
+            else {
+                this.d = new ROT.Display({ width: 10, height: 10, fontFamily: "Source Code Pro", spacing: 1.5, fontSize: 25});
+                var canvas = this.d.getContainer();
+                this.$el.append(canvas);
             }
         },
 
@@ -417,10 +432,6 @@ define([
                 width: this.consoleColumns, 
                 height: this.consoleRows
             });
-
-            if(this.useTiles) {
-                this.setupTileMapping();
-            }
 
             this.resize();
         },
@@ -463,8 +474,8 @@ define([
                     fontSize: maxFontSize, 
                 });
             
-                this.render();
             }
+            this.render();
         },
         
         queueUpdateCellModelData : function(data){
@@ -670,10 +681,10 @@ define([
 
         setupTileMapping: function() {
 
-            var tileWidth = 19;
-            var tileHeight = 33;
+            this.tileWidth = 19;
+            this.tileHeight = 33;
 
-            var tileMap = {};
+            this.tileMap = {};
 
             //32 -> 127 are 7-bit ASCII
             //128 -> 255 are the tiles
@@ -682,24 +693,14 @@ define([
 
             for(i = 32; i < 128; i++) {
                 //var mapChar = String.fromCharCode(i);
-                var tileLocation = [i % 16 * tileWidth, i / 16 * tileHeight];
-                tileMap[i] = tileLocation;
+                var tileLocation = [i % 16 * this.tileWidth, Math.floor(i / 16) * this.tileHeight];
+                this.tileMap[i] = tileLocation;
             }
 
             for (i = 130; i < 255; i++) {
-                var tileLocation = [(i - 2) % 16 * tileWidth, (i - 2) / 16 * tileHeight];
-                tileMap[i] = tileLocation;
+                var tileLocation = [(i - 2) % 16 * this.tileWidth, Math.floor((i - 2) / 16) * this.tileHeight];
+                this.tileMap[i] = tileLocation;
             }
-
-            this.d.setOptions({
-                layout: "tile",
-                bg: "transparent",
-                tileWidth: tileWidth,
-                tileHeight: tileHeight,
-                tileMap: tileMap,
-                tileSet: this.tileSet,
-                tileColorize: true
-            });
 
 
             /*
