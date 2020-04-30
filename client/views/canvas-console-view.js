@@ -168,22 +168,6 @@ define([
     const U_CIRCLE_BARS = '\u25C6';
     const U_FILLED_CIRCLE_BARS = '\u25C7';
 
-    //Where are these variables actually defined?
-    var _consoleCells = []; //really should be in the model
-    var d; //ROT display
-    var _consoleWidth;
-    var _consoleHeight;
-    var _consoleCellTopOffsetPercent;
-    var _consoleCellLeftOffsetPercent;
-    var _consoleCellWidthPercent;
-    var _consoleCellHeightPercent;
-    var _consoleCellCharSizePx;
-    var _consoleCellCharPaddingPx;
-    var _consoleCellAspectRatio = 0.53;  //TODO: we may eventually want this to be adjustable
-    var lastMouseOver = 0;
-    var mouseOverDelayedSend = 0;
-    var lastMouseDestCoords = [];
-
     // See BrogueCode/rogue.h for all brogue event definitions
     var KEYPRESS_EVENT_CHAR = 0;
 
@@ -377,7 +361,7 @@ define([
 
         initialize: function() {
             
-            this.useTiles = true;
+            this.useTiles = false;
             if(this.useTiles) {
                 this.tileSet = document.createElement("img");
                 this.tileSet.src = "tiles.png";
@@ -436,30 +420,19 @@ define([
             this.resize();
         },
 
-        renderCell: function(x, y) {
-            //Renders cell from data in consoleCells internal buffer
-            var cell = this._consoleCells[x][y];
+        renderCell: function(cellData) {
 
-            var cellCharacter = cell.get("char");
+            var cellCharacter = cellData["char"];
             var rgbForegroundString = "rgb(" +
-                cell.get("foregroundRed") + "," +
-                cell.get("foregroundGreen") + "," +
-                cell.get("foregroundBlue") + ")";
+                cellData["foregroundRed"] + "," +
+                cellData["foregroundGreen"] + "," +
+                cellData["foregroundBlue"] + ")";
             var rgbBackgroundString = "rgb(" +
-                cell.get("backgroundRed") + "," +
-                cell.get("backgroundGreen") + "," +
-                cell.get("backgroundBlue") + ")";
+                cellData["backgroundRed"] + "," +
+                cellData["backgroundGreen"] + "," +
+                cellData["backgroundBlue"] + ")";
 
-            this.d.draw(x, y, cellCharacter, rgbForegroundString, rgbBackgroundString);
-        },
-
-        render: function() {
-            //Render entire screen from buffer (only should be used after resize etc.)
-            for (var i = 0; i < this.consoleColumns; i++) {
-                for (var j = 0; j < this.consoleRows; j++) {
-                    this.renderCell(i, j);
-                }
-            }
+            this.d.draw(cellData["x"], cellData["y"], cellCharacter, rgbForegroundString, rgbBackgroundString);
         },
 
         resize: function() {
@@ -472,19 +445,17 @@ define([
 
                 this.d.setOptions({
                     fontSize: maxFontSize, 
-                });
-            
+                });  
             }
-            this.render();
         },
         
         queueUpdateCellModelData : function(data){
-            // todo -- comment
             var self = this;
-            setTimeout(function(){
+            setTimeout(function() {
                 self.updateCellModelData(data);
             }, 0);
         },
+
         updateCellModelData: function (data) {
             var dataArray = new Uint8Array(data);
             var dataLength = dataArray.length;
@@ -520,7 +491,10 @@ define([
                     charToDraw = this.remapBrogueGlyphs(combinedUTF16Char);
                 }               
                 
-                this._consoleCells[dataXCoord][dataYCoord].set({
+                //Just selectively render this cell
+                this.renderCell({
+                    x: dataXCoord,
+                    y: dataYCoord,
                     char: charToDraw,
                     foregroundRed: dataArray[dIndex++],
                     foregroundGreen: dataArray[dIndex++],
@@ -529,14 +503,7 @@ define([
                     backgroundGreen: dataArray[dIndex++],
                     backgroundBlue: dataArray[dIndex++]
                 });
-
-                //Just selectively render this cell
-                this.renderCell(dataXCoord, dataYCoord);
             }
-        },
-        
-        clearConsole : function(){
-
         },
 
         remapBrogueGlyphs: function(glyphCode) {
@@ -701,35 +668,12 @@ define([
                 var tileLocation = [(i - 2) % 16 * this.tileWidth, Math.floor((i - 2) / 16) * this.tileHeight];
                 this.tileMap[i] = tileLocation;
             }
-
-
-            /*
-
-            //Map 
-
-            var options = {
-                layout: "tile",
-                bg: "transparent",
-                tileWidth: 64,
-                tileHeight: 64,
-                tileSet: tileSet,
-                tileMap: {
-                    "@": [0, 0],
-                    "#": [0, 64],
-                    "a": [64, 0],
-                    "!": [64, 64]
-                },
-                width: 3,
-                height: 3
-            }
-            */
         },
         
         exitToLobby : function(message){
             activate.lobby();
             activate.currentGames();
             dispatcher.trigger("leaveGame");
-            this.clearConsole();
         }
     });
 

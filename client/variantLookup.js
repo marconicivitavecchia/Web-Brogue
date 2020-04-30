@@ -12,7 +12,7 @@ define([
                 display: "BrogueCE 1.8.2",
                 consoleColumns: 100,
                 consoleRows: 34,
-                remapGlyphs: true,
+                //remapGlyphs: true,
                 default: true
             },
             "BROGUEV175": {
