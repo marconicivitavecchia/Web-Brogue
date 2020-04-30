@@ -60,7 +60,6 @@ require([
     "views/mini-scores-view",
     "views/all-scores-view",
     "views/site-news-view",
-    "views/console-view",
     "views/canvas-console-view",
     "views/popups/seed-popup-view",
     "views/statistics-view",
@@ -73,7 +72,7 @@ require([
 ], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router,
      HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel,
      activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
-     ConsoleView, CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
+     CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
      DPadButtonView, DPadButtonVisibilityView){
     
     // If you want to enable debug mode, uncomment this function
@@ -84,7 +83,6 @@ require([
     var playView = new PlayView();
     var headerView = new HeaderView();
     var currentGamesView = new CurrentGamesView();
-    var consoleView = new ConsoleView();
     var chatView = new ChatView({model: new ChatModel()});
     var consoleChatView = new ConsoleChatView({model: new ChatModel()});
     var statisticsView = new StatisticsView();
@@ -126,8 +124,6 @@ require([
     var allScoresView = new AllScoresView({model: allScoresModel});
 
     // use dispatcher to co-ordinate multi-view actions on routed commands
-
-    //For now diverting all events from consoleView to consoleCanvasView
 
     dispatcher.on("quit", highScoresView.quit, highScoresView);
     dispatcher.on("quit", consoleCanvasView.exitToLobby, consoleCanvasView);
