@@ -693,7 +693,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       this._canvas.style.height = cssPixelsHeight + "px";
 
       var realPixelsWidth = cssPixelsWidth * this._scale;
-      var realPixelsHeight = realPixelsHeight * this._scale;
+      var realPixelsHeight = cssPixelsHeight * this._scale;
       
       this._canvas.width = realPixelsWidth;
       this._canvas.height = realPixelsHeight;
