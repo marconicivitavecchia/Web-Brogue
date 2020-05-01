@@ -231,7 +231,8 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       var _this;
 
       _this = _Backend.call(this) || this;
-      _this._ctx = document.createElement("canvas").getContext("2d");
+      _this._canvas = document.createElement("canvas");
+      _this._ctx = _this._canvas.getContext("2d");
       return _this;
     }
 
@@ -689,11 +690,11 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       var cssPixelsWidth = Math.floor(realPixelsWidth / this._scale);
       var cssPixelsHeight = Math.floor(realPixelsHeight / this._scale);
 
-      this._ctx.canvas.style.width = cssPixelsWidth;
-      this._ctx.canvas.style.height = cssPixelsHeight;
+      this._canvas.style.width = cssPixelsWidth;
+      this._canvas.style.height = cssPixelsHeight;
 
-      this._ctx.canvas.width = cssPixelsWidth * this._scale;
-      this._ctx.canvas.height = cssPixelsHeight * this._scale;
+      this._canvas.width = cssPixelsWidth * this._scale;
+      this._canvas.height = cssPixelsHeight * this._scale;
 
       //this._ctx.scale(this._scale, this._scale);
 
