@@ -636,7 +636,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       var chars = [].concat(ch);
 
       for (var i = 0; i < chars.length; i++) {
-        this._ctx.fillText(chars[i], (x + 0.5) * this._spacingX, Math.ceil((y + 0.5) * this._spacingY));
+        this._ctx.fillText(chars[i], Math.ceil((x + 0.5) * this._spacingX), Math.ceil((y + 0.5) * this._spacingY));
       }
     };
 
@@ -669,7 +669,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     };
 
     _proto5._normalizedEventToPosition = function _normalizedEventToPosition(x, y) {
-      return [Math.floor(x / (this._spacingX)), Math.floor(y / (this._spacingY)];
+      return [Math.floor(x / (this._spacingX)), Math.floor(y / (this._spacingY))];
     };
 
     _proto5._updateSize = function _updateSize() {
