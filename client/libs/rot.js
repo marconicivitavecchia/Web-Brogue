@@ -625,7 +625,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         var b = this._options.border;
         this._ctx.fillStyle = bg;
 
-        this._ctx.fillRect(x * this._spacingX + b, y * this._spacingY + b, this._spacingX - b, this._spacingY - b);
+        this._ctx.fillRect(x * this._spacingX * this._scale + b, y * this._spacingY  * this._scale + b, this._spacingX  * this._scale - b, this._spacingY  * this._scale - b);
       }
 
       if (!ch) {
@@ -636,7 +636,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       var chars = [].concat(ch);
 
       for (var i = 0; i < chars.length; i++) {
-        this._ctx.fillText(chars[i], (x + 0.5) * this._spacingX, Math.ceil((y + 0.5) * this._spacingY));
+        this._ctx.fillText(chars[i], (x + 0.5) * this._spacingX  * this._scale, Math.ceil((y + 0.5) * this._spacingY  * this._scale));
       }
     };
 
