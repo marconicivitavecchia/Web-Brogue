@@ -674,7 +674,11 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
     _proto5._updateSize = function _updateSize() {
       var opts = this._options;
-      var charWidth = Math.ceil(this._ctx.measureText("W").width); //real pixels
+
+      this._scale = window.devicePixelRatio;
+      this._ctx.scale(this._scale, this._scale);
+
+      var charWidth = Math.ceil(this._ctx.measureText("W").width); //style pixels
       this._spacingX = Math.ceil(opts.spacing * charWidth);
       this._spacingY = Math.ceil(opts.spacing * opts.fontSize);
 
@@ -682,21 +686,19 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         this._spacingX = this._spacingY = Math.max(this._spacingX, this._spacingY);
       }
 
-      var realPixelsWidth = opts.width * this._spacingX; //real pixels
-      var realPixelsHeight = opts.height * this._spacingY; //real pixels
-
-      this._scale = window.devicePixelRatio;
+      var cssPixelsWidth = opts.width * this._spacingX; //style pixels
+      var cssPixelsHeight = opts.height * this._spacingY; //style pixels
       
-      var cssPixelsWidth = Math.floor(realPixelsWidth / this._scale);
-      var cssPixelsHeight = Math.floor(realPixelsHeight / this._scale);
-
       this._canvas.style.width = cssPixelsWidth  + "px";
       this._canvas.style.height = cssPixelsHeight + "px";
 
-      this._canvas.width = cssPixelsWidth * this._scale;
-      this._canvas.height = cssPixelsHeight * this._scale;
+      var realPixelsWidth = cssPixelsWidth * this._scale;
+      var realPixelsHeight = realPixelsHeight * this._scale;
+      
+      this._canvas.width = realPixelsWidth;
+      this._canvas.height = realPixelsHeight;
 
-      this._ctx.scale(this._scale, this._scale);
+      
 
     };
 
