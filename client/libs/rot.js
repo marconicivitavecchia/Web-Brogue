@@ -647,7 +647,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     };
 
     //availWidth and availHeight are in scaled (style) units
-    //returns fontSize in real pixels
+    //returns fontSize in scaled (style) units, since scaling applied to canvas
     _proto5.computeFontSize = function computeFontSize(availWidth, availHeight) {
       var boxWidth = Math.floor(availWidth / this._options.width);
       var boxHeight = Math.floor(availHeight / this._options.height);
@@ -665,7 +665,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         boxHeight = Math.floor(boxHeight / widthFraction);
       }
 
-      return Math.floor(boxHeight * this._scale / this._options.spacing);
+      return Math.floor(boxHeight / this._options.spacing);
     };
 
     _proto5._normalizedEventToPosition = function _normalizedEventToPosition(x, y) {
