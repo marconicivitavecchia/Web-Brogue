@@ -661,7 +661,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         boxHeight = Math.floor(boxHeight / widthFraction);
       }
 
-      return Math.floor(boxHeight / (this._options.spacing * this._scale));
+      return Math.floor(boxHeight / this._options.spacing);
     };
 
     _proto5._normalizedEventToPosition = function _normalizedEventToPosition(x, y) {
