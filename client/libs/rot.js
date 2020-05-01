@@ -625,7 +625,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         var b = this._options.border;
         this._ctx.fillStyle = bg;
 
-        this._ctx.fillRect(x * this._spacingX * this._scale + b, y * this._spacingY  * this._scale + b, this._spacingX  * this._scale - b, this._spacingY  * this._scale - b);
+        this._ctx.fillRect(x * this._spacingX + b, y * this._spacingY + b, this._spacingX - b, this._spacingY - b);
       }
 
       if (!ch) {
@@ -636,7 +636,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       var chars = [].concat(ch);
 
       for (var i = 0; i < chars.length; i++) {
-        this._ctx.fillText(chars[i], (x + 0.5) * this._spacingX  * this._scale, Math.ceil((y + 0.5) * this._spacingY  * this._scale));
+        this._ctx.fillText(chars[i], (x + 0.5) * this._spacingX, Math.ceil((y + 0.5) * this._spacingY));
       }
     };
 
@@ -665,11 +665,11 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         boxHeight = Math.floor(boxHeight / widthFraction);
       }
 
-      return Math.floor(boxHeight / this._options.spacing);
+      return Math.floor(boxHeight * this._scale / this._options.spacing);
     };
 
     _proto5._normalizedEventToPosition = function _normalizedEventToPosition(x, y) {
-      return [Math.floor(x / (this._spacingX * this._scale)), Math.floor(y / (this._spacingY * this._scale))];
+      return [Math.floor(x / (this._spacingX)), Math.floor(y / (this._spacingY)];
     };
 
     _proto5._updateSize = function _updateSize() {
@@ -686,8 +686,8 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         this._spacingX = this._spacingY = Math.max(this._spacingX, this._spacingY);
       }
 
-      var cssPixelsWidth = opts.width * this._spacingX; //style pixels
-      var cssPixelsHeight = opts.height * this._spacingY; //style pixels
+      var cssPixelsWidth = Math.floor(opts.width * this._spacingX / this._scale); //style pixels
+      var cssPixelsHeight =  Math.floor(opts.height * this._spacingY / this._scale); //style pixels
       
       this._canvas.style.width = cssPixelsWidth  + "px";
       this._canvas.style.height = cssPixelsHeight + "px";
@@ -697,9 +697,6 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       
       this._canvas.width = realPixelsWidth;
       this._canvas.height = realPixelsHeight;
-
-      
-
     };
 
     return Rect;
