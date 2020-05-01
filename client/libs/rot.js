@@ -623,7 +623,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         var b = this._options.border;
         this._ctx.fillStyle = bg;
 
-        this._ctx.fillRect(x * this._spacingX + b, y * this._spacingY + b, this._spacingX - b, this._spacingY - b);
+        this._ctx.fillRect(x * this._spacingX * this._scale + b, y * this._spacingY * this._scale + b, this._spacingX * this._scale - b, this._spacingY * this._scale - b);
       }
 
       if (!ch) {
@@ -634,7 +634,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       var chars = [].concat(ch);
 
       for (var i = 0; i < chars.length; i++) {
-        this._ctx.fillText(chars[i], (x + 0.5) * this._spacingX, Math.ceil((y + 0.5) * this._spacingY));
+        this._ctx.fillText(chars[i], (x + 0.5) * this._spacingX * this._scale, Math.ceil((y + 0.5) * this._spacingY * this._scale));
       }
     };
 
@@ -661,11 +661,11 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         boxHeight = Math.floor(boxHeight / widthFraction);
       }
 
-      return Math.floor(boxHeight / this._options.spacing);
+      return Math.floor(boxHeight / (this._options.spacing * this._scale));
     };
 
     _proto5._normalizedEventToPosition = function _normalizedEventToPosition(x, y) {
-      return [Math.floor(x / this._spacingX), Math.floor(y / this._spacingY)];
+      return [Math.floor(x / (this._spacingX * this._scale)), Math.floor(y / (this._spacingY * this._scale))];
     };
 
     _proto5._updateSize = function _updateSize() {
@@ -678,8 +678,18 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         this._spacingX = this._spacingY = Math.max(this._spacingX, this._spacingY);
       }
 
-      this._ctx.canvas.width = opts.width * this._spacingX;
-      this._ctx.canvas.height = opts.height * this._spacingY;
+      var sizeWidth = opts.width * this._spacingX;
+      var sizeHeight = opts.height * this._spacingY;
+
+      this._ctx.canvas.style.width = sizeWidth;
+      this._ctx.canvas.style.height = sizeHeight;
+
+      this._scale = window.devicePixelRatio;
+      this._ctx.canvas.width = Math.floor(sizeWidth * this._scale);
+      this._ctx.canvas.height = Math.floor(sizeHeight * this._scale);
+
+      //this._ctx.scale(this._scale, this._scale);
+
     };
 
     return Rect;
