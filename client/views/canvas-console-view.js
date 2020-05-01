@@ -443,6 +443,8 @@ define([
                 var wrapperHeight = document.getElementById("console-wrapper").offsetHeight;
                 var maxFontSize = this.d.computeFontSize(wrapperWidth, wrapperHeight) - 1;
 
+                console.log("wrapperWidth: " + wrapperWidth + " wrapperHeight: " + wrapperHeight + " maxFontSize: " + maxFontSize);
+
                 this.d.setOptions({
                     fontSize: maxFontSize, 
                 });  

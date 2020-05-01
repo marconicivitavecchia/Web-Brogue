@@ -248,6 +248,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     _proto3.setOptions = function setOptions(opts) {
       _Backend.prototype.setOptions.call(this, opts);
 
+      //This is where the fontStyle is actually set; we use real pixels for the fontSize
       var style = opts.fontStyle ? opts.fontStyle + " " : "";
       var font = style + " " + opts.fontSize + "px " + opts.fontFamily;
       this._ctx.font = font;
@@ -644,6 +645,8 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       return [width, height];
     };
 
+    //availWidth and availHeight are in scaled (style) units
+    //returns fontSize in real pixels
     _proto5.computeFontSize = function computeFontSize(availWidth, availHeight) {
       var boxWidth = Math.floor(availWidth / this._options.width);
       var boxHeight = Math.floor(availHeight / this._options.height);
@@ -670,7 +673,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
 
     _proto5._updateSize = function _updateSize() {
       var opts = this._options;
-      var charWidth = Math.ceil(this._ctx.measureText("W").width);
+      var charWidth = Math.ceil(this._ctx.measureText("W").width); //real pixels
       this._spacingX = Math.ceil(opts.spacing * charWidth);
       this._spacingY = Math.ceil(opts.spacing * opts.fontSize);
 
@@ -678,15 +681,19 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
         this._spacingX = this._spacingY = Math.max(this._spacingX, this._spacingY);
       }
 
-      var sizeWidth = opts.width * this._spacingX;
-      var sizeHeight = opts.height * this._spacingY;
-
-      this._ctx.canvas.style.width = sizeWidth;
-      this._ctx.canvas.style.height = sizeHeight;
+      var realPixelsWidth = opts.width * this._spacingX; //real pixels
+      var realPixelsHeight = opts.height * this._spacingY; //real pixels
 
       this._scale = window.devicePixelRatio;
-      this._ctx.canvas.width = Math.floor(sizeWidth * this._scale);
-      this._ctx.canvas.height = Math.floor(sizeHeight * this._scale);
+      
+      var cssPixelsWidth = Math.floor(realPixelsWidth / this._scale);
+      var cssPixelsHeight = Math.floor(realPixelsHeight / this._scale);
+
+      this._ctx.canvas.style.width = cssPixelsWidth;
+      this._ctx.canvas.style.height = cssPixelsHeight;
+
+      this._ctx.canvas.width = cssPixelsWidth * this._scale;
+      this._ctx.canvas.height = cssPixelsHeight * this._scale;
 
       //this._ctx.scale(this._scale, this._scale);
 
