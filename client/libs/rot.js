@@ -647,7 +647,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     };
 
     //availWidth and availHeight are in scaled (style) units
-    //returns fontSize in scaled (style) units, since scaling applied to canvas
+    //returns fontSize in pixel units, since scale on canvas does not apply to fontSize
     _proto5.computeFontSize = function computeFontSize(availWidth, availHeight) {
       var boxWidth = Math.floor(availWidth / this._options.width);
       var boxHeight = Math.floor(availHeight / this._options.height);
@@ -793,8 +793,32 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       return [width, height];
     };
 
-    _proto6.computeFontSize = function computeFontSize() {
-      throw new Error("Tile backend does not understand font size");
+    _proto6.computeFontSize = function computeFontSize(availWidth, availHeight) {
+
+      var boxWidth = Math.floor(availWidth / this._options.width);
+      var boxHeight = Math.floor(availHeight / this._options.height);
+
+      console.log("boxWidth: " + boxWidth + " boxHeight: " + boxHeight);
+
+      var tileWidthScaling = boxWidth / this._options.tileWidth;
+      var tileHeightScaling = boxHeight / this._options.tileHeight;
+      
+      var minScaling = Math.min(tileWidthScaling, tileHeightScaling);
+
+      var scalingFactor = minScaling;
+
+      var cssPixelsWidth = Math.floor(this._options.width * this._options.tileWidth * scalingFactor); //style pixels
+      var cssPixelsHeight = Math.floor(this._options.height * this._options.tileHeight * scalingFactor); //style pixels
+
+      this._canvas.style.width = cssPixelsWidth  + "px";
+      this._canvas.style.height = cssPixelsHeight + "px";
+
+      //Not required at the moment since we are still drawing at 1:1 just scaling the entire canvas up and down to fit
+      //this._ctx.scale(scalingFactor, scalingFactor);
+
+      console.log("wrapperWidth: " + availWidth + " wrapperHeight: " + availHeight + " scalingFactor: " + scalingFactor);
+
+      console.log("cssPixelsWidth: " + cssPixelsWidth + " cssPixelsHeight: " + cssPixelsHeight);
     };
 
     _proto6._normalizedEventToPosition = function _normalizedEventToPosition(x, y) {

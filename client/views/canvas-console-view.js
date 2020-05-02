@@ -395,10 +395,12 @@ define([
             if('variant' in data) {
                 variantCode = data.variant;
             }
+
+            this.variant = variantLookup.variants[variantCode];
             
-            this.consoleColumns = variantLookup.variants[variantCode].consoleColumns;
-            this.consoleRows = variantLookup.variants[variantCode].consoleRows;
-            this.remapGlyphs = variantLookup.variants[variantCode].remapGlyphs;
+            this.consoleColumns = this.variant.consoleColumns;
+            this.consoleRows = this.variant.consoleRows;
+            this.remapGlyphs = this.variant.remapGlyphs;
             
             //Create consoleCells models
             var consoleCells = [];
@@ -448,6 +450,13 @@ define([
                 this.d.setOptions({
                     fontSize: maxFontSize, 
                 });  
+            }
+            else {
+                var wrapperWidth = document.getElementById("console-wrapper").offsetWidth;
+                var wrapperHeight = document.getElementById("console-wrapper").offsetHeight;
+
+                //Abused to set the convas style width
+                this.d.computeFontSize(wrapperWidth, wrapperHeight);
             }
         },
         
