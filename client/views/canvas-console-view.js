@@ -249,6 +249,12 @@ define([
                 return;
             }
 
+            //Client only keys
+            if(eventKey == "h") {
+                this.toggleTiles();
+                return;
+            }
+
             //Special keys - return early if handled by keydown
 
             switch (eventKey) {
@@ -359,34 +365,58 @@ define([
             }
         },
 
-        initialize: function() {
-            
-            this.useTiles = false;
-            if(this.useTiles) {
-                this.tileSet = document.createElement("img");
-                this.tileSet.src = "tiles.png";
-
-                this.setupTileMapping();
-
-                this.d = new ROT.Display({ 
-                        layout: "tile",
-                        bg: "transparent",
-                        tileWidth: this.tileWidth,
-                        tileHeight: this.tileHeight,
-                        tileMap: this.tileMap,
-                        tileSet: this.tileSet,
-                        tileColorize: true,
-                        width: 10,
-                        height: 10
-                    });
-                var canvas = this.d.getContainer();
-                this.$el.append(canvas);
+        toggleTiles: function() {
+            if(!this.useTiles) {
+                this.useTiles = true;
+                this.initialiseForNewGame({variant: this.variantCode});
             }
             else {
-                this.d = new ROT.Display({ width: 10, height: 10, fontFamily: "Source Code Pro", spacing: 1.5, fontSize: 25});
-                var canvas = this.d.getContainer();
-                this.$el.append(canvas);
+                this.useTiles = false;
+                this.initialiseForNewGame({variant: this.variantCode});
             }
+        },
+
+        setupTileCanvas: function(width, height) {
+            if(this.canvas) {
+                this.canvas.remove();
+            }
+
+            this.d = new ROT.Display({ 
+                layout: "tile",
+                bg: "transparent",
+                tileWidth: this.tileWidth,
+                tileHeight: this.tileHeight,
+                tileMap: this.tileMap,
+                tileSet: this.tileSet,
+                tileColorize: true,
+                width: width,
+                height: height
+            });
+            var canvas = this.d.getContainer();
+            this.canvas = canvas;
+            this.$el.append(canvas);
+        },
+
+        setupCharCanvas: function(width, height) {
+            if(this.canvas) {
+                this.canvas.remove();
+            }
+
+            this.d = new ROT.Display({ width: width, height: height, fontFamily: "Source Code Pro", spacing: 1.5, fontSize: 25});
+            var canvas = this.d.getContainer();
+            this.canvas = canvas;
+            this.$el.append(canvas);
+        },
+
+        initialize: function() {
+            
+            this.tileSet = document.createElement("img");
+            this.tileSet.src = "tiles.png";
+
+            this.setupTileMapping();
+
+            this.useTiles = true;
+        
         },
 
         initialiseForNewGame: function(data) {
@@ -396,6 +426,7 @@ define([
                 variantCode = data.variant;
             }
 
+            this.variantCode = data.variant;
             this.variant = variantLookup.variants[variantCode];
             
             this.consoleColumns = this.variant.consoleColumns;
@@ -414,10 +445,17 @@ define([
             this._consoleCells = consoleCells;
 
             //Setup display
-            this.d.setOptions({
-                width: this.consoleColumns, 
-                height: this.consoleRows
-            });
+            //Currently slightly expensive since nukes the canvas each time
+            
+            if(this.useTiles) {  
+                this.setupTileCanvas(this.consoleColumns, this.consoleRows);
+            }
+            else {
+                this.setupCharCanvas(this.consoleColumns, this.consoleRows);
+            }
+
+            //Send refresh, preferably only on switch, it is sent the first time by the server (brogueInterface). Or we just draw from local cache, if we still have it
+            //sendKeypressEvent(50, 0, 0, 0);
 
             this.resize();
         },
