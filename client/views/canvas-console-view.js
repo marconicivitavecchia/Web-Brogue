@@ -474,7 +474,6 @@ define([
         resize: function() {
             
             if(!this.useTiles) {
-                //Be slightly more conservative than rot.js, based on experience of different browsers
                 var wrapperWidth = document.getElementById("console-wrapper").offsetWidth;
                 var wrapperHeight = document.getElementById("console-wrapper").offsetHeight;
                 var maxFontSize = this.d.computeFontSize(wrapperWidth, wrapperHeight);

@@ -651,21 +651,24 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
     _proto5.computeFontSize = function computeFontSize(availWidth, availHeight) {
       var boxWidth = Math.floor(availWidth / this._options.width);
       var boxHeight = Math.floor(availHeight / this._options.height);
+
       /* compute char ratio */
 
       var oldFont = this._ctx.font;
       this._ctx.font = "100px " + this._options.fontFamily;
-      var width = Math.ceil(this._ctx.measureText("W").width);
+      var charFontMetrics = this._ctx.measureText("W");
+      var charWidth =  charFontMetrics.width / 100.0;
+      var charHeight = 1;//(charFontMetrics.actualBoundingBoxAscent + charFontMetrics.actualBoundingBoxDescent) / 100.0;
       this._ctx.font = oldFont;
-      var ratio = width / 100;
-      var widthFraction = ratio * boxHeight / boxWidth;
 
-      if (widthFraction > 1) {
-        /* too wide with current aspect ratio */
-        boxHeight = Math.floor(boxHeight / widthFraction);
-      }
+      var ptsWidth = boxWidth / charWidth;
+      var ptsHeight = boxHeight / charHeight;
+      
+      var ptsToUse = Math.min(ptsWidth, ptsHeight);
 
-      return Math.floor(boxHeight * this._scale / this._options.spacing);
+      var fontSize = ptsToUse * this._scale / this._options.spacing;
+
+      return fontSize;
     };
 
     _proto5._normalizedEventToPosition = function _normalizedEventToPosition(x, y) {
@@ -678,9 +681,10 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       this._scale = window.devicePixelRatio;
       this._ctx.scale(this._scale, this._scale);
 
-      var charWidth = Math.ceil(this._ctx.measureText("W").width); //style pixels
-      this._spacingX = Math.ceil(opts.spacing * charWidth);
-      this._spacingY = Math.ceil(opts.spacing * opts.fontSize);
+      var charWidth = this._ctx.measureText("W").width; //style pixels
+      
+      this._spacingX = Math.floor(opts.spacing * charWidth);
+      this._spacingY = Math.floor(opts.spacing * opts.fontSize);
 
       if (opts.forceSquareRatio) {
         this._spacingX = this._spacingY = Math.max(this._spacingX, this._spacingY);
