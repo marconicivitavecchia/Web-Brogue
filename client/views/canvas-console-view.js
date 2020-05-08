@@ -168,8 +168,8 @@ define([
     const U_CIRCLE_BARS = '\u25C6';
     const U_FILLED_CIRCLE_BARS = '\u25C7';
 
-    // See BrogueCode/rogue.h for all brogue event definitions
     var KEYPRESS_EVENT_CHAR = 0;
+    var REFRESH_EVENT_CHAR = 50;
 
     var Console = Backbone.View.extend({
         el: "#console-canvas",
@@ -455,7 +455,7 @@ define([
             }
 
             //Send refresh, preferably only on switch, it is sent the first time by the server (brogueInterface). Or we just draw from local cache, if we still have it
-            //sendKeypressEvent(50, 0, 0, 0);
+            sendKeypressEvent(REFRESH_EVENT_CHAR, 0, 0, 0);
 
             this.resize();
         },

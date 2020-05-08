@@ -25,6 +25,7 @@ var STATUS_DATA_OFFSET = 2;
 
 var MOUSE_INPUT_SIZE = 5;
 var KEY_INPUT_SIZE = 5;
+var REFRESH_INPUT_SIZE = 5;
 
 var SCREEN_REFRESH = 50;
 
@@ -108,7 +109,7 @@ BrogueInterface.prototype.sendToBrogue = function(message, callback) {
 
 BrogueInterface.prototype.handleIncomingBinaryMessage = function(message, callback) {
 
-    //Movement command from browser
+    //Command from browser
 
     var controlValue = message.readUInt8(0);
     var messageLength = message.length;
@@ -129,6 +130,9 @@ BrogueInterface.prototype.handleIncomingBinaryMessage = function(message, callba
         isValid = (messageLength === MOUSE_INPUT_SIZE) &&
             (ctrlCheck === 0 || ctrlCheck === 1) &&
             (shiftCheck === 0 || shiftCheck === 1);
+    }
+    else if (controlValue === SCREEN_REFRESH) {
+        isValid = (messageLength === REFRESH_INPUT_SIZE);
     }
 
     if (!isValid) {

@@ -3,7 +3,7 @@
 
 define(['dataIO/socket'], function(ws){
     
-    // See PlatformCode/webplaform.c for how these are ultimately used
+    // See PlatformCode/web-plaform.c for how these are ultimately used
     
     function send(eventCharCode, keyCode, ctrlKey, shiftKey){
         
