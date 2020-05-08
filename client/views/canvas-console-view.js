@@ -368,11 +368,11 @@ define([
         toggleTiles: function() {
             if(!this.useTiles) {
                 this.useTiles = true;
-                this.initialiseForNewGame({variant: this.variantCode});
+                this.setupCanvas(true);
             }
             else {
                 this.useTiles = false;
-                this.initialiseForNewGame({variant: this.variantCode});
+                this.setupCanvas(true);
             }
         },
 
@@ -420,7 +420,7 @@ define([
         },
 
         initialiseForNewGame: function(data) {
-
+            
             var variantCode = _.findWhere(_.values(variantLookup.variants), {default: true}).code;
             if('variant' in data) {
                 variantCode = data.variant;
@@ -428,22 +428,16 @@ define([
 
             this.variantCode = data.variant;
             this.variant = variantLookup.variants[variantCode];
-            
+
             this.consoleColumns = this.variant.consoleColumns;
             this.consoleRows = this.variant.consoleRows;
             this.remapGlyphs = this.variant.remapGlyphs;
+
+            this.setupCanvas(false);
+        },
+
+        setupCanvas: function(sendRefresh) {
             
-            //Create consoleCells models
-            var consoleCells = [];
-            for (var i=0; i<this.consoleColumns; i++) {
-                consoleCells[i] = [];
-                for (var j=0; j<this.consoleRows; j++) {
-                    consoleCells[i][j] = new ConsoleCanvasCellModel();
-                }
-            }
-
-            this._consoleCells = consoleCells;
-
             //Setup display
             //Currently slightly expensive since nukes the canvas each time
             
@@ -454,8 +448,10 @@ define([
                 this.setupCharCanvas(this.consoleColumns, this.consoleRows);
             }
 
-            //Send refresh, preferably only on switch, it is sent the first time by the server (brogueInterface). Or we just draw from local cache, if we still have it
-            sendKeypressEvent(REFRESH_EVENT_CHAR, 0, 0, 0);
+            //Send refresh, only on switch since it is sent the first time by the server (brogueInterface)
+            if(sendRefresh) {
+                sendKeypressEvent(REFRESH_EVENT_CHAR, 0, 0, 0);
+            }
 
             this.resize();
         },
