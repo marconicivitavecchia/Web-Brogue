@@ -402,7 +402,7 @@ define([
                 this.canvas.remove();
             }
 
-            this.d = new ROT.Display({ width: width, height: height, fontFamily: "Source Code Pro", spacing: 1.5, fontSize: 25});
+            this.d = new ROT.Display({ width: width, height: height, fontFamily: "Source Code Pro", spacing: 1.3, fontSize: 25});
             var canvas = this.d.getContainer();
             this.canvas = canvas;
             this.$el.append(canvas);
