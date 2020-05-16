@@ -31,7 +31,7 @@ define([
         },
         
         render: function() {
-            var cellCharacter = String.fromCharCode(this.model.get("char"));
+            var cellCharacter = this.model.get("char");
             var rgbForegroundString = "rgb(" +
                     this.model.get("foregroundRed") + "," +
                     this.model.get("foregroundGreen") + "," +

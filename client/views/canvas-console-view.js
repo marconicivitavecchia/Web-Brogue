@@ -172,7 +172,7 @@ define([
     var REFRESH_EVENT_CHAR = 50;
 
     var Console = Backbone.View.extend({
-        el: "#console-canvas",
+        el: "#canvas-console-canvas",
         events: {
             'keydown' : 'keydownHandler',
             'keyup' : 'keyupHandler',

@@ -119,7 +119,7 @@ require([
     var downRightRightZView = new DPadButtonView({el: "#console-down-right-right", model: new DPadButtonModel({ keyToSend: "Z".charCodeAt(0) })});
 
     //DPad - canvas console
-    var dPadVisibilityButton = new DPadButtonVisibilityView({el: "#canvas-console-dpad"});
+    var dPadVisibilityButtonCanvas = new DPadButtonVisibilityView({el: "#canvas-console-dpad"});
     new DPadButtonView({el: "#canvas-console-up", model: new DPadButtonModel({ keyToSend: 63232 })});
     new DPadButtonView({el: "#canvas-console-up-right", model: new DPadButtonModel({ keyToSend: 117 })});
     new DPadButtonView({el: "#canvas-console-right", model: new DPadButtonModel({ keyToSend: 63235 })});
@@ -244,6 +244,7 @@ require([
     // responsive resizing
     var throttledResize = _.debounce(function(){
             consoleCanvasView.resize();
+            consoleView.resize();
         }, 100);
     $(window).resize(throttledResize);
 
@@ -252,6 +253,9 @@ require([
         window.visualViewport.addEventListener('scroll', dPadVisibilityButton.positionDPad);
         window.visualViewport.addEventListener('resize', dPadVisibilityButton.positionDPad);
         window.addEventListener('scroll', dPadVisibilityButton.positionDPad);
+        window.visualViewport.addEventListener('scroll', dPadVisibilityButtonCanvas.positionDPad);
+        window.visualViewport.addEventListener('resize', dPadVisibilityButtonCanvas.positionDPad);
+        window.addEventListener('scroll', dPadVisibilityButtonCanvas.positionDPad);
     } 
 
     activate.endLoading();
