@@ -24,16 +24,31 @@ define(['jquery'], function($){
             $('#all-scores, #chat').removeClass('inactive');
         },
         
+        selectTilesConsole : function(tilesConsole) {
+            this.tilesConsole = tilesConsole;
+        },
+
         console : function(){
             $('#lobby').addClass("inactive");
-            $("#console-holder").removeClass("inactive");
-            //$("#console").focus(); //testing
-            $("#canvas-console").focus();
+
+            if(this.tilesConsole) {
+                $("#canvas-console-holder").removeClass("inactive");
+                $("#console-holder").addClass("inactive");
+
+                $("#canvas-console").focus();
+            }
+            else {
+                $("#console-holder").removeClass("inactive");
+                $("#canvas-console-holder").addClass("inactive");
+                $("#console").focus();
+            }
         },
         
         lobby: function(){
             $('#lobby').removeClass("inactive");
             $("#console-holder").addClass("inactive");
+            $("#canvas-console-holder").addClass("inactive");
+
         },
         
         loggedIn: function(){
@@ -42,7 +57,7 @@ define(['jquery'], function($){
         },
         
         resetAll: function(){
-            $('#play, #all-scores, #console-holder, #server-statistics').addClass("inactive");
+            $('#play, #all-scores, #console-holder, #canvas-console-holder, #server-statistics').addClass("inactive");
             $('#lobby, #auth, #current-games, #mini-scores').removeClass("inactive");
         }
     };

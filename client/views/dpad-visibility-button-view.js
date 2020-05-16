@@ -8,8 +8,6 @@ define([
 
     var DpadVisibilityButtonView = Backbone.View.extend({
         
-        el: "#console-dpad",
-
         events : {
             "click" : "handleClick"
         },

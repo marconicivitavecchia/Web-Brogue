@@ -9,7 +9,6 @@ define([
 ], function ($, _, Backbone, dispatcher, util, ChatModel, send) {
 
     var ConsoleChatView = Backbone.View.extend({
-        el: "#console-chat",
         listElement: "#console-chat-messages",
         inputElement: "#console-chat-input",
         truncateStringLength: 1024,

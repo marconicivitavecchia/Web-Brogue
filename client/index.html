@@ -40,9 +40,7 @@
 </div>
 <div id="console-holder" class="console-holder inactive">
     <div id="console-chat" class="console-chat"></div>
-    <div id="console-wrapper" class= "console-wrapper">
-        <div id="console-canvas" class="console-canvas" tabindex="0"></div>
-    </div>
+    <div id="console" class="console" tabindex="0">
         <div id="console-dpad" class="console-button-dpad">DPAD</div>
         <div id="console-dpad-holder" class="inactive">
             <div id="console-centre" class="console-button">○</div>
@@ -57,6 +55,29 @@
             <div id="console-up-right-right" class="console-button">i</div>
             <div id="console-right-right" class="console-button">x</div>
             <div id="console-down-right-right" class="console-button">Z</div>
+        </div>
+    </div>
+</div>
+
+<div id="canvas-console-holder" class="console-holder inactive">
+    <div id="canvas-console-chat" class="console-chat"></div>
+    <div id="canvas-console-wrapper" class= "console-wrapper">
+        <div id="canvas-console-canvas" class="console-canvas" tabindex="0"></div>
+    </div>
+        <div id="canvas-console-dpad" class="console-button-dpad">DPAD</div>
+        <div id="canvas-console-dpad-holder" class="inactive">
+            <div id="canvas-console-centre" class="console-button">○</div>
+            <div id="canvas-console-up" class="console-button">⇧</div>
+            <div id="canvas-console-up-right" class="console-button">⬀</div>
+            <div id="canvas-console-right" class="console-button">⇨</div>
+            <div id="canvas-console-down-right" class="console-button">⬂</div>
+            <div id="canvas-console-down" class="console-button">⇩</div>
+            <div id="canvas-console-down-left" class="console-button">⬃</div>
+            <div id="canvas-console-left" class="console-button">⇦</div>
+            <div id="canvas-console-up-left" class="console-button">⬁</div>
+            <div id="canvas-console-up-right-right" class="console-button">i</div>
+            <div id="canvas-console-right-right" class="console-button">x</div>
+            <div id="canvas-console-down-right-right" class="console-button">Z</div>
         </div>
     </div>
 
@@ -80,6 +101,17 @@
             <a id="start-brogue-<%=i.code%>" href="#start-brogue-<%=i.code%>">(play)</a>
             <a id="start-brogue-seed-<%=i.code%>" href="#start-broge-seed-<%=i.code%>">(seed)</a>
         </li>
+        <%if(i.tiles) {%>
+        <li>
+            <%if(i.default) {%>
+                <strong><%=i.display%></strong>
+            <%} else {%>
+                <%=i.display%>
+            <%}%>
+            <a id="start-brogue-tiles-<%=i.code%>" href="#start-brogue-tiles-<%=i.code%>">(play tiles)</a>
+            <a id="start-brogue-tiles-seed-<%=i.code%>" href="#start-brogue-tiles-seed-<%=i.code%>">(seed tiles)</a>
+        </li>
+        <%}%>
         <%}})%>
         <li><a id="show-current-games" href="#show-current-games">Current Games </a></li>
         <li><a id="show-high-scores" href="#show-high-scores">High Scores</a></li>

@@ -474,8 +474,8 @@ define([
         resize: function() {
             
             if(!this.useTiles) {
-                var wrapperWidth = document.getElementById("console-wrapper").offsetWidth;
-                var wrapperHeight = document.getElementById("console-wrapper").offsetHeight;
+                var wrapperWidth = document.getElementById("canvas-console-wrapper").offsetWidth;
+                var wrapperHeight = document.getElementById("canvas-console-wrapper").offsetHeight;
                 var maxFontSize = this.d.computeFontSize(wrapperWidth, wrapperHeight);
 
                 console.log("wrapperWidth: " + wrapperWidth + " wrapperHeight: " + wrapperHeight + " maxFontSize: " + maxFontSize);
@@ -485,8 +485,8 @@ define([
                 });  
             }
             else {
-                var wrapperWidth = document.getElementById("console-wrapper").offsetWidth;
-                var wrapperHeight = document.getElementById("console-wrapper").offsetHeight;
+                var wrapperWidth = document.getElementById("canvas-console-wrapper").offsetWidth;
+                var wrapperHeight = document.getElementById("canvas-console-wrapper").offsetHeight;
 
                 //Abused to set the convas style width
                 this.d.computeFontSize(wrapperWidth, wrapperHeight);
@@ -494,6 +494,11 @@ define([
         },
         
         queueUpdateCellModelData : function(data){
+            
+            if ($("#canvas-console-holder").hasClass("inactive")) {
+                return;
+            }
+            
             var self = this;
             setTimeout(function() {
                 self.updateCellModelData(data);
