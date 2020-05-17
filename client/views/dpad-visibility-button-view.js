@@ -16,26 +16,37 @@ define([
         
             event.preventDefault();
 
-            $('#console-dpad-holder').toggleClass("inactive");
+            var dPadHolder = '#' + this.prefix + 'dpad-holder';
+            $(dPadHolder).toggleClass("inactive");
 
             this.positionDPad();
             
         },
+
+        setDPadPrefix : function (prefix) {
+            this.prefix = prefix;
+        },
+
         positionDPad : function () {
 
-            let consoleActiveDPadButton = document.getElementById('console-dpad');
-            let consoleCentreDPadButton = document.getElementById('console-centre');
-            let consoleUpDPadButton = document.getElementById('console-up');
-            let consoleDownDPadButton = document.getElementById('console-down');
-            let consoleLeftDPadButton = document.getElementById('console-left');
-            let consoleRightDPadButton = document.getElementById('console-right');
-            let consoleDownRightDPadButton = document.getElementById('console-down-right');
-            let consoleUpRightDPadButton = document.getElementById('console-up-right');
-            let consoleUpLeftDPadButton = document.getElementById('console-up-left');
-            let consoleDownLeftDPadButton = document.getElementById('console-down-left');
-            let consoleUpRightRightDPadButton = document.getElementById('console-up-right-right');
-            let consoleRightRightDPadButton = document.getElementById('console-right-right');
-            let consoleDownRightRightDPadButton = document.getElementById('console-down-right-right');
+            //Don't do a resize etc. if the prefix is not set yet
+            if (!this.prefix) {
+                return;
+            }
+
+            let consoleActiveDPadButton = document.getElementById(this.prefix + 'dpad');
+            let consoleCentreDPadButton = document.getElementById(this.prefix + 'centre');
+            let consoleUpDPadButton = document.getElementById(this.prefix + 'up');
+            let consoleDownDPadButton = document.getElementById(this.prefix + 'down');
+            let consoleLeftDPadButton = document.getElementById(this.prefix + 'left');
+            let consoleRightDPadButton = document.getElementById(this.prefix + 'right');
+            let consoleDownRightDPadButton = document.getElementById(this.prefix + 'down-right');
+            let consoleUpRightDPadButton = document.getElementById(this.prefix + 'up-right');
+            let consoleUpLeftDPadButton = document.getElementById(this.prefix + 'up-left');
+            let consoleDownLeftDPadButton = document.getElementById(this.prefix + 'down-left');
+            let consoleUpRightRightDPadButton = document.getElementById(this.prefix + 'up-right-right');
+            let consoleRightRightDPadButton = document.getElementById(this.prefix + 'right-right');
+            let consoleDownRightRightDPadButton = document.getElementById(this.prefix + 'down-right-right');
             
             function translateDPadButton(dPadButtonElement, dPadLeftOffset, dPadTopOffset, buttonLeftOffset, buttonTopOffset, buttonRect) {
                 

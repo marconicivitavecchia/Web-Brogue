@@ -105,6 +105,7 @@ require([
 
     //DPad - console
     var dPadVisibilityButton = new DPadButtonVisibilityView({el: "#console-dpad"});
+    dPadVisibilityButton.setDPadPrefix('console-');
     var upArrowView = new DPadButtonView({el: "#console-up", model: new DPadButtonModel({ keyToSend: 63232 })});
     var upRightArrowView = new DPadButtonView({el: "#console-up-right", model: new DPadButtonModel({ keyToSend: 117 })});
     var rightArrowView = new DPadButtonView({el: "#console-right", model: new DPadButtonModel({ keyToSend: 63235 })});
@@ -120,6 +121,7 @@ require([
 
     //DPad - canvas console
     var dPadVisibilityButtonCanvas = new DPadButtonVisibilityView({el: "#canvas-console-dpad"});
+    dPadVisibilityButtonCanvas.setDPadPrefix('canvas-console-');
     new DPadButtonView({el: "#canvas-console-up", model: new DPadButtonModel({ keyToSend: 63232 })});
     new DPadButtonView({el: "#canvas-console-up-right", model: new DPadButtonModel({ keyToSend: 117 })});
     new DPadButtonView({el: "#canvas-console-right", model: new DPadButtonModel({ keyToSend: 63235 })});
@@ -250,12 +252,12 @@ require([
 
     // dpad translation and scaling
     if(window.visualViewport) {
-        window.visualViewport.addEventListener('scroll', dPadVisibilityButton.positionDPad);
-        window.visualViewport.addEventListener('resize', dPadVisibilityButton.positionDPad);
-        window.addEventListener('scroll', dPadVisibilityButton.positionDPad);
-        window.visualViewport.addEventListener('scroll', dPadVisibilityButtonCanvas.positionDPad);
-        window.visualViewport.addEventListener('resize', dPadVisibilityButtonCanvas.positionDPad);
-        window.addEventListener('scroll', dPadVisibilityButtonCanvas.positionDPad);
+        window.visualViewport.addEventListener('scroll', dPadVisibilityButton.positionDPad.bind(dPadVisibilityButton));
+        window.visualViewport.addEventListener('resize', dPadVisibilityButton.positionDPad.bind(dPadVisibilityButton));
+        window.addEventListener('scroll', dPadVisibilityButton.positionDPad.bind(dPadVisibilityButton));
+        window.visualViewport.addEventListener('scroll', dPadVisibilityButtonCanvas.positionDPad.bind(dPadVisibilityButtonCanvas));
+        window.visualViewport.addEventListener('resize', dPadVisibilityButtonCanvas.positionDPad.bind(dPadVisibilityButtonCanvas));
+        window.addEventListener('scroll', dPadVisibilityButtonCanvas.positionDPad.bind(dPadVisibilityButtonCanvas));
     } 
 
     activate.endLoading();
