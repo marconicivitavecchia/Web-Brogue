@@ -100,18 +100,11 @@
         <%}%>
             <a id="start-brogue-<%=i.code%>" href="#start-brogue-<%=i.code%>">(play)</a>
             <a id="start-brogue-seed-<%=i.code%>" href="#start-broge-seed-<%=i.code%>">(seed)</a>
-        </li>
         <%if(i.tiles) {%>
-        <li>
-            <%if(i.default) {%>
-                <strong><%=i.display%></strong>
-            <%} else {%>
-                <%=i.display%>
-            <%}%>
-            <a id="start-brogue-tiles-<%=i.code%>" href="#start-brogue-tiles-<%=i.code%>">(play tiles)</a>
-            <a id="start-brogue-tiles-seed-<%=i.code%>" href="#start-brogue-tiles-seed-<%=i.code%>">(seed tiles)</a>
-        </li>
+            <a id="start-brogue-tiles-<%=i.code%>" href="#start-brogue-tiles-<%=i.code%>">(tiles)</a>
+            <a id="start-brogue-tiles-seed-<%=i.code%>" href="#start-brogue-tiles-seed-<%=i.code%>">(tiles seed)</a>
         <%}%>
+        </li>
         <%}})%>
         <li><a id="show-current-games" href="#show-current-games">Current Games </a></li>
         <li><a id="show-high-scores" href="#show-high-scores">High Scores</a></li>
