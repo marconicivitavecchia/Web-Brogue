@@ -156,13 +156,13 @@
 </script>
 
 <script id="console-chat-template" type="text/template">
-    <button id="console-chat-show-button" class="console-chat-buttons <%=chatHiddenStatus%>">Show Chat</button>
-    <button id="console-chat-hide-button" class="console-chat-buttons <%=chatShownStatus%>">Hide Chat</button>
-    <div id="console-chat-inner" class="console-chat-inner <%=chatShownStatus%>">
+    <button id="<%= prefix %>-chat-show-button" class="console-chat-buttons <%=chatHiddenStatus%>">Show Chat</button>
+    <button id="<%= prefix %>-chat-hide-button" class="console-chat-buttons <%=chatShownStatus%>">Hide Chat</button>
+    <div id="<%= prefix %>-chat-inner" class="console-chat-inner <%=chatShownStatus%>">
         <h2>Chat</h2>
-        <ul id="console-chat-messages" class="console-chat-messages"><%= messageListItems %></ul>
+        <ul id="<%= prefix %>-chat-messages" class="console-chat-messages"><%= messageListItems %></ul>
         <form action="">
-            <input id="console-chat-input" autocomplete="off" /><button type="submit", id="console-chat-send-button">Send</button>
+            <input id="<%= prefix %>-chat-input" autocomplete="off" /><button type="submit", id="<%= prefix %>-chat-send-button">Send</button>
         </form>
     </div>
 </script>

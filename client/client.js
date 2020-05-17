@@ -54,6 +54,7 @@ require([
     "views/auth-view",
     "views/chat-view",
     "views/console-chat-view",
+    "views/canvas-console-chat-view",
     "views/play-view",
     "views/header-view",
     "views/current-games-view",
@@ -72,7 +73,7 @@ require([
     "views/dpad-visibility-button-view"
 ], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router,
      HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel,
-     activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
+     activate, AuthView, ChatView, ConsoleChatView, CanvasConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
      ConsoleView, CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
      DPadButtonView, DPadButtonVisibilityView){
     
@@ -101,7 +102,7 @@ require([
 
     //Canvas console
     var consoleCanvasView = new CanvasConsoleView();
-    var consoleCanvasChatView = new ConsoleChatView({el: "#canvas-console-chat", model: new ChatModel()});
+    var consoleCanvasChatView = new CanvasConsoleChatView({el: "#canvas-console-chat", model: new ChatModel()});
 
     //DPad - console
     var dPadVisibilityButton = new DPadButtonVisibilityView({el: "#console-dpad"});

@@ -9,14 +9,14 @@ define([
 ], function ($, _, Backbone, dispatcher, util, ChatModel, send) {
 
     var ConsoleChatView = Backbone.View.extend({
-        listElement: "#console-chat-messages",
-        inputElement: "#console-chat-input",
+        listElement: "#canvas-console-chat-messages",
+        inputElement: "#canvas-console-chat-input",
         truncateStringLength: 1024,
 
         events: {
-            "click #console-chat-send-button": "chatSend",
-            "click #console-chat-show-button": "chatShow",
-            "click #console-chat-hide-button": "chatHide"
+            "click #canvas-console-chat-send-button": "chatSend",
+            "click #canvas-console-chat-show-button": "chatShow",
+            "click #canvas-console-chat-hide-button": "chatHide"
         },
         template: _.template($('#console-chat-template').html()),
 
@@ -44,7 +44,7 @@ define([
             }
 
             this.$el.html(this.template({
-                "prefix": 'console',
+                "prefix": "canvas-console",
                 "messageListItems": messagesList,
                 "chatHiddenStatus": chatHiddenStatus,
                 "chatShownStatus": chatShownStatus
@@ -79,7 +79,7 @@ define([
 
             event.preventDefault();
 
-            var inputText = $('#console-chat-input').val();
+            var inputText = $('#canvas-console-chat-input').val();
             var messageToSend = this.truncateString(inputText, this.truncateStringLength);
 
             send("chat", "message", { channel: "console", data: messageToSend });
