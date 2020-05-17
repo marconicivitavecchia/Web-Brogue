@@ -8,7 +8,7 @@ define([
 
     var ConsoleCellModel = Backbone.Model.extend({
         defaults: {
-            char: 0,
+            char: "",
             foregroundRed: 255,
             foregroundGreen: 255,
             foregroundBlue: 255,
@@ -40,7 +40,7 @@ define([
         
         clear : function(){
             this.set({
-                char: 0,
+                char: "",
                 foregroundRed: 255,
                 foregroundGreen: 255,
                 foregroundBlue: 255,

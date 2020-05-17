@@ -225,6 +225,10 @@ button {
     height: 95vh;
 }
 
+.console {
+    outline: none;
+}
+
 .console-canvas {
     position : absolute;
     box-sizing : border-box;
