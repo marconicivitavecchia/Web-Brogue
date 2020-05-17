@@ -34,8 +34,7 @@ define(['jquery'], function($){
             if(this.tilesConsole) {
                 $("#canvas-console-holder").removeClass("inactive");
                 $("#console-holder").addClass("inactive");
-
-                $("#canvas-console").focus();
+                $("#canvas-console-canvas").focus();
             }
             else {
                 $("#console-holder").removeClass("inactive");
