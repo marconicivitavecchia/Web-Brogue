@@ -610,7 +610,7 @@ function _inheritsLoose(subClass, superClass) { subClass.prototype = Object.crea
       var boxWidth = Math.floor(availWidth / this._options.width);
       var boxHeight = Math.floor(availHeight / this._options.height);
 
-      console.log("boxWidth: " + boxWidth + " boxHeight: " + boxHeight);
+      //console.log("boxWidth: " + boxWidth + " boxHeight: " + boxHeight);
 
       var tileWidthScaling = boxWidth / this._options.tileWidth;
       var tileHeightScaling = boxHeight / this._options.tileHeight;
