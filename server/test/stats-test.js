@@ -15,7 +15,7 @@ describe("stats.filterForValidGames", function() {
             score: 100,
             seed: 200,
             level: 3,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1"
@@ -27,7 +27,7 @@ describe("stats.filterForValidGames", function() {
             score: 150,
             seed: 250,
             level: 5,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
             recording: "file2"
@@ -48,7 +48,7 @@ describe("stats.filterForValidGames", function() {
             score: 100,
             seed: 200,
             level: 3,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1",
@@ -61,7 +61,7 @@ describe("stats.filterForValidGames", function() {
             score: 150,
             seed: 250,
             level: 5,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
             recording: "file2",
@@ -83,7 +83,7 @@ describe("stats.filterForValidGames", function() {
             score: 100,
             seed: 200,
             level: 3,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1"
@@ -95,7 +95,7 @@ describe("stats.filterForValidGames", function() {
             score: 150,
             seed: 250,
             level: 5,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
             recording: "file2",
@@ -117,7 +117,7 @@ describe("stats.filterForValidGames", function() {
             score: 100,
             seed: 200,
             level: 0,
-            result: brogueConstants.gameOver.GAMEOVER_VICTORY,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1"
@@ -129,7 +129,7 @@ describe("stats.filterForValidGames", function() {
             score: 150,
             seed: 250,
             level: 5,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
             recording: "file2"
@@ -150,7 +150,7 @@ describe("stats.filterForValidGames", function() {
             score: 150,
             seed: 250,
             level: null,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
             recording: "file2"
@@ -162,7 +162,7 @@ describe("stats.filterForValidGames", function() {
             score: 100,
             seed: 200,
             level: 3,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1"
@@ -182,7 +182,7 @@ describe("stats.filterForValidGames", function() {
             date: new Date("2011-06-26T07:56:00.123Z"),
             score: 150,
             seed: 250,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
             recording: "file2"
@@ -194,7 +194,7 @@ describe("stats.filterForValidGames", function() {
             score: 100,
             seed: 200,
             level: 3,
-            result: brogueConstants.gameOver.GAMEOVER_DEATH,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1"

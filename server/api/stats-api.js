@@ -114,9 +114,9 @@ module.exports = function(app, config) {
                     var filteredGames = stats.filterForValidGames(games, variant, config.variants[0]);
 
                     var allNormalModeGames = _.filter(filteredGames, function(game) { return game.easyMode != true; });
-                    var allNormalModeGamesExcludingQuits = _.reject(allNormalModeGames, function(game) { return game.result == brogueConstants.gameOver.GAMEOVER_QUIT });
+                    var allNormalModeGamesExcludingQuits = _.reject(allNormalModeGames, function(game) { return game.result == brogueConstants.notifyEvents.GAMEOVER_QUIT });
                     var allNormalModeGamesExcludingQuitsAndVictories = _.reject(allNormalModeGamesExcludingQuits,
-                        function(game) { return game.result == brogueConstants.gameOver.GAMEOVER_VICTORY || game.result == brogueConstants.gameOver.GAMEOVER_SUPERVICTORY });
+                        function(game) { return game.result == brogueConstants.notifyEvents.GAMEOVER_VICTORY || game.result == brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY });
 
                     if(allNormalModeGamesExcludingQuitsAndVictories.length == 0) {
                         res.json({});
@@ -187,15 +187,15 @@ module.exports = function(app, config) {
                     var allEasyModeGames = _.where(filteredGames, {easyMode: true});
                     var allNormalModeGames = _.filter(filteredGames, function(game) { return game.easyMode != true; });
 
-                    var allEasyModeVictories = _.where(allEasyModeGames, {result: brogueConstants.gameOver.GAMEOVER_VICTORY});
-                    var allEasyModeQuits = _.where(allEasyModeGames, {result: brogueConstants.gameOver.GAMEOVER_QUIT});
-                    var allEasyModeDeaths = _.where(allEasyModeGames, {result: brogueConstants.gameOver.GAMEOVER_DEATH});
-                    var allEasyModeSuperVictories = _.where(allEasyModeGames, {result: brogueConstants.gameOver.GAMEOVER_SUPERVICTORY});
+                    var allEasyModeVictories = _.where(allEasyModeGames, {result: brogueConstants.notifyEvents.GAMEOVER_VICTORY});
+                    var allEasyModeQuits = _.where(allEasyModeGames, {result: brogueConstants.notifyEvents.GAMEOVER_QUIT});
+                    var allEasyModeDeaths = _.where(allEasyModeGames, {result: brogueConstants.notifyEvents.GAMEOVER_DEATH});
+                    var allEasyModeSuperVictories = _.where(allEasyModeGames, {result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY});
 
-                    var allNormalModeVictories = _.where(allNormalModeGames, {result: brogueConstants.gameOver.GAMEOVER_VICTORY});
-                    var allNormalModeQuits = _.where(allNormalModeGames, {result: brogueConstants.gameOver.GAMEOVER_QUIT});
-                    var allNormalModeDeaths = _.where(allNormalModeGames, {result: brogueConstants.gameOver.GAMEOVER_DEATH});
-                    var allNormalModeSuperVictories = _.where(allNormalModeGames, {result: brogueConstants.gameOver.GAMEOVER_SUPERVICTORY});
+                    var allNormalModeVictories = _.where(allNormalModeGames, {result: brogueConstants.notifyEvents.GAMEOVER_VICTORY});
+                    var allNormalModeQuits = _.where(allNormalModeGames, {result: brogueConstants.notifyEvents.GAMEOVER_QUIT});
+                    var allNormalModeDeaths = _.where(allNormalModeGames, {result: brogueConstants.notifyEvents.GAMEOVER_DEATH});
+                    var allNormalModeSuperVictories = _.where(allNormalModeGames, {result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY});
 
                     var totalLumenstonesPerGame = _.map(allNormalModeGames, function (game) {
 
@@ -236,7 +236,7 @@ module.exports = function(app, config) {
 
                         var usersGames = _.sortBy(games, 'date');
                         _.each(usersGames, function(v, index) {
-                            if(v.result === brogueConstants.gameOver.GAMEOVER_SUPERVICTORY || v.result === brogueConstants.gameOver.GAMEOVER_VICTORY) {
+                            if(v.result === brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY || v.result === brogueConstants.notifyEvents.GAMEOVER_VICTORY) {
                                 streakCounter++;
                                 if(streakCounter >= longestStreakCounter) {
                                     longestStreakCounter = streakCounter;

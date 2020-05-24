@@ -99,15 +99,14 @@ _.extend(BrogueController.prototype, {
     },
 
     brogueEventListener: function (event) {
-        //console.log("Event listener " + this.username + " data: " + JSON.stringify(event));
+        //console.log("Event listener " + " data: " + JSON.stringify(event));
 
         //Add record to the database (only if owner of game)
-        //TODO: Maybe just one eventId for end game events?
         if(this.mode == brogueMode.GAME && (
-            event.eventId === brogueConstants.gameOver.GAMEOVER_QUIT ||
-            event.eventId === brogueConstants.gameOver.GAMEOVER_DEATH ||
-            event.eventId === brogueConstants.gameOver.GAMEOVER_VICTORY ||
-            event.eventId === brogueConstants.gameOver.GAMEOVER_SUPERVICTORY)) {
+            event.eventId === brogueConstants.notifyEvents.GAMEOVER_QUIT ||
+            event.eventId === brogueConstants.notifyEvents.GAMEOVER_DEATH ||
+            event.eventId === brogueConstants.notifyEvents.GAMEOVER_VICTORY ||
+            event.eventId === brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY)) {
 
             var self = this;
             var thisGameRecord = {
@@ -134,6 +133,10 @@ _.extend(BrogueController.prototype, {
                 }
             });
 
+        }
+        else if(event.eventId === brogueConstants.notifyEvents.SWITCH_TO_GRAPHICS) {
+            var data = { "graphics": event.data1 };
+            this.sendMessage('meta', data);
         }
     },
 

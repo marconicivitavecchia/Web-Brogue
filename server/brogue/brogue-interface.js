@@ -26,8 +26,10 @@ var STATUS_DATA_OFFSET = 2;
 var MOUSE_INPUT_SIZE = 5;
 var KEY_INPUT_SIZE = 5;
 var REFRESH_INPUT_SIZE = 5;
+var QUERY_GRAPHICS_INPUT_SIZE = 5;
 
 var SCREEN_REFRESH = 50;
+var QUERY_GRAPHICS = 51;
 
 var IDLE_KILLER_INTERVAL = 1 * 24 * 60 * 60 * 1000;
 var IDLE_KILLER_TIMEOUT = 14 * 24 * 60 * 60 * 1000;
@@ -133,6 +135,9 @@ BrogueInterface.prototype.handleIncomingBinaryMessage = function(message, callba
     }
     else if (controlValue === SCREEN_REFRESH) {
         isValid = (messageLength === REFRESH_INPUT_SIZE);
+    }
+    else if (controlValue === QUERY_GRAPHICS) {
+        isValid = (messageLength === QUERY_GRAPHICS_INPUT_SIZE);
     }
 
     if (!isValid) {
@@ -311,6 +316,8 @@ BrogueInterface.prototype.attachChildEvents = function () {
                     break;
                 }
 
+                // Parse standard event data
+
                 // We need to send bytes over as unsigned long.  JS bitwise operations force a signed long, so we are forced to use a float here.
                 var eventData1 =
                     self.dataAccumulator[i + EVENT_DATA_OFFSET + 1] * 16777216 +
@@ -360,27 +367,47 @@ BrogueInterface.prototype.attachChildEvents = function () {
 
                 var eventStr1 = self.dataAccumulator.slice(message1Start, message1End).toString('utf8');
                 var eventStr2 = self.dataAccumulator.slice(message2Start, message2End).toString('utf8');
+                
+                //Process and emit specific events
 
-                var makePathForRecording = function(recordingFilename) {
-                    return self.getChildWorkingDir() + "/" + recordingFilename;
-                };
+                if(eventId === brogueConstants.notifyEvents.GAMEOVER_QUIT ||
+                    eventId === brogueConstants.notifyEvents.GAMEOVER_DEATH ||
+                    eventId === brogueConstants.notifyEvents.GAMEOVER_VICTORY ||
+                    eventId === brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY ||
+                    eventId === brogueConstants.notifyEvents.GAMEOVER_RECORDING) {
 
-                var eventData = {
-                    date: Date.now(),
-                    eventId: eventId,
-                    data1: eventData1,
-                    data2: 0,
-                    gold: gold,
-                    level: level,
-                    seed: seed,
-                    easyMode: easyMode,
-                    message: eventStr1,
-                    recording: makePathForRecording(eventStr2)
-                };
+                    var makePathForRecording = function(recordingFilename) {
+                        return self.getChildWorkingDir() + "/" + recordingFilename;
+                    };
+                    
+                    var eventData = {
+                        date: Date.now(),
+                        eventId: eventId,
+                        data1: eventData1,
+                        data2: 0,
+                        gold: gold,
+                        level: level,
+                        seed: seed,
+                        easyMode: easyMode,
+                        message: eventStr1,
+                        recording: makePathForRecording(eventStr2)
+                    };
 
-                self.brogueEvents.emit('event', eventData);
+                    self.brogueEvents.emit('event', eventData);
+                    self.processBrogueEvents(self, eventData);
+                }
 
-                self.processBrogueEvents(self, eventData);
+                else if(eventId === brogueConstants.notifyEvents.SWITCH_TO_GRAPHICS) {
+                   
+                    var eventData = {
+                        date: Date.now(),
+                        eventId: eventId,
+                        data1: eventData1
+                    };
+
+                    self.brogueEvents.emit('event', eventData);
+                    self.processBrogueEvents(self, eventData);
+                }
 
                 i += EVENT_DATA_LENGTH;
             }
@@ -491,11 +518,11 @@ BrogueInterface.prototype.processBrogueEvents = function(self, eventData) {
     //Analyse brogue messages and do suitable processing, before passing back to the controller
 
     //Kill the brogue process on quit (save a keypress and make sure it dies)
-    if(eventData.eventId === brogueConstants.gameOver.GAMEOVER_QUIT ||
-        eventData.eventId === brogueConstants.gameOver.GAMEOVER_DEATH ||
-        eventData.eventId === brogueConstants.gameOver.GAMEOVER_VICTORY ||
-        eventData.eventId === brogueConstants.gameOver.GAMEOVER_SUPERVICTORY ||
-        eventData.eventId === brogueConstants.gameOver.GAMEOVER_RECORDING) {
+    if(eventData.eventId === brogueConstants.notifyEvents.GAMEOVER_QUIT ||
+        eventData.eventId === brogueConstants.notifyEvents.GAMEOVER_DEATH ||
+        eventData.eventId === brogueConstants.notifyEvents.GAMEOVER_VICTORY ||
+        eventData.eventId === brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY ||
+        eventData.eventId === brogueConstants.notifyEvents.GAMEOVER_RECORDING) {
 
         self.killBrogue(self);
         self.brogueEvents.emit('quit');

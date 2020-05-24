@@ -222,12 +222,16 @@ require([
 
     dispatcher.on("brogue", consoleCanvasView.queueUpdateCellModelData, consoleCanvasView);
     dispatcher.on("brogue", consoleView.queueUpdateCellModelData, consoleView);
-    
+
+    dispatcher.on("meta", consoleCanvasView.processServerMetadataUpdate, consoleCanvasView);
+    dispatcher.on("meta", consoleView.processServerMetadataUpdate, consoleView);
+
     // set up routes for the messages from the websocket connection (only)
     router.registerHandlers({
         //Must bind 'this' to the scope of the view so we can use the internal view functions
         "error" : console.error.bind(console),
         "brogue" : function(data) { dispatcher.trigger("brogue", data) },
+        "meta" : function(data) { dispatcher.trigger("meta", data) },
         "quit" : function(data) { dispatcher.trigger("quit", data) },
         "lobby" : currentGamesView.updateRowModelData.bind(currentGamesView),
         "chat": function(data) { dispatcher.trigger("chat", data) },

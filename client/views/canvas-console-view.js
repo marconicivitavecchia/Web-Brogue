@@ -22,6 +22,7 @@ define([
 
     var KEYPRESS_EVENT_CHAR = 0;
     var REFRESH_EVENT_CHAR = 50;
+    var QUERY_GRAPHICS_EVENT_CHAR = 51;
 
     var Console = Backbone.View.extend({
         el: "#canvas-console-canvas",
@@ -102,10 +103,12 @@ define([
             }
 
             //Client only keys
+            /*
             if(eventKey == "h") {
                 this.toggleTiles();
                 return;
             }
+            */
 
             //Special keys - return early if handled by keydown
 
@@ -217,6 +220,14 @@ define([
             }
         },
 
+        setTiles: function(setTiles) {
+            
+            if(setTiles !== this.useTiles) {
+                this.useTiles = setTiles;
+                this.setupCanvas(true);
+            }
+        },
+
         toggleTiles: function() {
             if(!this.useTiles) {
                 this.useTiles = true;
@@ -286,6 +297,10 @@ define([
             this.remapGlyphs = this.variant.remapGlyphs;
 
             this.setupCanvas(false);
+
+            //Query whether to use graphics. If the game supports this query it will reply and the view
+            //will redraw the canvas if needed. This is a bit inefficient, but not all games support this query at present
+            sendKeypressEvent(QUERY_GRAPHICS_EVENT_CHAR, 0, 0, 0);
         },
 
         setupCanvas: function(sendRefresh) {
@@ -293,7 +308,7 @@ define([
             //Setup display
             //Currently slightly expensive since nukes the canvas each time
             
-            if(this.useTiles) {  
+            if(this.useTiles) {
                 this.setupTileCanvas(this.consoleColumns, this.consoleRows);
             }
             else {
@@ -330,8 +345,6 @@ define([
                 var wrapperHeight = document.getElementById("canvas-console-wrapper").offsetHeight;
                 var maxFontSize = this.d.computeFontSize(wrapperWidth, wrapperHeight);
 
-                console.log("wrapperWidth: " + wrapperWidth + " wrapperHeight: " + wrapperHeight + " maxFontSize: " + maxFontSize);
-
                 this.d.setOptions({
                     fontSize: maxFontSize, 
                 });  
@@ -355,6 +368,18 @@ define([
             setTimeout(function() {
                 self.updateCellModelData(data);
             }, 0);
+        },
+
+        processServerMetadataUpdate : function (data) {
+
+            if('graphics' in data) {
+                if(data.graphics) {
+                    this.setTiles(true);
+                }
+                else {
+                    this.setTiles(false);
+                }
+            }
         },
 
         updateCellModelData: function (data) {

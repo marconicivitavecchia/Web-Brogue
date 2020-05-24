@@ -22,7 +22,7 @@ define(['dataIO/router', 'dispatcher', 'io', 'config'], function(router, dispatc
 
     socket.outputPerformanceTracking = function() {
         for(i=debugPoint;i < performanceTracking.length; i++){
-            console.log(JSON.stringify(performanceTracking[i]));
+            //console.log(JSON.stringify(performanceTracking[i]));
         }
         debugPoint = performanceTracking.length;
     }

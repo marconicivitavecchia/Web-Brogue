@@ -287,6 +287,11 @@ define([
                 self.updateCellModelData(data);
             }, 0);
         },
+
+        processServerMetadataUpdate : function (data) {
+
+        },
+
         updateCellModelData: function (data) {
             var dataArray = new Uint8Array(data);
             var dataLength = dataArray.length;
