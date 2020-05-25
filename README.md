@@ -13,9 +13,15 @@ Get the latest stable version of node.js and mongoDB.
 ### Step 2: Get node packages
 Navigate to the `server` directory and run `npm install` to get the node dependencies
 
-### Step 3: Build Brogue Executables ###
-Brogue: `cd brogue` `make web`
-gBrogue: `cd gBrogue` `make -f Makefile.linux web`
+### Step 3: Build Brogue Executables ##
+The paths to the binaries is stored in `server/config.js`.
+Brogue binaries are either compiled and referenced in place, or stored in the `binaries/` directory. Best practice is to place binaries in the `binaries/` directory. If a replay-breaking change is added to a brogue binary, create a new variant and add a new brogue binary. This allows old recordings to still work.
+
+Brogue (1.7.4): `cd brogue` `make web`
+Brogue (1.7.5): `cd brogue-1.7.5` `make web`
+gBrogue: `cd gbrogue` `make -f Makefile.linux web`
+unBrogue: `cd unBrogue` `make web`
+Brogue CE (1.8): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue`. `make bin/brogue` then copy binary to `binaries/brogue-ce18`
 
 Starting the Server
 ----------------------------
