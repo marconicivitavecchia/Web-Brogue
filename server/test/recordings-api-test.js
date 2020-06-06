@@ -23,13 +23,27 @@ describe("api/recordings", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "test/testfile.broguerec",
-            variant: "GBROGUE"
+            variant: "BROGUECEV18"
+        };
+
+        var gameRecord2 = {
+            username: "flend",
+            date: new Date("2012-05-27T07:56:00.123Z"),
+            score: 100,
+            seed: 200,
+            level: 4,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly on depth 3.",
+            recording: "test/testfile.broguerec",
+            variant: "BROGUEV174"
         };
 
         var self = this;
 
-        gameRecord.create([gameRecord1], function(err, doc) {
-            self.currentTest.gameId = doc[0]._id;
+        gameRecord.create([gameRecord1, gameRecord2], function(err, doc) {
+            self.currentTest.gameId1 = doc[0]._id;
+            self.currentTest.gameId2 = doc[1]._id;
             done();
         });
     });
@@ -52,12 +66,19 @@ describe("api/recordings", function(){
         var self = this;
 
         request(server)
-            .get("/api/recordings/" + this.test.gameId)
+            .get("/api/recordings/" + this.test.gameId1)
             .end(function(err, res) {
                 expect(res.status).to.equal(200);
-                expect(res.header['content-disposition']).to.equal('attachment; filename=webbrogue-recording-' + self.test.gameId + '.broguerec');
+                expect(res.header['content-disposition']).to.equal('attachment; filename=webbrogue-recording-' + self.test.gameId1 + '.broguerec');
                 done();
             });
+    });
+
+    it("returns for 404 for valid recordings of old versions", function(done) {
+        
+        request(server)
+            .get("/api/recordings/" + this.test.gameId2)
+            .expect(404, done);
     });
 
 });

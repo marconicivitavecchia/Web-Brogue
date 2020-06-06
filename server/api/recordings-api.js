@@ -20,6 +20,17 @@ module.exports = function(app, config) {
                 return;
             }
 
+            //Blacklist old versions that don't have desktop versions
+            if(gameRecord.variant === 'BROGUEV174' ||
+                gameRecord.variant === 'GBROGUEV1180211' ||
+                gameRecord.variant === 'BROGUEV175' ||
+                gameRecord.variant === 'UNBROGUEV113' ||
+                gameRecord.variant === 'BROGUEV174DISCORD') {
+                    
+                res.status(404).send('Not found');
+                return;
+            }
+
             var file = gameRecord.recording;
 
             var filename = "webbrogue-recording-" + recordingId + ".broguerec";
