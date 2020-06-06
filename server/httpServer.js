@@ -5,6 +5,7 @@ module.exports = function(config) {
     var util = require("util");
     var fs = require("fs");
     var highScoreApi = require("./api/high-score-api");
+    var recordingsApi = require("./api/recordings-api");
     var newsApi = require("./api/news-api");
     var statsApi = require("./api/stats-api");
 
@@ -36,6 +37,7 @@ module.exports = function(config) {
     });
 
     highScoreApi(app, config);
+    recordingsApi(app, config);
     newsApi(app);
     statsApi(app, config);
 
