@@ -86,5 +86,16 @@ module.exports = {
         });
 
         return filteredOnValidLevel;
+    },
+
+    doesVariantSupportRecordingDownloads: function (variant) {
+        if(variant === 'BROGUEV174' ||
+                variant === 'GBROGUEV1180211' ||
+                variant === 'BROGUEV175' ||
+                variant === 'UNBROGUEV113' ||
+                variant === 'BROGUEV174DISCORD') {
+            return false;
+        }
+        return true;
     }
 };

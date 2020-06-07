@@ -23,7 +23,7 @@ describe("api/games", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1",
-            variant: "GBROGUE"
+            variant: "BROGUECEV18"
         };
 
         var gameRecord2 = {
@@ -36,7 +36,7 @@ describe("api/games", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file2",
-            variant: "BROGUE"
+            variant: "BROGUEV174"
         };
 
         gameRecord.create([gameRecord1, gameRecord2], function() {
@@ -79,6 +79,19 @@ describe("api/games", function(){
                 var resText = JSON.parse(res.text);
                 var gameData = resText.data;
                 expect(gameData[0]).to.have.property('recording', 'recording-' + gameData[0]._id);
+                done();
+            });
+    });
+
+    it("returns download IDs with games where they can be downloaded", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                expect(gameData[0]).to.have.property('download', 'recordings/' + gameData[0]._id);
+                expect(gameData[1]).to.not.have.property('download');
                 done();
             });
     });

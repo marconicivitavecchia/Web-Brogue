@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var GameRecord = require("../database/game-record-model");
 var paginate = require("express-paginate");
 var _ = require("underscore");
+var stats = require('../stats/stats.js');
 
 module.exports = function(app, config) {
 
@@ -31,6 +32,10 @@ module.exports = function(app, config) {
 
             if('recording' in gameRecord && gameRecord.recording != undefined) {
                 filteredRecord.recording = 'recording-' + gameRecord._id;
+            }
+
+            if('recording' in gameRecord && stats.doesVariantSupportRecordingDownloads(gameRecord.variant)) {
+                filteredRecord.download = 'recordings/' + gameRecord._id;
             }
 
             filteredGameRecords.push(filteredRecord);
