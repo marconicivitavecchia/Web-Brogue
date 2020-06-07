@@ -43,7 +43,7 @@ define([
             "click #watch-game" : "watchGame"
         },
 
-        watchGame: function(event){
+        watchGame: function(event) {
             event.preventDefault();
 
             var gameId = $(event.target).data("gameid");
@@ -62,17 +62,27 @@ define([
             };
 
             this.$el.empty();
-            var rawValue = this.model.get(this.column.get("name"));
-            var formattedValue = this.formatter.fromRaw(rawValue, this.model);
-            if(formattedValue) {
+            var rawNameValue = this.model.get(this.column.get("name"));
+            var formattedNameValue = this.formatter.fromRaw(rawNameValue, this.model);
+            if(formattedNameValue) {
                 this.$el.append($("<a>", {
                     href: '#brogue',
                     title: this.model.title,
                     id: 'watch-game',
-                    "data-gameid": formattedValue,
+                    "data-gameid": formattedNameValue,
                     "data-variant": this.model.get("variant"),
                     "data-gamedescription": this.model.get("username") + "-" + this.model.get("seed") + "-" + formatDate(this.model.get("date"))
                 }).text("Watch game"));
+            }
+
+            var downloadValue = this.model.get("download");
+            if(downloadValue) {
+                this.$el.append(" ");
+                this.$el.append($("<a>", {
+                    href: 'api/' + downloadValue,
+                    title: this.model.title,
+                    id: 'download-game',
+                }).text("Download game"));
             }
             this.delegateEvents();
             return this;
