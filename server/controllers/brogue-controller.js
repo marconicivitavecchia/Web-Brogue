@@ -2,7 +2,6 @@ var path = require('path');
 var fs = require('fs');
 var _ = require('underscore');
 
-var router = require('./router');
 var config = require('../config');
 
 var Controller = require('./controller-base');
@@ -13,7 +12,7 @@ var brogueComms = require('../brogue/brogue-comms');
 var gameRecord = require('../database/game-record-model');
 var brogueConstants = require('../brogue/brogue-constants.js');
 
-var mongoose = require('mongoose');
+var KEYPRESS_EVENT_CHAR = 0;
 
 // Controller for handling I/O with brogue process and client.  Note that unlike other controllers this one deals in binary data. Any incoming or outgoing binary data from this server should only come from this controller.
 
@@ -161,26 +160,68 @@ _.extend(BrogueController.prototype, {
         this.sendMessage('b', data);
     },
 
+
+    createInitialiseCommandForStartAtTurn: function(turnNumber) {
+
+        //Must be a number string
+        if(!/^-{0,1}\d+$/.test(turnNumber)) {
+            return [];
+        };
+
+        var cmds = [];
+
+        for(var i = 0; i < turnNumber.length; i++) {
+            var messageArray = new Buffer.alloc(5);
+            var thisChar = turnNumber.charCodeAt(i);
+            var keyCodePart1 = (thisChar & '0xffff') >> 8;
+            var keyCodePart2 = (thisChar & '0xff');
+            
+            messageArray[0] = KEYPRESS_EVENT_CHAR;
+            messageArray[1] = keyCodePart1;
+            messageArray[2] = keyCodePart2;
+            cmds.push(messageArray);
+        }
+
+        //ENTER
+        messageArray = new Buffer.alloc(5);
+        messageArray[0] = KEYPRESS_EVENT_CHAR;
+        messageArray[1] = 0;
+        messageArray[2] = 13;
+        cmds.push(messageArray);
+
+        return cmds;
+    },
+
     watchRecording: function (data) {
         if (!data || !data.recording) {
             this.sendFailedToStartGameMessage("No game record given to watch.");
+            console.error("No game record given to watch.");
             return;
         }
 
         //Lookup recording id in database
         var splitRecordingId = data.recording.split('-');
         if (splitRecordingId.length < 2) {
-            this.sendFailedToStartGameMessage("Can't process recording id " + data.recording);
+            this.sendFailedToStartGameMessage("Recording id in incorrect format " + data.recording);
+            console.error("Recording id in incorrect format " + data.recording);
             return;
         }
 
         var id = splitRecordingId[1];
+
+        var initialiseCommands = [];
+
+        //Request to send characters to game once started
+        if (splitRecordingId.length == 3) {
+            initialiseCommands = initialiseCommands.concat(this.createInitialiseCommandForStartAtTurn(splitRecordingId[2]));
+        }
 
         var self = this;
 
         gameRecord.findOne({'_id': id}, function (err, gameRecord) {
             if (err) {
                 self.controllers.error.send(JSON.stringify(err));
+                console.error("Error on retrieving game record " + JSON.stringify(err));
                 return;
             }
             if (gameRecord) {
@@ -197,7 +238,7 @@ _.extend(BrogueController.prototype, {
                     var username = self.controllers.auth.getUserOrAnonName();
                     self.brogueGameChatId = self.getCurrentGameChatId(username, data.variant, "RECORDING");
 
-                    self.startBrogueSession(username, data.variant, data, brogueMode.RECORDING);
+                    self.startBrogueSession(username, data.variant, data, brogueMode.RECORDING, initialiseCommands);
 
                     //Stop lobby updates for this user
                     self.controllers.lobby.stopUserDataListen();
@@ -212,6 +253,7 @@ _.extend(BrogueController.prototype, {
             }
             else {
                 self.sendFailedToStartGameMessage("Can't process recording id " + data.recording);
+                console.error("Can't process recording id " + data.recording);
                 return;
             }
         });
@@ -329,7 +371,7 @@ _.extend(BrogueController.prototype, {
         }
     },
 
-    startBrogueSession: function (username, variant, data, mode) {
+    startBrogueSession: function (username, variant, data, mode, initialisationCmds) {
 
         //Connect to brogue interface
 
@@ -358,8 +400,8 @@ _.extend(BrogueController.prototype, {
         //console.log("Added listeners. Count " + this.brogueInterface.brogueEvents.listeners('data').length);
 
         //Refresh once the game has had a chance to start (if required)
-        var refreshMethod = this.brogueInterface.sendRefreshScreen.bind(this.brogueInterface);
-        setTimeout(refreshMethod, 250);
+        var refreshMethod = this.brogueInterface.sendRefreshScreenAndInitialiseCommands.bind(this.brogueInterface);
+        setTimeout(refreshMethod, 250, initialisationCmds);
     },
 
     sendFailedToStartGameMessage: function(message) {

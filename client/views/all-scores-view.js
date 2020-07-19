@@ -97,6 +97,8 @@ define([
 
         render: function() {
 
+            this.renderOptions();
+
             $("#all-scores-grid").append(this.grid.render().$el);
             $("#all-scores-paginator").append(this.paginator.render().$el);
 
@@ -109,15 +111,11 @@ define([
 
         login: function(userName) {
             this.model.setUserName(userName);
-            this.renderOptions(); //ensure user scores option is shown
-
             this.render();
         },
 
         logout: function() {
             this.model.clearUserName();
-            this.renderOptions(); //ensure user scores option is shown
-
             this.render();
         },
 

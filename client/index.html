@@ -17,7 +17,7 @@
     <img class="banner" src="assets/brogue-banner.png" />
     <div id="loading" class="loading">Loading...</div>
     <div id="auth" class="auth"></div>
-    <div id="play" class="play inactive"></div>
+    <div id="play" class="play"></div>
     <div id="lobby-chat" class="lobby-chat"></div>
     <div id="about" class="about inactive">
         <h2> WebBrogue </h2>
@@ -88,8 +88,9 @@
 
 <!-- Templates -->
 <script id="main-menu-template" type="text/template">
-    <h2>Play Brogue!</h2>
+    <h2>Main Menu</h2>
     <ul id="play-brogue-list">
+        <%if(loggedIn) {%>
         <%_.forEach(variants, function (i) {%>
         <%if(!i.disabled) {%>
             <li>
@@ -106,6 +107,7 @@
         <%}%>
         </li>
         <%}})%>
+        <%}%>
         <li><a id="show-current-games" href="#show-current-games">Current Games </a></li>
         <li><a id="show-high-scores" href="#show-high-scores">High Scores</a></li>
         <li><a id="show-stats" href="#show-stats">Game Statistics</a></li>

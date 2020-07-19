@@ -8,7 +8,7 @@ define([
     "dispatcher",
     "dataIO/send-generic",
     "views/view-activation-helpers"
-], function ($, _, Backbone, config, dispatcher, send, activate) {
+], function ($, _, Backbone, config, dispatcher, send) {
 
     var CurrentGamesRowView = Backbone.View.extend({
         tagName: "tr",
@@ -36,7 +36,6 @@ define([
         },
 
         goToConsole : function() {
-            activate.console();
             dispatcher.trigger("showConsole");
         }
 

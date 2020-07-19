@@ -7,9 +7,8 @@ define([
     "config",
     "dispatcher",
     "views/popups/popup-view",
-    "dataIO/send-generic",
-    "views/view-activation-helpers"
-], function ($, _, Backbone, config, dispatcher, PopupView, send, activate) {
+    "dataIO/send-generic"
+], function ($, _, Backbone, config, dispatcher, PopupView, send) {
 
     var SeedView = PopupView.extend({
         
@@ -35,7 +34,6 @@ define([
                 this.closePopup();
                 dispatcher.trigger("startGame", { variant: this.variantCode });
 
-                activate.console();
                 dispatcher.trigger("showConsole");
             }
         },

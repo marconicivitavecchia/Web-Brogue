@@ -31,7 +31,7 @@
     "morgan": "^1.9.1",
     "socket.io": "^2.2.0",
     "underscore": "^1.8.2",
-    "unix-dgram": "^2.0.0"
+    "unix-dgram": "^2.0.4"
   },
   "scripts": {
     "test": "mocha --timeout 10000"

@@ -8,13 +8,11 @@ define([
     "util",
     "dataIO/send-generic",
     "dataIO/router",
-    "models/auth",
     "views/view-activation-helpers"
-], function ($, _, Backbone, dispatcher, util, send, router, AuthenticationModel, activate) {
+], function ($, _, Backbone, dispatcher, util, send, router, activate) {
 
     var AuthenticationView = Backbone.View.extend({
         el: "#auth",
-        model: new AuthenticationModel(),
 
         events: {
             "click #login-button": "loginSubmit",
@@ -27,10 +25,16 @@ define([
             register: _.template($('#register').html())
         },
         initialize: function () {
+            this.model.set({
+                username: "",
+                type: "",
+                loggedIn: false
+            });
+            
             this.requestLogin();
         },
         render: function (templateName) {
-            this.$el.html(this.templates[templateName](this.model.toJSON()));
+            this.$el.html(this.templates[templateName]);
         },
         requestLogin: function () {
 
@@ -47,6 +51,12 @@ define([
         },
         logout: function() {
 
+            this.model.set({
+                username: "",
+                type: "",
+                loggedIn: false
+            });
+
             //Request an anon login
             send("auth", "anon-login");
         },
@@ -57,9 +67,6 @@ define([
                 username: $('#username').val(),
                 password: $('#password').val()
             };
-            this.model.set({
-                username: loginData.username
-            });
             send("auth", "login", loginData);
         },
         registerSubmit: function (event) {
@@ -112,7 +119,9 @@ define([
                     case "anon-logged-in":
 
                         this.model.set({
-                            username: message.data.username
+                            username: message.data.username,
+                            type: "anon",
+                            loggedIn: true
                         });
 
                         dispatcher.trigger("anon-login", message.data.username);
@@ -123,7 +132,9 @@ define([
                         activate.loggedIn();
 
                         this.model.set({
-                            username: message.data.username
+                            username: message.data.username,
+                            type: "registered",
+                            loggedIn: true
                         });
 
                         dispatcher.trigger("login", message.data.username);

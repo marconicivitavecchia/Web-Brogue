@@ -1,7 +1,10 @@
 
 // Define our repeatable jquery activation and deactivation functions for our common view actions.
 
-define(['jquery'], function($){
+define([
+    'jquery',
+    'router'
+], function($, router) {
     
     var activate = {
         endLoading : function(){
@@ -10,16 +13,19 @@ define(['jquery'], function($){
         },
 
         currentGames : function(){
+            router.navigate("currentGames");
             $('#all-scores, #server-statistics').addClass('inactive');
             $('#current-games, #mini-scores, #chat, #site-news').removeClass('inactive');
         },
 
         statistics : function(){
+            router.navigate("gameStatistics");
             $('#current-games, #mini-scores, #all-scores, #site-news').addClass('inactive');
             $('#server-statistics').removeClass('inactive');
         },
 
-        highScores : function(){
+        highScores : function() {
+            router.navigate("highScores");
             $('#current-games, #mini-scores, #server-statistics, #site-news').addClass('inactive');
             $('#all-scores, #chat').removeClass('inactive');
         },
@@ -52,11 +58,10 @@ define(['jquery'], function($){
         
         loggedIn: function(){
             $('#auth').addClass("inactive");
-            $('#play').removeClass("inactive");
         },
         
         resetAll: function(){
-            $('#play, #all-scores, #console-holder, #canvas-console-holder, #server-statistics').addClass("inactive");
+            $('#all-scores, #console-holder, #canvas-console-holder, #server-statistics').addClass("inactive");
             $('#lobby, #auth, #current-games, #mini-scores').removeClass("inactive");
         }
     };

@@ -96,6 +96,19 @@ describe("api/games", function(){
             });
     });
 
+    it("returns link IDs with games where they can be loaded from a link", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                expect(gameData[0]).to.have.property('link', 'viewRecording/' + "BROGUECEV18-" + gameData[0]._id);
+                expect(gameData[1]).to.have.property('link', 'viewRecording/' + "BROGUEV174-" + gameData[1]._id);
+                done();
+            });
+    });
+
     it("returns multiple games", function(done) {
         request(server)
             .get("/api/games")

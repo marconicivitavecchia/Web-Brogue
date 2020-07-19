@@ -489,7 +489,7 @@ define([
         
         exitToLobby : function(message){
             activate.lobby();
-            activate.currentGames();
+            dispatcher.trigger("currentGames");
             dispatcher.trigger("leaveGame");
             this.clearConsole();
         }

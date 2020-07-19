@@ -8,7 +8,7 @@ define([
     "backgrid",
     "moment",
     "views/view-activation-helpers"
-], function ($, _, Backbone, config, dispatcher, send, Backgrid, Moment, activate) {
+], function ($, _, Backbone, config, dispatcher, send, Backgrid, Moment) {
 
     var LevelFormatter = _.extend({}, Backgrid.CellFormatter.prototype, {
         fromRaw: function (rawValue, model) {
@@ -40,7 +40,8 @@ define([
     var WatchGameUriCell = Backgrid.UriCell.extend({
 
         events : {
-            "click #watch-game" : "watchGame"
+            "click #watch-game" : "watchGame",
+            "click #link-game": "copyLink"
         },
 
         watchGame: function(event) {
@@ -50,9 +51,18 @@ define([
             var gameDescription = $(event.target).data("gamedescription");
             var gameVariant = $(event.target).data("variant");
 
-            send("brogue", "recording", {recording: gameId, variant: gameVariant});
-            dispatcher.trigger("recordingGame", {recording: gameDescription, variant: gameVariant});
-            this.goToConsole();
+            dispatcher.trigger("recordingGame", {id: gameId, recording: gameDescription, variant: gameVariant});
+            dispatcher.trigger("showConsole");
+        },
+
+        copyLink: function(event) {
+            event.preventDefault();
+            var gameLink = window.location.host + "/" + $(event.target).attr("href");
+            var $temp = $("<input>");
+            $("body").append($temp);
+            $temp.val(gameLink).select();
+            document.execCommand("copy");
+            $temp.remove();
         },
 
         render: function () {
@@ -72,7 +82,7 @@ define([
                     "data-gameid": formattedNameValue,
                     "data-variant": this.model.get("variant"),
                     "data-gamedescription": this.model.get("username") + "-" + this.model.get("seed") + "-" + formatDate(this.model.get("date"))
-                }).text("Watch game"));
+                }).text("Watch"));
             }
 
             var downloadValue = this.model.get("download");
@@ -82,15 +92,23 @@ define([
                     href: 'api/' + downloadValue,
                     title: this.model.title,
                     id: 'download-game',
-                }).text("Download game"));
+                }).text("Download"));
             }
+
+            var downloadValue = this.model.get("link");
+            if(downloadValue) {
+                this.$el.append(" ");
+                this.$el.append($("<a>", {
+                    href: '#' + downloadValue,
+                    title: this.model.title,
+                    id: 'link-game',
+                }).text("Copy Link"));
+            }
+
             this.delegateEvents();
             return this;
         },
-        goToConsole : function(){
-            activate.console();
-            dispatcher.trigger("showConsole");
-        }
+
     });
 
     var tableCells = {

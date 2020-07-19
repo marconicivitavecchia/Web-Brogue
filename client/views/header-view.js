@@ -85,7 +85,7 @@ define([
 
         goToLobby: function() {
             activate.lobby();
-            activate.currentGames();
+            dispatcher.trigger("currentGames");
             dispatcher.trigger("leaveGame");
 
             //Tell the server we are leaving the game

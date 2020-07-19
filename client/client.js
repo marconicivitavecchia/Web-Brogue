@@ -30,7 +30,6 @@ require.config({
         }
     }
 });
-
 require([
     "jquery",
     "underscore",
@@ -42,6 +41,7 @@ require([
     "tests/debug-mode",
     "dataIO/socket",
     "dataIO/router",
+    "router",
     "models/high-scores",
     "models/chat",
     "models/site-news",
@@ -50,6 +50,8 @@ require([
     "models/general-stats-model",
     "models/level-probability-model",
     "models/dpad-button",
+    "models/auth",
+    "services/recordings",
     "views/view-activation-helpers",
     "views/auth-view",
     "views/chat-view",
@@ -71,17 +73,14 @@ require([
     "views/level-probability-view",
     "views/dpad-button-view",
     "views/dpad-visibility-button-view"
-], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router,
-     HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel,
+], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, pageRouter,
+     HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, AuthenticationModel, recordings,
      activate, AuthView, ChatView, ConsoleChatView, CanvasConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
      ConsoleView, CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
      DPadButtonView, DPadButtonVisibilityView){
     
-    // If you want to enable debug mode, uncomment this function
-    debugMode();
-    
-    // initialize each view
-    var authView = new AuthView();
+    // initialize each model and view;
+    var authView = new AuthView({model: new AuthenticationModel()});
     var playView = new PlayView();
     var headerView = new HeaderView();
     var currentGamesView = new CurrentGamesView();
@@ -95,6 +94,16 @@ require([
     var popups = {
         seedView : new SeedPopupView(),
     };
+
+    var highScoresModel = new HighScoresModel();
+    highScoresModel.fetch();
+    setInterval(function() { highScoresModel.fetch(); }, 5 * 60 * 1000);
+    var highScoresView = new HighScoresView({model: highScoresModel});
+
+    var allScoresModel = new HighScoresModel();
+    allScoresModel.fetch();
+    setInterval(function() { allScoresModel.fetch(); }, 5 * 60 * 1000);
+    var allScoresView = new AllScoresView({model: allScoresModel});
 
     //Console
     var consoleView = new ConsoleView();
@@ -136,22 +145,12 @@ require([
     new DPadButtonView({el: "#canvas-console-right-right", model: new DPadButtonModel({ keyToSend: "x".charCodeAt(0) })});
     new DPadButtonView({el: "#canvas-console-down-right-right", model: new DPadButtonModel({ keyToSend: "Z".charCodeAt(0) })});
 
-    var highScoresModel = new HighScoresModel();
-    highScoresModel.fetch();
-    setInterval(function() { highScoresModel.fetch(); }, 5 * 60 * 1000);
-    var highScoresView = new HighScoresView({model: highScoresModel});
-
-    var allScoresModel = new HighScoresModel();
-    allScoresModel.fetch();
-    setInterval(function() { allScoresModel.fetch(); }, 5 * 60 * 1000);
-    var allScoresView = new AllScoresView({model: allScoresModel});
-
-    // use dispatcher to co-ordinate multi-view actions on routed commands
+    // use dispatcher to co-ordinate multi-view/service actions on routed commands
+    // direct calls to activate should be replaced by this mechanism
 
     dispatcher.on("quit", highScoresView.quit, highScoresView);
     dispatcher.on("quit", consoleCanvasView.exitToLobby, consoleCanvasView);
     dispatcher.on("quit", consoleView.exitToLobby, consoleView);
-
 
     dispatcher.on("fail", highScoresView.quit, highScoresView);
     dispatcher.on("fail", consoleCanvasView.exitToLobby, consoleCanvasView);
@@ -163,31 +162,38 @@ require([
     dispatcher.on("login", chatView.login, chatView);
     dispatcher.on("login", consoleChatView.login, consoleChatView);
     dispatcher.on("login", consoleCanvasChatView.login, consoleCanvasChatView);
-
+    dispatcher.on("login", playView.login, playView);
     dispatcher.on("login", currentGamesView.login, currentGamesView);
+    dispatcher.on("login", pageRouter.login, router);
 
     dispatcher.on("anon-login", headerView.anonymousLogin, headerView);
     dispatcher.on("anon-login", chatView.login, chatView);
     dispatcher.on("anon-login", consoleChatView.login, consoleChatView);
     dispatcher.on("anon-login", consoleCanvasChatView.login, consoleCanvasChatView);
-
+    dispatcher.on("anon-login", pageRouter.login, router);
 
     dispatcher.on("logout", highScoresView.logout, highScoresView);
     dispatcher.on("logout", allScoresView.logout, allScoresView);
     dispatcher.on("logout", consoleChatView.logout, consoleChatView);
     dispatcher.on("logout", consoleCanvasChatView.logout, consoleCanvasChatView);
-
     dispatcher.on("logout", chatView.logout, chatView);
     dispatcher.on("logout", currentGamesView.logout, currentGamesView);
     dispatcher.on("logout", authView.logout, authView);
+    dispatcher.on("logout", playView.logout, playView);
 
+
+    dispatcher.on("all-scores", activate.highScores, activate);
     dispatcher.on("all-scores", allScoresView.activate, allScoresView);
+
+    dispatcher.on("currentGames", activate.currentGames, activate);
+
+    dispatcher.on("gameStatistics", activate.statistics, activate)
 
     dispatcher.on("chat", chatView.chatMessage, chatView);
     dispatcher.on("chat", consoleChatView.chatMessage, consoleChatView);
     dispatcher.on("chat", consoleCanvasChatView.chatMessage, consoleCanvasChatView);
 
-
+    dispatcher.on("showConsole", activate.console, activate);
     dispatcher.on("showConsole", consoleCanvasView.resize, consoleCanvasView);
     dispatcher.on("showConsole", consoleView.resize, consoleView);
 
@@ -205,6 +211,7 @@ require([
     dispatcher.on("observeGame", consoleCanvasView.initialiseForNewGame, consoleCanvasView);
     dispatcher.on("observeGame", consoleView.initialiseForNewGame, consoleView);
 
+    dispatcher.on("recordingGame", recordings.startRecording, recordings);
     dispatcher.on("recordingGame", headerView.recordingGame, headerView);
     dispatcher.on("recordingGame", consoleCanvasView.initialiseForNewGame, consoleCanvasView);
     dispatcher.on("recordingGame", consoleView.initialiseForNewGame, consoleView);
@@ -239,9 +246,13 @@ require([
         "seed" : popups.seedView.handleMessage.bind(popups.seedView),
         "fail" : function(data) { dispatcher.trigger("fail", data) },
     });
-    
+            
     //debugging
-    setInterval(socket.outputPerformanceTracking, 5000);
+    var debug = false;
+    if(debug) {
+        debugMode();
+        setInterval(socket.outputPerformanceTracking, 5000);
+    }
 
     // clean up application
     $(window).on("unload", function(){
