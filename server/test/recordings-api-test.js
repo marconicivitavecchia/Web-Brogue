@@ -23,7 +23,7 @@ describe("api/recordings", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "test/testfile.broguerec",
-            variant: "BROGUECEV18"
+            variant: "BROGUE"
         };
 
         var gameRecord2 = {
@@ -36,7 +36,7 @@ describe("api/recordings", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "test/testfile.broguerec",
-            variant: "BROGUEV174"
+            variant: "GBROGUE"
         };
 
         var self = this;

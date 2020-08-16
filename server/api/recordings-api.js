@@ -23,7 +23,7 @@ module.exports = function(app, config) {
 
             //Blacklist old versions that don't have desktop versions
             
-            if(!stats.doesVariantSupportRecordingDownloads(gameRecord.variant)) {
+            if(!stats.doesVariantSupportRecordingDownloads(config, gameRecord.variant)) {
                 res.status(404).send('Not found');
                 return;
             }

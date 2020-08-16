@@ -23,7 +23,7 @@ describe("api/games", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1",
-            variant: "BROGUECEV18"
+            variant: "BROGUE"
         };
 
         var gameRecord2 = {
@@ -36,7 +36,7 @@ describe("api/games", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file2",
-            variant: "BROGUEV174"
+            variant: "GBROGUE"
         };
 
         gameRecord.create([gameRecord1, gameRecord2], function() {
@@ -103,8 +103,8 @@ describe("api/games", function(){
             .end(function(err, res) {
                 var resText = JSON.parse(res.text);
                 var gameData = resText.data;
-                expect(gameData[0]).to.have.property('link', 'viewRecording/' + "BROGUECEV18-" + gameData[0]._id);
-                expect(gameData[1]).to.have.property('link', 'viewRecording/' + "BROGUEV174-" + gameData[1]._id);
+                expect(gameData[0]).to.have.property('link', 'viewRecording/' + "BROGUE-" + gameData[0]._id);
+                expect(gameData[1]).to.have.property('link', 'viewRecording/' + "GBROGUE-" + gameData[1]._id);
                 done();
             });
     });

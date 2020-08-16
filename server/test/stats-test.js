@@ -35,7 +35,7 @@ describe("stats.filterForValidGames", function() {
 
         var allValidGameRecords = [validGameRecord1, validGameRecord2];
 
-        var filteredGames = stats.filterForValidGames(allValidGameRecords, config.variants[0], config.variants[0]);
+        var filteredGames = stats.filterForValidGames(allValidGameRecords, config.defaultBrogueVariant, config.defaultBrogueVariant);
 
         expect(filteredGames).to.deep.equal(allValidGameRecords);
     });
@@ -70,12 +70,12 @@ describe("stats.filterForValidGames", function() {
 
         var allValidGameRecords = [validGameRecord1, validGameRecord2];
 
-        var filteredGames = stats.filterForValidGames(allValidGameRecords, "BROGUE2", config.variants[0]);
+        var filteredGames = stats.filterForValidGames(allValidGameRecords, "BROGUE2", config.defaultBrogueVariant);
 
         expect(filteredGames).to.deep.equal([validGameRecord2]);
     });
 
-    it("treats games with no variant as being of variant config.variants[0]", function () {
+    it("treats games with no variant as being of variant config.defaultBrogueVariant", function () {
 
         var validGameRecord1 = {
             username: "flend",
@@ -104,7 +104,7 @@ describe("stats.filterForValidGames", function() {
 
         var allValidGameRecords = [validGameRecord1, validGameRecord2];
 
-        var filteredGames = stats.filterForValidGames(allValidGameRecords, config.variants[0], config.variants[0]);
+        var filteredGames = stats.filterForValidGames(allValidGameRecords, config.defaultBrogueVariant, config.defaultBrogueVariant);
 
         expect(filteredGames).to.deep.equal([validGameRecord1]);
     });
@@ -137,7 +137,7 @@ describe("stats.filterForValidGames", function() {
 
         var allValidGameRecords = [validGameRecord1, validGameRecord2];
 
-        var filteredGames = stats.filterForValidGames(allValidGameRecords, config.variants[0], config.variants[0]);
+        var filteredGames = stats.filterForValidGames(allValidGameRecords, config.defaultBrogueVariant, config.defaultBrogueVariant);
 
         expect(filteredGames).to.deep.equal(allValidGameRecords);
     });
@@ -170,7 +170,7 @@ describe("stats.filterForValidGames", function() {
 
         var allGameRecords = [gameWithNullLevel, validGameRecord1];
 
-        var filteredGames = stats.filterForValidGames(allGameRecords, config.variants[0], config.variants[0]);
+        var filteredGames = stats.filterForValidGames(allGameRecords, config.defaultBrogueVariant, config.defaultBrogueVariant);
 
         expect(filteredGames).to.deep.equal([ validGameRecord1 ]);
     });
@@ -202,7 +202,7 @@ describe("stats.filterForValidGames", function() {
 
         var allGameRecords = [validGameRecord1, gameWithUndefinedLevel];
 
-        var filteredGames = stats.filterForValidGames(allGameRecords, config.variants[0], config.variants[0]);
+        var filteredGames = stats.filterForValidGames(allGameRecords, config.defaultBrogueVariant, config.defaultBrogueVariant);
 
         expect(filteredGames).to.deep.equal([ validGameRecord1 ]);
     });

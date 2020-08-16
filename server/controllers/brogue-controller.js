@@ -231,7 +231,7 @@ _.extend(BrogueController.prototype, {
                     data.variant = gameRecord.variant;
                     //Handle recordings before variants were introduced
                     if (!data.variant) {
-                        data.variant = config.variants[0];
+                        data.variant = config.defaultBrogueVariant;
                     }
                     self.variant = data.variant; //Not strictly needed in this case
 
@@ -268,6 +268,10 @@ _.extend(BrogueController.prototype, {
         }
     },
 
+    isValidVariant: function(variant) {
+        return _.contains(_.keys(config.brogueVariants), variant);
+    },
+
     startGameOrObserve: function (data, observing) {
 
         var mode = brogueMode.OBSERVE;
@@ -280,7 +284,7 @@ _.extend(BrogueController.prototype, {
             }
 
             //Check variant and abort on error
-            if (!data.variant || !_.contains(config.variants, data.variant)) {
+            if (!data.variant || !this.isValidVariant(data.variant)) {
                 this.sendFailedToStartGameMessage("No valid variant selected");
                 return;
             }

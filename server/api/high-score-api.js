@@ -35,7 +35,7 @@ module.exports = function(app, config) {
                 filteredRecord.link = 'viewRecording/' + gameRecord.variant + "-" + gameRecord._id;
             }
 
-            if('recording' in gameRecord && stats.doesVariantSupportRecordingDownloads(gameRecord.variant)) {
+            if('recording' in gameRecord && stats.doesVariantSupportRecordingDownloads(config, gameRecord.variant)) {
                 filteredRecord.download = 'recordings/' + gameRecord._id;
             }
 

@@ -196,7 +196,7 @@ BrogueInterface.prototype.newBrogueProcess = function(data, mode) {
     if(mode == brogueMode.RECORDING) {
         args = ["--no-menu", "--no-saves"];
 
-        if(this.variant === "BROGUECEV18") {
+        if(config.brogueVariants[this.variant].modernCmdLine) {
             args = ["--server-mode", "-G"];
         }
 
@@ -206,7 +206,7 @@ BrogueInterface.prototype.newBrogueProcess = function(data, mode) {
     else {
         args = ["--no-menu", "--no-recording", "--no-scores", "--no-saves"];
 
-        if(this.variant === "BROGUECEV18") {
+        if(config.brogueVariants[this.variant].modernCmdLine) {
             args = ["--server-mode", "-G"];
         }
 
@@ -231,7 +231,7 @@ BrogueInterface.prototype.spawnChildProcess = function (args, childWorkingDir) {
         detached: true,
         stdio: 'ignore'
     };
-    var brogueClientPath = config.path.brogueClient[this.variant];
+    var brogueClientPath = path.normalize(__dirname + "/../../" + config.brogueVariants[this.variant].binaryPath);
     if(!brogueClientPath) {
         throw new Error("Unable to find path for variant: " + this.variant)
     }
