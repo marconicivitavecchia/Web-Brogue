@@ -7,14 +7,22 @@ define([
     //Includes all historical variants, so the API response can be prettified
     var VariantLookup = {
         variants: {
+            "BROGUECEV19": {
+                code: "BROGUECEV19",
+                display: "BrogueCE 1.9.0",
+                consoleColumns: 100,
+                consoleRows: 34,
+                remapGlyphs: true,
+                tiles: true,
+                default: true
+            },
             "BROGUECEV18": {
                 code: "BROGUECEV18",
                 display: "BrogueCE 1.8.3",
                 consoleColumns: 100,
                 consoleRows: 34,
                 remapGlyphs: true,
-                tiles:true,
-                default: true
+                tiles: true
             },
             "BROGUEV175": {
                 code: "BROGUEV175",
