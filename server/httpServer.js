@@ -1,3 +1,5 @@
+const usersApi = require("./api/users-api");
+
 module.exports = function(config) {
     var express = require("express");
     var morgan = require("morgan");
@@ -8,6 +10,7 @@ module.exports = function(config) {
     var recordingsApi = require("./api/recordings-api");
     var newsApi = require("./api/news-api");
     var statsApi = require("./api/stats-api");
+    var usersApi = require("./api/users-api");
 
     var mongoose = require("mongoose");
     mongoose.connect(config.db.url);
@@ -40,6 +43,7 @@ module.exports = function(config) {
     recordingsApi(app, config);
     newsApi(app);
     statsApi(app, config);
+    usersApi(app, config);
 
     var server = require('http').Server(app);
     var io = require('socket.io')(server);
