@@ -7,6 +7,7 @@ require.config({
         backbone : "libs/backbone",
         moment: "libs/moment",
         backbonePaginator: "libs/backbone.paginator",
+        backboneAutocomplete: "libs/autocomplete-view",
         backgrid: "libs/backgrid",
         backgridPaginator: "libs/backgrid-paginator",
         io: "socket.io/socket.io.js",
@@ -73,12 +74,13 @@ require([
     "views/level-probability-view",
     "views/dpad-button-view",
     "views/dpad-visibility-button-view",
-    "views/users-page-view"
+    "views/users-page-view",
+    "views/users-page-select-view"
 ], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, pageRouter,
      HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, AuthenticationModel, recordings,
      activate, AuthView, ChatView, ConsoleChatView, CanvasConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
      ConsoleView, CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
-     DPadButtonView, DPadButtonVisibilityView, UsersPageView){
+     DPadButtonView, DPadButtonVisibilityView, UsersPageView, UsersPageSelectView){
     
     // initialize each model and view;
     var authView = new AuthView({model: new AuthenticationModel()});
@@ -91,11 +93,37 @@ require([
     var causeStatsView = new CauseStatsView({model: new CauseStatsModel()});
     var generalStatsView = new GeneralStatsView({model: new GeneralStatsModel()});
     var levelProbabilityView = new LevelProbabilityView({model: new LevelProbabilityModel()});
-    var usersPageView = new UsersPageView();
     var siteNewsView = new SiteNewsView({model: new SiteNewsModel() });
     var popups = {
         seedView : new SeedPopupView(),
     };
+
+    //Users page
+
+    var usersPageView = new UsersPageView();
+    
+    var someNames = new Backbone.Collection([{
+        name: 'Bob'
+    },{
+        name: 'Harry'
+    },{
+        name: 'Alfred'
+    },{
+        name: 'James'
+    },{
+        name: 'Sylvia'
+    },{
+        name: 'Maureen'
+    }]);
+
+    var usersPageSelectView = new UsersPageSelectView({
+        collection: someNames
+    });
+
+    usersPageSelectView.render();
+    document.getElementById('users-page-select').appendChild(usersPageSelectView.el);
+
+    //High scores
 
     var highScoresModel = new HighScoresModel();
     highScoresModel.fetch();
