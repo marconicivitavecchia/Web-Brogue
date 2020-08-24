@@ -14,20 +14,26 @@ define([
 
         currentGames : function(){
             router.navigate("currentGames");
-            $('#all-scores, #server-statistics').addClass('inactive');
+            $('#all-scores, #users-page, #server-statistics').addClass('inactive');
             $('#current-games, #mini-scores, #chat, #site-news').removeClass('inactive');
         },
 
         statistics : function(){
             router.navigate("gameStatistics");
-            $('#current-games, #mini-scores, #all-scores, #site-news').addClass('inactive');
+            $('#current-games, #mini-scores, #all-scores, #site-news, #users-page').addClass('inactive');
             $('#server-statistics').removeClass('inactive');
         },
 
         highScores : function() {
             router.navigate("highScores");
-            $('#current-games, #mini-scores, #server-statistics, #site-news').addClass('inactive');
+            $('#current-games, #mini-scores, #server-statistics, #site-news, #users-page').addClass('inactive');
             $('#all-scores, #chat').removeClass('inactive');
+        },
+
+        usersPage : function() {
+            router.navigate("usersPage");
+            $('#current-games, #mini-scores, #server-statistics, #site-news, #all-scores').addClass('inactive');
+            $('#users-page').removeClass('inactive');
         },
         
         selectTilesConsole : function(tilesConsole) {
@@ -61,7 +67,7 @@ define([
         },
         
         resetAll: function(){
-            $('#all-scores, #console-holder, #canvas-console-holder, #server-statistics').addClass("inactive");
+            $('#all-scores, #console-holder, #canvas-console-holder, #server-statistics, #users-page').addClass("inactive");
             $('#lobby, #auth, #current-games, #mini-scores').removeClass("inactive");
         }
     };

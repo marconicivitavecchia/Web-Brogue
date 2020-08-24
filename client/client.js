@@ -72,12 +72,13 @@ require([
     "views/cause-stats-view",
     "views/level-probability-view",
     "views/dpad-button-view",
-    "views/dpad-visibility-button-view"
+    "views/dpad-visibility-button-view",
+    "views/users-page-view"
 ], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, pageRouter,
      HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, AuthenticationModel, recordings,
      activate, AuthView, ChatView, ConsoleChatView, CanvasConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
      ConsoleView, CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
-     DPadButtonView, DPadButtonVisibilityView){
+     DPadButtonView, DPadButtonVisibilityView, UsersPageView){
     
     // initialize each model and view;
     var authView = new AuthView({model: new AuthenticationModel()});
@@ -90,6 +91,7 @@ require([
     var causeStatsView = new CauseStatsView({model: new CauseStatsModel()});
     var generalStatsView = new GeneralStatsView({model: new GeneralStatsModel()});
     var levelProbabilityView = new LevelProbabilityView({model: new LevelProbabilityModel()});
+    var usersPageView = new UsersPageView();
     var siteNewsView = new SiteNewsView({model: new SiteNewsModel() });
     var popups = {
         seedView : new SeedPopupView(),
@@ -184,6 +186,9 @@ require([
 
     dispatcher.on("all-scores", activate.highScores, activate);
     dispatcher.on("all-scores", allScoresView.activate, allScoresView);
+
+    dispatcher.on("users-page", activate.usersPage, activate);
+    //dispatcher.on("users-page", usersPageView.activate, usersPageView);
 
     dispatcher.on("currentGames", activate.currentGames, activate);
 

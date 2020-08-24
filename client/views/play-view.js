@@ -19,7 +19,8 @@ define([
             "click #play-brogue-list" : "playBrogueListClick",
             "click #show-current-games" : "showCurrentGames",
             "click #show-stats" : "showStats",
-            "click #show-high-scores" : "showHighScores"
+            "click #show-high-scores" : "showHighScores",
+            "click #show-users-page" : "showUsersPage"
         },
 
         loggedIn: false,
@@ -85,6 +86,10 @@ define([
         showHighScores: function(event) {
             event.preventDefault();
             dispatcher.trigger("all-scores");
+        },
+        showUsersPage: function(event) {
+            event.preventDefault();
+            dispatcher.trigger("users-page");
         },
         goToConsole : function(){
             dispatcher.trigger("showConsole");

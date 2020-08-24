@@ -52,7 +52,7 @@ describe("users", function(){
             .set('Accept', 'application/json')
             .end(function(err, res) {
                 var bodyObj = JSON.parse(res.text);
-                expect(bodyObj).to.deep.equal(["flend", "whitechapel", "dave"]);
+                expect(bodyObj).to.deep.equal(["dave", "flend", "whitechapel"]);
                 done();
             });
     });
