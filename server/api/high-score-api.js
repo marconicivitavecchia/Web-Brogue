@@ -1,6 +1,7 @@
 var mongoose = require('mongoose');
 var GameRecord = require("../database/game-record-model");
 var paginate = require("express-paginate");
+var sanitize = require('mongo-sanitize');
 var _ = require("underscore");
 var stats = require('../stats/stats.js');
 
@@ -137,7 +138,9 @@ module.exports = function(app, config) {
 
     app.get("/api/games/:username", function (req, res) {
 
-        var query = {username: req.params.username};
+        var query = {
+            username: sanitize(req.params.username)
+        };
 
         if(req.query.variant) {
             query['variant'] = req.query.variant;
@@ -184,7 +187,7 @@ module.exports = function(app, config) {
 
     app.get("/api/games/id/:id", function (req, res) {
 
-        GameRecord.paginate({_id: req.params.id}, {
+        GameRecord.paginate({_id: sanitize(req.params.id)}, {
             page: req.query.page,
             limit: req.query.limit,
             sortBy: sortFromQueryParams(req, '-date')

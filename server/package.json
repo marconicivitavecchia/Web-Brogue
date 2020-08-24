@@ -28,6 +28,7 @@
     "fs-extra": "^5.0.0",
     "mongoose": "^4.13.18",
     "mongoose-paginate": "^4.0.0",
+    "mongo-sanitize": "^1.1.0",
     "morgan": "^1.9.1",
     "socket.io": "^2.2.0",
     "underscore": "^1.8.2",

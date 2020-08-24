@@ -14,4 +14,6 @@ userSchema.methods.createHash = function (password) {
     return bCrypt.hashSync(password, bCrypt.genSaltSync(10));
 };
 
+userSchema.index({ username: "text" });
+
 module.exports = mongoose.model('User', userSchema);

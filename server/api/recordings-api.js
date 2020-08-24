@@ -2,6 +2,7 @@ var mongoose = require('mongoose');
 var GameRecord = require("../database/game-record-model");
 var paginate = require("express-paginate");
 var _ = require("underscore");
+var sanitize = require('mongo-sanitize');
 const fs = require('fs');
 var stats = require('../stats/stats.js');
 
@@ -9,7 +10,7 @@ module.exports = function(app, config) {
 
     app.get("/api/recordings/:id", function (req, res, next) {
 
-        var recordingId = req.params.id;
+        var recordingId = sanitize(req.params.id);
 
         GameRecord.findById(recordingId, function (err, gameRecord) {
 
