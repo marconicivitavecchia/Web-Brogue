@@ -49,6 +49,9 @@ define([
         },
         setVariantGeneralStats: function(variantCode) {
             this.url = 'api/stats/general?variant=' + variantCode;
+        },
+        setAllVariantGeneralStats: function(variantCode) {
+            this.url = 'api/stats/general';
         }
     });
 

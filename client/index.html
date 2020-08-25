@@ -294,9 +294,10 @@
 <script id="general-statistics-template" type="text/template">
     <h3>General Statistics</h3>
     <ul id="general-stats-by-level-list">
-            <%_.forEach(variants, function (i) {%>
+        <li><a id="general-stats-by-level-variant-all" href="#deaths-probability-by-level-variant-all">Statistics for all games</a></li>    
+        <%_.forEach(variants, function (i) {%>
             <li><a id="general-stats-by-level-variant-<%=i.code%>" href="#deaths-probability-by-level-variant-<%=i.code%>">Statistics for (<%=i.display%>)</a></li>
-            <%})%>
+        <%})%>
     </ul>
     <ul>
         <li>Total games played: <%= stats.totalGames %> (easy mode: <%= stats.totalEasyModeGames %>)</li>

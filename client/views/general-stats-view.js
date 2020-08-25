@@ -60,10 +60,15 @@ define([
 
             var code = event.target.id.substring(codeAfterHyphenIndex + 1);
 
+            if(code === 'all') {
+                this.model.setAllVariantGeneralStats(code);
+            }
+
             if(code in variantLookup.variants) {
                 this.model.setVariantGeneralStats(code);
-                this.model.fetch();
             }
+
+            this.model.fetch();
         }
     });
 
