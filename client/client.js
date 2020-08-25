@@ -52,6 +52,7 @@ require([
     "models/level-probability-model",
     "models/dpad-button",
     "models/auth",
+    "models/user-details",
     "services/recordings",
     "views/view-activation-helpers",
     "views/auth-view",
@@ -77,7 +78,7 @@ require([
     "views/users-page-view",
     "views/users-page-select-view"
 ], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, pageRouter,
-     HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, AuthenticationModel, recordings,
+     HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, AuthenticationModel, UserDetailsCollection, recordings,
      activate, AuthView, ChatView, ConsoleChatView, CanvasConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
      ConsoleView, CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
      DPadButtonView, DPadButtonVisibilityView, UsersPageView, UsersPageSelectView){
@@ -101,23 +102,10 @@ require([
     //Users page
 
     var usersPageView = new UsersPageView();
-    
-    var someNames = new Backbone.Collection([{
-        name: 'Bob'
-    },{
-        name: 'Harry'
-    },{
-        name: 'Alfred'
-    },{
-        name: 'James'
-    },{
-        name: 'Sylvia'
-    },{
-        name: 'Maureen'
-    }]);
-
     var usersPageSelectView = new UsersPageSelectView({
-        collection: someNames
+        searchField: 'username',
+        collection: new UserDetailsCollection(),
+        minimumInputLength: 2
     });
 
     usersPageSelectView.render();
@@ -216,7 +204,7 @@ require([
     dispatcher.on("all-scores", allScoresView.activate, allScoresView);
 
     dispatcher.on("users-page", activate.usersPage, activate);
-    //dispatcher.on("users-page", usersPageView.activate, usersPageView);
+    dispatcher.on("users-page", usersPageSelectView.initialise, usersPageSelectView);
 
     dispatcher.on("currentGames", activate.currentGames, activate);
 

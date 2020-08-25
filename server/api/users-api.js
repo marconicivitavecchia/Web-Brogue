@@ -11,7 +11,9 @@ module.exports = function(app, config) {
 
             res.format({
                 json: function () {
-                    const allUsers = _.map(users, function(user) { return user.username; });
+                    const allUsers = _.map(users, function(user) {
+                        return _.pick(user, 'username');
+                    });
                     res.json(allUsers);
                 }
             });
