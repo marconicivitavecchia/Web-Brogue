@@ -180,8 +180,8 @@ module.exports = function(app, config) {
         if(req.query.variant) {
             variant = sanitize(req.query.variant);
         }
-        if(req.query.user) {
-            user = sanitize(req.query.user);
+        if(req.query.username) {
+            user = sanitize(req.query.username);
         }
 
         res.format({

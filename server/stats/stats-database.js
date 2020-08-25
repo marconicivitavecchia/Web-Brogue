@@ -5,22 +5,17 @@ var brogueConstants = require('../brogue/brogue-constants.js');
 
 module.exports = {
 
-    generateCalculateGeneralStatsQuery: function(variant, user) {
-        if(user) {
-            return { variant: variant, user: user};
+    generateCalculateGeneralStatsQuery: function(variant, username) {
+        if(username) {
+            return { variant: variant, username: username};
         }
         else 
             return { variant: variant };
     },
 
-    calculateGeneralStats: function(res, variant, user) {
+    calculateGeneralStats: function(res, variant, username) {
     
-        if (!variant) {
-            res.json({});
-            return;
-        }
-        
-        const query = this.generateCalculateGeneralStatsQuery(variant, user);
+        const query = this.generateCalculateGeneralStatsQuery(variant, username);
         
         GameRecord.find(query).lean().exec(function (err, games) {
 
