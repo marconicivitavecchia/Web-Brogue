@@ -67,21 +67,6 @@ module.exports = {
         return allDeathGamesWithCause;
     },
 
-    filterForValidGames: function (games, variant) {
-
-        var filteredOnValidLevel = _.filter(games, function(game) {
-            if(variant !== game.variant) {
-                return false;
-            }
-            if(!(game.level || game.level === 0)) {
-                return false;
-            };
-            return true;
-        });
-
-        return filteredOnValidLevel;
-    },
-
     doesVariantSupportRecordingDownloads: function (config, variant) {
         return config.brogueVariants[variant] && config.brogueVariants[variant].supportsDownloads;
     }

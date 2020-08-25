@@ -24,10 +24,9 @@ module.exports = function(app, config) {
 
         res.format({
             json: function () {
-                GameRecord.find({}).lean().exec(function (err, games) {
+                GameRecord.find({variant: variant}).lean().exec(function (err, games) {
 
-                    var filteredGames = stats.filterForValidGames(games, variant);
-                    var allNormalModeGames = _.filter(filteredGames, function(game) { return game.easyMode != true; });
+                    var allNormalModeGames = _.filter(games, function(game) { return game.easyMode != true; });
 
                     var allDeathGamesWithCause = stats.deathGamesWithCauses(allNormalModeGames);
 
@@ -74,10 +73,9 @@ module.exports = function(app, config) {
 
         res.format({
             json: function () {
-                GameRecord.find({}).lean().exec(function (err, games) {
+                GameRecord.find({variant: variant}).lean().exec(function (err, games) {
 
-                    var filteredGames = stats.filterForValidGames(games, variant);
-                    var allNormalModeGames = _.filter(filteredGames, function(game) { return game.easyMode != true; });
+                    var allNormalModeGames = _.filter(games, function(game) { return game.easyMode != true; });
 
                     var allDeathGamesWithCause = stats.deathGamesWithCauses(allNormalModeGames);
 
@@ -107,15 +105,13 @@ module.exports = function(app, config) {
 
         res.format({
             json: function () {
-                GameRecord.find({}).lean().exec(function (err, games) {
+                GameRecord.find({variant: variant}).lean().exec(function (err, games) {
 
                     //To calculate the difficulty, we work out the conditional probability of dying on each level
                     //Quits are excluded
                     //Victories are excluded from the deaths, but included in the total number of games to normalise the probability
 
-                    var filteredGames = stats.filterForValidGames(games, variant);
-
-                    var allNormalModeGames = _.filter(filteredGames, function(game) { return game.easyMode != true; });
+                    var allNormalModeGames = _.filter(games, function(game) { return game.easyMode != true; });
                     var allNormalModeGamesExcludingQuits = _.reject(allNormalModeGames, function(game) { return game.result == brogueConstants.notifyEvents.GAMEOVER_QUIT });
                     var allNormalModeGamesExcludingQuitsAndVictories = _.reject(allNormalModeGamesExcludingQuits,
                         function(game) { return game.result == brogueConstants.notifyEvents.GAMEOVER_VICTORY || game.result == brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY });
