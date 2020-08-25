@@ -21,7 +21,8 @@ describe("stats/general", function(){
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
-            recording: "file1"
+            recording: "file1",
+            variant: "BROGUE"
         };
 
         var gameRecord2 = {
@@ -33,7 +34,8 @@ describe("stats/general", function(){
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
-            recording: "file2"
+            recording: "file2",
+            variant: "BROGUE"
         };
 
         var gameRecord3 = {
@@ -45,7 +47,8 @@ describe("stats/general", function(){
             result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
             easyMode: false,
             description: "Escaped the Dungeons of Doom with 3 lumenstones!",
-            recording: "file3"
+            recording: "file3",
+            variant: "BROGUE"
         };
 
         var gameRecord4 = {
@@ -57,7 +60,8 @@ describe("stats/general", function(){
             result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
             easyMode: false,
             description: "Escaped the Dungeons of Doom!",
-            recording: "file4"
+            recording: "file4",
+            variant: "BROGUE"
         };
 
         gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4], function() {
@@ -500,7 +504,8 @@ describe("stats/levels/monsters", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
-            recording: "file1"
+            recording: "file1",
+            variant: "BROGUE"
         };
 
         var gameRecord2 = {
@@ -512,7 +517,8 @@ describe("stats/levels/monsters", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
-            recording: "file2"
+            recording: "file2",
+            variant: "BROGUE"
         };
 
         var gameRecord3 = {
@@ -524,7 +530,8 @@ describe("stats/levels/monsters", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a rat on depth 1.",
-            recording: "file3"
+            recording: "file3",
+            variant: "BROGUE"
         };
 
         var gameRecord4 = {
@@ -536,7 +543,8 @@ describe("stats/levels/monsters", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a rat on depth 1.",
-            recording: "file4"
+            recording: "file4",
+            variant: "BROGUE"
         };
 
         var gameRecord5 = {
@@ -548,7 +556,8 @@ describe("stats/levels/monsters", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a jackal on depth 1.",
-            recording: "file5"
+            recording: "file5",
+            variant: "BROGUE"
         };
 
         gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4, gameRecord5], function () {
@@ -661,7 +670,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
-            recording: "file1"
+            recording: "file1",
+            variant: "BROGUE"
         };
 
         var gameRecord2 = {
@@ -673,7 +683,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
-            recording: "file2"
+            recording: "file2",
+            variant: "BROGUE"
         };
 
         var gameRecord3 = {
@@ -685,7 +696,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a rat on depth 1.",
-            recording: "file3"
+            recording: "file3",
+            variant: "BROGUE"
         };
 
         var gameRecord4 = {
@@ -697,7 +709,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a rat on depth 1.",
-            recording: "file4"
+            recording: "file4",
+            variant: "BROGUE"
         };
 
         var gameRecord5 = {
@@ -709,7 +722,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a jackal on depth 2.",
-            recording: "file5"
+            recording: "file5",
+            variant: "BROGUE"
         };
 
         var gameRecord6 = {
@@ -721,7 +735,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a hamster on depth 2.",
-            recording: "file6"
+            recording: "file6",
+            variant: "BROGUE"
         };
 
         var gameRecord7 = {
@@ -733,7 +748,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 2.",
-            recording: "file7"
+            recording: "file7",
+            variant: "BROGUE"
         };
 
         var gameRecord8 = {
@@ -745,7 +761,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 3.",
-            recording: "file8"
+            recording: "file8",
+            variant: "BROGUE"
         };
 
         var gameRecord9 = {
@@ -757,7 +774,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
             easyMode: false,
             description: "Escaped the Dungeons of Doom.",
-            recording: "file9"
+            recording: "file9",
+            variant: "BROGUE"
         };
 
         var gameRecord10 = {
@@ -769,7 +787,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
             easyMode: false,
             description: "Mastered the Dungeons of Doom.",
-            recording: "file10"
+            recording: "file10",
+            variant: "BROGUE"
         };
 
         var gameRecord11 = {
@@ -781,7 +800,8 @@ describe("stats/levelProbabilities", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_QUIT,
             easyMode: false,
             description: "Quit on level 1.",
-            recording: "file11"
+            recording: "file11",
+            variant: "BROGUE"
         };
 
         gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4, gameRecord5, gameRecord6, gameRecord7, gameRecord8, gameRecord9, gameRecord10, gameRecord11], function () {
@@ -858,7 +878,8 @@ describe("stats/levels", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
-            recording: "file1"
+            recording: "file1",
+            variant: "BROGUE"
         };
 
         var gameRecord2 = {
@@ -870,7 +891,8 @@ describe("stats/levels", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
-            recording: "file2"
+            recording: "file2",
+            variant: "BROGUE"
         };
 
         var gameRecord3 = {
@@ -882,7 +904,8 @@ describe("stats/levels", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a rat on depth 1.",
-            recording: "file3"
+            recording: "file3",
+            variant: "BROGUE"
         };
 
         var gameRecord4 = {
@@ -894,7 +917,8 @@ describe("stats/levels", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a rat on depth 1.",
-            recording: "file4"
+            recording: "file4",
+            variant: "BROGUE"
         };
 
         var gameRecord5 = {
@@ -906,7 +930,8 @@ describe("stats/levels", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a jackal on depth 2.",
-            recording: "file5"
+            recording: "file5",
+            variant: "BROGUE"
         };
 
         var gameRecord6 = {
@@ -918,7 +943,8 @@ describe("stats/levels", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a hamster on depth 2.",
-            recording: "file6"
+            recording: "file6",
+            variant: "BROGUE"
         };
 
         var gameRecord7 = {
@@ -930,7 +956,8 @@ describe("stats/levels", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 2.",
-            recording: "file7"
+            recording: "file7",
+            variant: "BROGUE"
         };
 
         var gameRecord8 = {
@@ -942,7 +969,8 @@ describe("stats/levels", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: true,
             description: "Killed by a violent explosion on depth 20.",
-            recording: "file7"
+            recording: "file8",
+            variant: "BROGUE"
         };
 
         gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4, gameRecord5, gameRecord6, gameRecord7, gameRecord8], function () {

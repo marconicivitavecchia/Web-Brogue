@@ -18,7 +18,8 @@ describe("stats.filterForValidGames", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
-            recording: "file1"
+            recording: "file1",
+            variant: "BROGUE1"
         };
 
         var validGameRecord2 = {
@@ -30,12 +31,13 @@ describe("stats.filterForValidGames", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
-            recording: "file2"
+            recording: "file2",
+            variant: "BROGUE1"
         };
 
         var allValidGameRecords = [validGameRecord1, validGameRecord2];
 
-        var filteredGames = stats.filterForValidGames(allValidGameRecords, config.defaultBrogueVariant, config.defaultBrogueVariant);
+        var filteredGames = stats.filterForValidGames(allValidGameRecords, "BROGUE1");
 
         expect(filteredGames).to.deep.equal(allValidGameRecords);
     });
@@ -70,43 +72,9 @@ describe("stats.filterForValidGames", function() {
 
         var allValidGameRecords = [validGameRecord1, validGameRecord2];
 
-        var filteredGames = stats.filterForValidGames(allValidGameRecords, "BROGUE2", config.defaultBrogueVariant);
+        var filteredGames = stats.filterForValidGames(allValidGameRecords, "BROGUE2");
 
         expect(filteredGames).to.deep.equal([validGameRecord2]);
-    });
-
-    it("treats games with no variant as being of variant config.defaultBrogueVariant", function () {
-
-        var validGameRecord1 = {
-            username: "flend",
-            date: new Date("2011-05-26T07:56:00.123Z"),
-            score: 100,
-            seed: 200,
-            level: 3,
-            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
-            easyMode: false,
-            description: "Killed by a pink jelly on depth 3.",
-            recording: "file1"
-        };
-
-        var validGameRecord2 = {
-            username: "flend",
-            date: new Date("2011-06-26T07:56:00.123Z"),
-            score: 150,
-            seed: 250,
-            level: 5,
-            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
-            easyMode: false,
-            description: "Killed by a violent explosion on depth 5.",
-            recording: "file2",
-            variant: "BROGUE2"
-        };
-
-        var allValidGameRecords = [validGameRecord1, validGameRecord2];
-
-        var filteredGames = stats.filterForValidGames(allValidGameRecords, config.defaultBrogueVariant, config.defaultBrogueVariant);
-
-        expect(filteredGames).to.deep.equal([validGameRecord1]);
     });
 
     it("returns victories recorded with level 0", function () {
@@ -120,7 +88,8 @@ describe("stats.filterForValidGames", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
-            recording: "file1"
+            recording: "file1",
+            variant: "BROGUE1"
         };
 
         var validGameRecord2 = {
@@ -132,12 +101,13 @@ describe("stats.filterForValidGames", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
-            recording: "file2"
+            recording: "file2",
+            variant: "BROGUE1"
         };
 
         var allValidGameRecords = [validGameRecord1, validGameRecord2];
 
-        var filteredGames = stats.filterForValidGames(allValidGameRecords, config.defaultBrogueVariant, config.defaultBrogueVariant);
+        var filteredGames = stats.filterForValidGames(allValidGameRecords, "BROGUE1");
 
         expect(filteredGames).to.deep.equal(allValidGameRecords);
     });
@@ -153,7 +123,8 @@ describe("stats.filterForValidGames", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
-            recording: "file2"
+            recording: "file2",
+            variant: "BROGUE1"
         };
 
         var validGameRecord1 = {
@@ -165,12 +136,13 @@ describe("stats.filterForValidGames", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
-            recording: "file1"
+            recording: "file1",
+            variant: "BROGUE1"
         };
 
         var allGameRecords = [gameWithNullLevel, validGameRecord1];
 
-        var filteredGames = stats.filterForValidGames(allGameRecords, config.defaultBrogueVariant, config.defaultBrogueVariant);
+        var filteredGames = stats.filterForValidGames(allGameRecords, "BROGUE1");
 
         expect(filteredGames).to.deep.equal([ validGameRecord1 ]);
     });
@@ -185,7 +157,8 @@ describe("stats.filterForValidGames", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
-            recording: "file2"
+            recording: "file2",
+            variant: "BROGUE1"
         };
 
         var validGameRecord1 = {
@@ -197,12 +170,13 @@ describe("stats.filterForValidGames", function() {
             result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
-            recording: "file1"
+            recording: "file1",
+            variant: "BROGUE1"
         };
 
         var allGameRecords = [validGameRecord1, gameWithUndefinedLevel];
 
-        var filteredGames = stats.filterForValidGames(allGameRecords, config.defaultBrogueVariant, config.defaultBrogueVariant);
+        var filteredGames = stats.filterForValidGames(allGameRecords, "BROGUE1");
 
         expect(filteredGames).to.deep.equal([ validGameRecord1 ]);
     });

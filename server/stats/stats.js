@@ -67,16 +67,10 @@ module.exports = {
         return allDeathGamesWithCause;
     },
 
-    filterForValidGames: function (games, variant, defaultVariant) {
+    filterForValidGames: function (games, variant) {
 
         var filteredOnValidLevel = _.filter(games, function(game) {
-            //Support game records with no variant
-            if(!game.variant) {
-                if(variant !== defaultVariant) {
-                    return false;
-                }
-            }
-            else if(variant !== game.variant) {
+            if(variant !== game.variant) {
                 return false;
             }
             if(!(game.level || game.level === 0)) {
