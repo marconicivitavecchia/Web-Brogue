@@ -10,10 +10,10 @@ module.exports = function(app, config) {
     var sortFromQueryParams = function(req, defaultSort) {
         if (req.query.sort) {
             if (req.query.order && req.query.order === "desc") {
-                return "-" + req.query.sort;
+                return "-" + sanitize(req.query.sort);
             }
             else {
-                return req.query.sort;
+                return sanitize(req.query.sort);
             }
         }
         else {
@@ -52,12 +52,12 @@ module.exports = function(app, config) {
 
         var query = {};
         if(req.query.variant) {
-            query = { 'variant': req.query.variant };
+            query = { 'variant': sanitize(req.query.variant) };
         }
 
         if(req.query.previousdays) {
             var previousDays = new Date();
-            var dateOffset = (24*60*60*1000) * req.query.previousdays;
+            var dateOffset = (24*60*60*1000) * sanitize(req.query.previousdays);
             previousDays.setTime(new Date().getTime() - dateOffset);
 
             var startTime = previousDays;
@@ -68,8 +68,8 @@ module.exports = function(app, config) {
         }
 
         GameRecord.paginate(query, {
-            page: req.query.page,
-            limit: req.query.limit,
+            page: sanitize(req.query.page),
+            limit: sanitize(req.query.limit),
             sortBy: sortFromQueryParams(req, '-date')
         }, function (err, gameRecords, pageCount, itemCount) {
 
@@ -109,13 +109,13 @@ module.exports = function(app, config) {
         };
 
         if(req.query.variant) {
-            query['variant'] = req.query.variant;
+            query['variant'] = sanitize(req.query.variant);
         }
 
         GameRecord.paginate(
             query,
-            {   page: req.query.page,
-                limit: req.query.limit,
+            {   page: sanitize(req.query.page),
+                limit: sanitize(req.query.limit),
                 sortBy: sortFromQueryParams(req, '-score')
         }, function (err, gameRecords, pageCount, itemCount) {
 
@@ -143,16 +143,12 @@ module.exports = function(app, config) {
         };
 
         if(req.query.variant) {
-            query['variant'] = req.query.variant;
-        }
-
-        if(req.query.variant) {
-            query = { 'variant': req.query.variant };
+            query['variant'] = sanitize(req.query.variant);
         }
 
         if(req.query.previousdays) {
             var previousDays = new Date();
-            var dateOffset = (24*60*60*1000) * req.query.previousdays;
+            var dateOffset = (24*60*60*1000) * sanitize(req.query.previousdays);
             previousDays.setTime(new Date().getTime() - dateOffset);
 
             var startTime = previousDays;
@@ -163,8 +159,8 @@ module.exports = function(app, config) {
         }
 
         GameRecord.paginate(query, {
-            page: req.query.page,
-            limit: req.query.limit,
+            page: sanitize(req.query.page),
+            limit: sanitize(req.query.limit),
             sortBy: sortFromQueryParams(req, '-date')
         }, function (err, gameRecords, pageCount, itemCount) {
 
@@ -188,8 +184,8 @@ module.exports = function(app, config) {
     app.get("/api/games/id/:id", function (req, res) {
 
         GameRecord.paginate({_id: sanitize(req.params.id)}, {
-            page: req.query.page,
-            limit: req.query.limit,
+            page: sanitize(req.query.page),
+            limit: sanitize(req.query.limit),
             sortBy: sortFromQueryParams(req, '-date')
         }, function (err, gameRecords, pageCount, itemCount) {
 

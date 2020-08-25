@@ -1,5 +1,6 @@
 var NewsRecord = require("../database/news-model");
 var paginate = require("express-paginate");
+var sanitize = require('mongo-sanitize');
 var _ = require("underscore");
 
 module.exports = function(app) {
@@ -7,10 +8,10 @@ module.exports = function(app) {
     var sortFromQueryParams = function (req, defaultSort) {
         if (req.query.sort) {
             if (req.query.order && req.query.order === "desc") {
-                return "-" + req.query.sort;
+                return "-" + sanitize(req.query.sort);
             }
             else {
-                return req.query.sort;
+                return sanitize(req.query.sort);
             }
         }
         else {
@@ -42,8 +43,8 @@ module.exports = function(app) {
 
     app.get("/api/news", function (req, res) {
         NewsRecord.paginate({}, {
-            page: req.query.page,
-            limit: req.query.limit,
+            page: sanitize(req.query.page),
+            limit: sanitize(req.query.limit),
             sortBy: sortFromQueryParams(req, '-date')
         }, function (err, newsRecords, pageCount, itemCount) {
 

@@ -3,6 +3,7 @@ var GameRecord = require("../database/game-record-model");
 
 var brogueConstants = require('../brogue/brogue-constants.js');
 var stats = require('../stats/stats.js');
+var sanitize = require('mongo-sanitize');
 var _ = require("underscore");
 
 module.exports = function(app, config) {
@@ -12,12 +13,12 @@ module.exports = function(app, config) {
         var maxCausesPerLevel = Number.MAX_SAFE_INTEGER;
 
         if(req.query.maxCauses) {
-            maxCausesPerLevel = req.query.maxCauses;
+            maxCausesPerLevel = sanitize(req.query.maxCauses);
         }
 
         var variant = config.defaultBrogueVariant;
         if(req.query.variant) {
-            variant = req.query.variant;
+            variant = sanitize(req.query.variant);
         }
 
         res.format({
@@ -67,7 +68,7 @@ module.exports = function(app, config) {
 
         var variant = config.defaultBrogueVariant;
         if(req.query.variant) {
-            variant = req.query.variant;
+            variant = sanitize(req.query.variant);
         }
 
         res.format({
@@ -100,7 +101,7 @@ module.exports = function(app, config) {
 
         var variant = config.defaultBrogueVariant;
         if(req.query.variant) {
-            variant = req.query.variant;
+            variant = sanitize(req.query.variant);
         }
 
         res.format({
@@ -175,7 +176,7 @@ module.exports = function(app, config) {
 
         var variant = config.defaultBrogueVariant;
         if(req.query.variant) {
-            variant = req.query.variant;
+            variant = sanitize(req.query.variant);
         }
 
         res.format({
