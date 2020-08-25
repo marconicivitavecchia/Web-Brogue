@@ -6,11 +6,17 @@ var brogueConstants = require('../brogue/brogue-constants.js');
 module.exports = {
 
     generateCalculateGeneralStatsQuery: function(variant, username) {
-        if(username) {
+        if (username && variant) {
             return { variant: variant, username: username};
         }
-        else 
+        else if (username) {
+            return { username: username };
+        }
+        else if (variant) {
             return { variant: variant };
+        }
+        else 
+            return { };
     },
 
     calculateGeneralStats: function(res, variant, username) {
@@ -19,10 +25,8 @@ module.exports = {
         
         GameRecord.find(query).lean().exec(function (err, games) {
 
-            var filteredGames = stats.filterForValidGames(games, variant);
-
-            var allEasyModeGames = _.where(filteredGames, {easyMode: true});
-            var allNormalModeGames = _.filter(filteredGames, function(game) { return game.easyMode != true; });
+            var allEasyModeGames = _.where(games, {easyMode: true});
+            var allNormalModeGames = _.filter(games, function(game) { return game.easyMode != true; });
 
             var allEasyModeVictories = _.where(allEasyModeGames, {result: brogueConstants.notifyEvents.GAMEOVER_VICTORY});
             var allEasyModeQuits = _.where(allEasyModeGames, {result: brogueConstants.notifyEvents.GAMEOVER_QUIT});
@@ -50,7 +54,7 @@ module.exports = {
 
             var totalLumenstones = _.reduce(totalLumenstonesPerGame, function(memo, num){ return memo + num; }, 0);
 
-            var totalLevelsPerGame = _.map(filteredGames, function (game) { return parseInt(game.level) || 0 });
+            var totalLevelsPerGame = _.map(games, function (game) { return parseInt(game.level) || 0 });
             var totalLevels = _.reduce(totalLevelsPerGame, function(memo, num){ return memo + num; }, 0);
 
             var allVictories = allNormalModeVictories.concat(allNormalModeSuperVictories);
@@ -104,7 +108,7 @@ module.exports = {
             
             var statsSummary = {};
 
-            statsSummary.totalGames = filteredGames.length;
+            statsSummary.totalGames = games.length;
 
             statsSummary.totalEasyModeGames = allEasyModeGames.length;
             statsSummary.totalNormalModeGames = allNormalModeGames.length;

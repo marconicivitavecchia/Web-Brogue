@@ -35,7 +35,7 @@ describe("stats/general", function(){
             easyMode: false,
             description: "Killed by a violent explosion on depth 5.",
             recording: "file2",
-            variant: "BROGUE"
+            variant: "GBROGUE"
         };
 
         var gameRecord3 = {
@@ -48,7 +48,7 @@ describe("stats/general", function(){
             easyMode: false,
             description: "Escaped the Dungeons of Doom with 3 lumenstones!",
             recording: "file3",
-            variant: "BROGUE"
+            variant: "GBROGUE"
         };
 
         var gameRecord4 = {
@@ -84,7 +84,7 @@ describe("stats/general", function(){
           .expect(200, done)
     });
 
-    it("totalGames is calculated correctly", function(done) {
+    it("totalGames is calculated correctly over all variants", function(done) {
         request(server)
             .get("/api/stats/general")
             .set('Accept', 'application/json')
@@ -95,7 +95,7 @@ describe("stats/general", function(){
             });
     });
 
-    it("last victory is calculated from victories", function(done) {
+    it("last victory is calculated from victories over all variants", function(done) {
         request(server)
             .get("/api/stats/general")
             .set('Accept', 'application/json')

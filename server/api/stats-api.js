@@ -175,18 +175,9 @@ module.exports = function(app, config) {
 
     app.get("/api/stats/general", function (req, res) {
 
-        var variant = config.defaultBrogueVariant;
-        var user = undefined;
-        if(req.query.variant) {
-            variant = sanitize(req.query.variant);
-        }
-        if(req.query.username) {
-            user = sanitize(req.query.username);
-        }
-
         res.format({
             json: function () {
-                statsDatabase.calculateGeneralStats(res, variant, user);
+                statsDatabase.calculateGeneralStats(res, sanitize(req.query.variant), sanitize(req.query.username));
             }
         });
     });
