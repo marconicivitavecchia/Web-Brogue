@@ -105,7 +105,8 @@ require([
     var usersPageSelectView = new UsersPageSelectView({
         searchField: 'username',
         collection: new UserDetailsCollection(),
-        minimumInputLength: 2
+        minimumInputLength: 1,
+        maxOptions: 5
     });
 
     usersPageSelectView.render();

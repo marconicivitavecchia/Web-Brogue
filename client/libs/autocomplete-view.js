@@ -44,6 +44,7 @@ var ResultsView = Backbone.View.extend({
 		this.searchField = options.searchField;
 		this.collection = options.collection;
 		this.parentView = options.parentView;
+		this.maxOptions = options.maxOptions || Number.MAX_SAFE_INTEGER;
 		this.noResultsText = options.noResultsText || 'No results';
 		this.on('show', this.show, this);
 		this.on('hide', this.hide, this);
@@ -134,7 +135,8 @@ var ResultsView = Backbone.View.extend({
 		this.$el.empty();
 		var frag = document.createDocumentFragment();
 
-		this.collection.each(function(model) {
+		var clippedCollection = this.collection.first(this.maxOptions);
+		_.each(clippedCollection, function(model) {
 			var result = this._createItemView(model);
 			result.render();
 			frag.appendChild(result.el);
@@ -179,6 +181,7 @@ var AutocompleteView = Backbone.View.extend({
 
 		this.resultsView = new ResultsView({
 			searchField: this.searchField,
+			maxOptions: options.maxOptions,
 			parentView: this,
 			collection: this.resultsCollection
 		});
@@ -229,8 +232,8 @@ var AutocompleteView = Backbone.View.extend({
 	onHighlight: function(model) {
 		this.selectedModel = model;
 		var value = model.get(this.searchField);
-		this.setSearchValue(value);
-		this.$('input').val(value);
+		//this.setSearchValue(value);
+		//this.$('input').val(value);
 
 	},
 	setSearchValue: function(value) {

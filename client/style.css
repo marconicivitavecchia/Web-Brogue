@@ -88,7 +88,8 @@ button {
 .mini-scores,
 .site-news,
 .all-scores,
-.server-statistics {
+.server-statistics,
+.user-statistics {
     margin: 0 2.5%;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -165,6 +166,14 @@ button {
     text-align: left;
 }
 
+.ac-result {
+    font-size: 75%;
+}
+
+.highlight {
+    color: #add8e6;
+}
+
 @media screen and (min-width: 700px) {
     .banner {
         width: auto;
@@ -201,7 +210,8 @@ button {
         width: 90%;
     }
 
-    .server-statistics {
+    .server-statistics,
+    .user-statistics {
         margin: 0 2.5% 0 7.5%;
         padding-left: 400px;
     }

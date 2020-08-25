@@ -14,17 +14,10 @@ define([
             // the method is bound to the view, with current value of the user input available as `this.searchValue`
             var searchValue = this.searchValue.toLowerCase().trim(); 
     
-            console.log("searchValue: " + searchValue);
-
-            if (label.indexOf(searchValue) !== -1) {
-                return true;
-            } else {
-                return false;
-            }
+            return label.startsWith(searchValue);
         },
         initialise: function() {
             this.collection.fetch();
-            console.log("fetching collection")
         }
     })
 
