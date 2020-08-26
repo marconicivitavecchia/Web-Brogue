@@ -314,8 +314,14 @@
 <script id="users-page-template" type="text/template">
     <h2>Users</h2>
     <!--<input type="text" id="user-select" value="Type a user name..." />-->
-    Search for a user: <div id="users-page-select" class="users-page-select"></div>
+    <div>Search for a user:</div>
+    <div id="users-page-select" class="users-page-select"></div>
+    <div id="user-stats-selected-user" class="user-stats-selected-user"></div>
     <div id="general-statistics-user" class="general-statistics"></div>
+</script>
+
+<script id="user-stats-selected-template" type="text/template">
+    <div>Statistics for: <%= userName %></div>
 </script>
 
 <script id="seed-popup" type="text/template">

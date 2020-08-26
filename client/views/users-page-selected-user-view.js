@@ -5,10 +5,10 @@ define([
     "dispatcher"
 ], function ($, _, Backbone, dispatcher) {
 
-    var UsersPageView = Backbone.View.extend({
+    var UsersPageSelectedUserView = Backbone.View.extend({
 
-        el: '#users-page',
-        headingTemplate: _.template($('#users-page-template').html()),
+        el: '#user-stats-selected-user',
+        template: _.template($('#user-stats-selected-template').html()),
         userName: '',
 
         initialize: function() {
@@ -17,7 +17,7 @@ define([
 
         render: function() {
 
-            this.$el.html(this.headingTemplate({ userName: this.userName }));
+            this.$el.html(this.template({ userName: this.userName }));
             return this;
         },
 
@@ -31,12 +31,11 @@ define([
         },
 
         //Event handler
-        login: function(userName) {
-            dispatcher.trigger("userSelected", userName);
+        userSelected: function(userName) {
+            this.setSelectedUser(userName);
         }
     });
 
-    return UsersPageView;
+    return UsersPageSelectedUserView;
 
 });
-

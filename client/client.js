@@ -76,12 +76,13 @@ require([
     "views/dpad-button-view",
     "views/dpad-visibility-button-view",
     "views/users-page-view",
-    "views/users-page-select-view"
+    "views/users-page-select-view",
+    "views/users-page-selected-user-view"
 ], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, pageRouter,
      HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, AuthenticationModel, UserDetailsCollection, recordings,
      activate, AuthView, ChatView, ConsoleChatView, CanvasConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
      ConsoleView, CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
-     DPadButtonView, DPadButtonVisibilityView, UsersPageView, UsersPageSelectView){
+     DPadButtonView, DPadButtonVisibilityView, UsersPageView, UsersPageSelectView, UserPageSelectedUserView){
     
     // initialize each model and view;
     var authView = new AuthView({model: new AuthenticationModel()});
@@ -112,6 +113,7 @@ require([
     usersPageSelectView.render();
     document.getElementById('users-page-select').appendChild(usersPageSelectView.el);
 
+    var userPageSelectedUserView = new UserPageSelectedUserView();
     var generalStatsUserView = new GeneralStatsView({el: '#general-statistics-user', model: new GeneralStatsModel()});
 
     //High scores
@@ -186,6 +188,7 @@ require([
     dispatcher.on("login", playView.login, playView);
     dispatcher.on("login", currentGamesView.login, currentGamesView);
     dispatcher.on("login", pageRouter.login, router);
+    dispatcher.on("login", usersPageView.login, usersPageView);
 
     dispatcher.on("anon-login", headerView.anonymousLogin, headerView);
     dispatcher.on("anon-login", chatView.login, chatView);
@@ -209,6 +212,7 @@ require([
     dispatcher.on("users-page", activate.usersPage, activate);
     dispatcher.on("users-page", usersPageSelectView.initialise, usersPageSelectView);
     dispatcher.on("userSelected", generalStatsUserView.setUserStats, generalStatsUserView);
+    dispatcher.on("userSelected", userPageSelectedUserView.userSelected, userPageSelectedUserView);
 
     dispatcher.on("currentGames", activate.currentGames, activate);
 
