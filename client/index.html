@@ -318,10 +318,23 @@
     <div id="users-page-select" class="users-page-select"></div>
     <div id="user-stats-selected-user" class="user-stats-selected-user"></div>
     <div id="general-statistics-user" class="general-statistics"></div>
+    <div id="user-stats-scores" class="general-statistics"></div>
 </script>
 
 <script id="user-stats-selected-template" type="text/template">
     <div>Statistics for: <%= userName %></div>
+</script>
+
+<script id="user-stats-scores-heading" type="text/template">
+    <h2>High Scores</h2>
+    <ul id="user-stats-scores-options-list">
+        <li id="user-stats-scores-daily-list-item"><a id="user-stats-scores-daily" href="#user-stats-scores-daily">Daily Top Scores</a></li>
+        <%_.forEach(variants, function (i) {%>
+        <li><a id="user-stats-scores-variant-<%=i.code%>" href="#user-stats-scores-variant-<%=i.code%>">All-time Top Scores (<%=i.display%>)</a></li>
+        <%})%>
+    </ul>
+    <div id="user-stats-scores-grid" />
+    <div id="user-stats-scores-paginator" />
 </script>
 
 <script id="seed-popup" type="text/template">

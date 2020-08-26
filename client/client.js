@@ -77,12 +77,13 @@ require([
     "views/dpad-visibility-button-view",
     "views/users-page-view",
     "views/users-page-select-view",
-    "views/users-page-selected-user-view"
+    "views/users-page-selected-user-view",
+    "views/users-page-scores-view"
 ], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, pageRouter,
      HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, AuthenticationModel, UserDetailsCollection, recordings,
      activate, AuthView, ChatView, ConsoleChatView, CanvasConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
      ConsoleView, CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
-     DPadButtonView, DPadButtonVisibilityView, UsersPageView, UsersPageSelectView, UserPageSelectedUserView){
+     DPadButtonView, DPadButtonVisibilityView, UsersPageView, UsersPageSelectView, UserPageSelectedUserView, UsersPageScoresView){
     
     // initialize each model and view;
     var authView = new AuthView({model: new AuthenticationModel()});
@@ -115,6 +116,10 @@ require([
 
     var userPageSelectedUserView = new UserPageSelectedUserView();
     var generalStatsUserView = new GeneralStatsView({el: '#general-statistics-user', model: new GeneralStatsModel()});
+    var userPageScoresModel = new HighScoresModel();
+    userPageScoresModel.fetch();
+    setInterval(function() { userPageScoresModel.fetch(); }, 5 * 60 * 1000);
+    var usersPageScoresView = new UsersPageScoresView({model: userPageScoresModel});
 
     //High scores
 
@@ -213,6 +218,7 @@ require([
     dispatcher.on("users-page", usersPageSelectView.initialise, usersPageSelectView);
     dispatcher.on("userSelected", generalStatsUserView.setUserStats, generalStatsUserView);
     dispatcher.on("userSelected", userPageSelectedUserView.userSelected, userPageSelectedUserView);
+    dispatcher.on("userSelected", usersPageScoresView.userSelected, usersPageScoresView);
 
     dispatcher.on("currentGames", activate.currentGames, activate);
 
