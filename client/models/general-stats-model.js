@@ -47,11 +47,37 @@ define([
 
             return parsedData;
         },
+        setUserGeneralStats: function(username) {
+            this.useUser = true;
+            this.userCode = username;
+            this.setUrl();
+        },
+        setAllUserGeneralStats: function() {
+            this.useUser = false;
+            this.setUrl();
+        },
         setVariantGeneralStats: function(variantCode) {
-            this.url = 'api/stats/general?variant=' + variantCode;
+            this.useVariant = true;
+            this.variantCode = variantCode;
+            this.setUrl();
         },
         setAllVariantGeneralStats: function(variantCode) {
-            this.url = 'api/stats/general';
+            this.useVariant = false;
+            this.setUrl();
+        },
+        setUrl: function() {
+            if(this.useUser && this.useVariant) {
+                this.url = 'api/stats/general?variant=' + this.variantCode + '&username=' + this.userCode;
+            }
+            else if(this.useUser) {
+                this.url = 'api/stats/general?username=' + this.userCode;
+            }
+            else if(this.useVariant) {
+                this.url = 'api/stats/general?variant=' + this.variantCode;
+            }
+            else {
+                this.url = 'api/stats/general';
+            }
         }
     });
 

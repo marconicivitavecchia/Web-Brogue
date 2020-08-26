@@ -39,6 +39,11 @@ define([
             this.render();
         },
 
+        setUserStats: function(user) {
+            this.model.setUserGeneralStats(user);
+            this.model.fetch();
+        },
+
         setDefaultGeneralStats: function() {
             this.model.setVariantGeneralStats(_.findWhere(_.values(variantLookup.variants), {default: true}).code);
             this.model.fetch();
