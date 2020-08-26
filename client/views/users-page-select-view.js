@@ -2,12 +2,14 @@ define([
     "jquery",
     "underscore",
     "backbone",
-    "backboneAutocomplete"
-], function ($, _, Backbone, AutocompleteView) {
+    "backboneAutocomplete",
+    "dispatcher"
+], function ($, _, Backbone, AutocompleteView, dispatcher) {
 
     var UsersPageSelectView = AutocompleteView.extend({
         onSelect: function(model){
-            console.log("onselect: " + model.get("username")); 
+            console.log("onselect: " + model.get("username"));
+            dispatcher.trigger("userSelected", model.get("username"));
         },
         searchMethod: function(model) { // method passed to filter(..) on the collection
             var label = model.get('username').toLowerCase();

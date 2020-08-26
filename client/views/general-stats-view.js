@@ -7,7 +7,6 @@ define([
 
     var GeneralStatsView = Backbone.View.extend({
 
-        el: '#general-statistics',
         headingTemplate: _.template($('#general-statistics-template').html()),
 
         events: {
@@ -40,6 +39,7 @@ define([
         },
 
         setUserStats: function(user) {
+            console.log("setuserstats" + user);
             this.model.setUserGeneralStats(user);
             this.model.fetch();
         },

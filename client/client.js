@@ -92,7 +92,7 @@ require([
     var statisticsView = new StatisticsView();
     var levelStatsView = new LevelStatsView({model: new LevelStatsModel()});
     var causeStatsView = new CauseStatsView({model: new CauseStatsModel()});
-    var generalStatsView = new GeneralStatsView({model: new GeneralStatsModel()});
+    var generalStatsView = new GeneralStatsView({el: '#general-statistics', model: new GeneralStatsModel()});
     var levelProbabilityView = new LevelProbabilityView({model: new LevelProbabilityModel()});
     var siteNewsView = new SiteNewsView({model: new SiteNewsModel() });
     var popups = {
@@ -111,6 +111,8 @@ require([
 
     usersPageSelectView.render();
     document.getElementById('users-page-select').appendChild(usersPageSelectView.el);
+
+    var generalStatsUserView = new GeneralStatsView({el: '#general-statistics-user', model: new GeneralStatsModel()});
 
     //High scores
 
@@ -206,6 +208,7 @@ require([
 
     dispatcher.on("users-page", activate.usersPage, activate);
     dispatcher.on("users-page", usersPageSelectView.initialise, usersPageSelectView);
+    dispatcher.on("userSelected", generalStatsUserView.setUserStats, generalStatsUserView);
 
     dispatcher.on("currentGames", activate.currentGames, activate);
 
