@@ -108,9 +108,12 @@ define([
             this.model.fetch();
         },
 
+        //Event handler
         userSelected: function(userName) {
+            console.log("user_score_selected: " + userName)
             this.model.setUserName(userName);
-            this.render();
+            this.model.setVariantTopScores(_.findWhere(_.values(variantLookup.variants), {default: true}).code);
+            this.model.fetch();
         },
 
         setDefaultVariantScores: function() {

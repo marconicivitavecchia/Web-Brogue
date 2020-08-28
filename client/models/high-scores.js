@@ -70,7 +70,12 @@ define([
             this.state.sortKey = "date";
         },
         setAllTopScores: function() {
-            this.url = 'api/games';
+            if(this.username) {
+                this.url = 'api/games?username=' + this.username;
+            }
+            else {
+                this.url = 'api/games';
+            }
             this.state.sortKey = "score";
         },
         setUserTopScores: function() {
@@ -86,7 +91,12 @@ define([
             this.state.sortKey = "score";
         },
         setVariantTopScores: function(variantCode) {
-            this.url = 'api/games?variant=' + variantCode;
+            if(this.username) {
+                this.url = 'api/games?variant=' + variantCode + '&username=' + this.username;
+            }
+            else {
+                this.url = 'api/games?variant=' + variantCode;
+            }
             this.state.sortKey = "score";
         },
         setUserName: function(username) {

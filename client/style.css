@@ -88,6 +88,7 @@ button {
 .mini-scores,
 .site-news,
 .all-scores,
+.users-page,
 .server-statistics,
 .user-statistics {
     margin: 0 2.5%;
@@ -141,13 +142,15 @@ button {
 
 .current-games,
 .mini-scores,
-.all-scores {
+.all-scores,
+.users-page {
     width: 100%;
 }
 
 .current-games table,
 .mini-scores table,
-.all-scores table {
+.all-scores table,
+.users-page table {
     width: 100%;
 }
 
@@ -161,6 +164,8 @@ button {
 .mini-scores td,
 .all-scores th,
 .all-scores td,
+.users-page th,
+.users-page td,
 .server-statistics th,
 .server-statistics td {
     text-align: left;
@@ -203,7 +208,8 @@ button {
     .current-games,
     .mini-scores,
     .site-news,
-    .all-scores {
+    .all-scores,
+    .users-page {
         margin: 0 2.5% 0 7.5%;
         padding-left: 400px;
         /* accounts for margin */

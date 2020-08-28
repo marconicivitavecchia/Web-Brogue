@@ -50,10 +50,21 @@ module.exports = function(app, config) {
 
     app.get("/api/games", function (req, res) {
 
-        var query = {};
-        if(req.query.variant) {
-            query = { 'variant': sanitize(req.query.variant) };
+        var generateHighScoreStatsQuery = function(variant, username) {
+            if (username && variant) {
+                return { variant: variant, username: username};
+            }
+            else if (username) {
+                return { username: username };
+            }
+            else if (variant) {
+                return { variant: variant };
+            }
+            else 
+                return { };
         }
+
+        var query = generateHighScoreStatsQuery(sanitize(req.query.variant), sanitize(req.query.username));
 
         if(req.query.previousdays) {
             var previousDays = new Date();

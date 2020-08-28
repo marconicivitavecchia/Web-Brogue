@@ -204,6 +204,91 @@ describe("api/games filtering by variant", function(){
     });
 });
 
+describe("api/games filtering by variant and username", function(){
+
+    beforeEach(function(done) {
+
+        var gameRecord1 = {
+            username: "flend",
+            date: new Date("2012-05-26T07:56:00.123Z"),
+            score: 100,
+            seed: 200,
+            level: 3,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly on depth 3.",
+            recording: "file1",
+            variant: "GBROGUE"
+        };
+
+        var gameRecord2 = {
+            username: "ccc",
+            date: new Date("2011-05-27T07:56:00.123Z"),
+            score: 1003,
+            seed: 2002,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "BROGUE"
+        };
+
+        var gameRecord3 = {
+            username: "flend",
+            date: new Date("2011-05-28T07:56:00.123Z"),
+            score: 1004,
+            seed: 2004,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_QUIT,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file3",
+            variant: "BROGUE"
+        };
+
+        gameRecord.create([gameRecord1, gameRecord2, gameRecord3], function() {
+            done();
+        });
+    });
+
+    afterEach(function(done) {
+
+        gameRecord.remove({}, function() {
+            done();
+        });
+    });
+
+    it("filters games based on username only", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .query({ username: 'flend' })
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                expect(gameData).to.have.length.of(2);
+                expect(gameData[0]).to.have.deep.property('seed', 200);
+                expect(gameData[1]).to.have.deep.property('seed', 2004);
+                done();
+            });
+    });
+
+    it("filters games based on username and variant", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .query({ username: 'flend', variant: 'BROGUE' })
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                expect(gameData).to.have.length.of(1);
+                expect(gameData[0]).to.have.deep.property('seed', 2004);
+                done();
+            });
+    });
+});
+
 describe("api/games filtering by previousdays", function(){
 
     beforeEach(function(done) {
