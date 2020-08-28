@@ -31,7 +31,7 @@ define([
         },
 
         usersPage : function() {
-            router.navigate("usersPage");
+            router.navigate("userStatistics");
             $('#current-games, #mini-scores, #server-statistics, #site-news, #all-scores').addClass('inactive');
             $('#users-page').removeClass('inactive');
         },

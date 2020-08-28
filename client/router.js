@@ -11,6 +11,7 @@ define([
             "highScores":        "highScores",
             "currentGames":      "currentGames",
             "gameStatistics":    "gameStatistics",
+            "userStatistics":    "userStatistics",
             "viewRecording/:variant-:id(/:turn)": "viewRecording"
         },
 
@@ -24,6 +25,9 @@ define([
         },
         gameStatistics: function() {
             dispatcher.trigger("gameStatistics");
+        },
+        userStatistics: function() {
+            dispatcher.trigger("users-page");
         },
         viewRecording: function(variant, id, turn) {
 
