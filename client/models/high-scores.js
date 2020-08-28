@@ -60,42 +60,52 @@ define([
         setAllScores: function() {
             this.url = 'api/games';
             this.state.sortKey = "date";
+            this.scoresTypeSelected = "All scores";
         },
         setAllScoresForPreviousDays: function(days) {
             this.url = 'api/games?previousdays=' + days;
             this.state.sortKey = "date";
+            this.scoresTypeSelected = "Scores for " + days + "previous days.";
         },
         setUserScoresForPreviousDays: function(days) {
             this.url = 'api/games/' + this.username + '?previousdays=' + days;
             this.state.sortKey = "date";
+            this.scoresTypeSelected = "User " + this.username + " scores for " + days + "previous days.";
         },
         setAllTopScores: function() {
             if(this.username) {
                 this.url = 'api/games?username=' + this.username;
+                this.scoresTypeSelected = "User " + this.username + " all scores";
             }
             else {
                 this.url = 'api/games';
+                this.scoresTypeSelected = "All scores";
             }
             this.state.sortKey = "score";
         },
         setUserTopScores: function() {
             this.url = 'api/games/' + this.username;
             this.state.sortKey = "score";
+            this.scoresTypeSelected = "User " + this.username + " all scores";
         },
         setDailyTopScores: function() {
             this.url = 'api/dailygames';
             this.state.sortKey = "score";
+            this.scoresTypeSelected = "Daily scores";
         },
         setMonthlyTopScores: function() {
             this.url = 'api/monthlygames';
             this.state.sortKey = "score";
+            this.scoresTypeSelected = "Monthly scores";
         },
         setVariantTopScores: function(variantCode) {
             if(this.username) {
                 this.url = 'api/games?variant=' + variantCode + '&username=' + this.username;
+                this.scoresTypeSelected = "User " + this.username + " scores for " + this.lookupVariant(variantCode);
             }
             else {
                 this.url = 'api/games?variant=' + variantCode;
+                this.scoresTypeSelected = "Scores for " + this.lookupVariant(variantCode);
             }
             this.state.sortKey = "score";
         },
@@ -104,6 +114,9 @@ define([
         },
         clearUserName: function() {
             delete this.username;
+        },
+        getScoresTypeSelected: function() {
+            return this.scoresTypeSelected;
         }
     });
 

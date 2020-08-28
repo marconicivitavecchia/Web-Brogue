@@ -296,9 +296,10 @@
     <ul id="general-stats-by-level-list">
         <li><a id="general-stats-by-level-variant-all" href="#deaths-probability-by-level-variant-all">Statistics for all games</a></li>    
         <%_.forEach(variants, function (i) {%>
-            <li><a id="general-stats-by-level-variant-<%=i.code%>" href="#deaths-probability-by-level-variant-<%=i.code%>">Statistics for (<%=i.display%>)</a></li>
+            <li><a id="general-stats-by-level-variant-<%=i.code%>" href="#general-stats-by-level-variant-<%=i.code%>">Statistics for (<%=i.display%>)</a></li>
         <%})%>
     </ul>
+    <p>Variant: <%= stats.variantName %></p>
     <ul>
         <li>Total games played: <%= stats.totalGames %> (easy mode: <%= stats.totalEasyModeGames %>)</li>
         <li>Total victories: <%= stats.totalNormalModeVictories %></li>
@@ -333,6 +334,7 @@
         <li><a id="user-stats-scores-variant-<%=i.code%>" href="#user-stats-scores-variant-<%=i.code%>">All-time Top Scores (<%=i.display%>)</a></li>
         <%})%>
     </ul>
+    <p><%= scoresTypeSelected %></p>
     <div id="user-stats-scores-grid" />
     <div id="user-stats-scores-paginator" />
 </script>

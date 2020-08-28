@@ -2,8 +2,9 @@ define([
     'jquery',
     'underscore',
     'backbone',
-    'moment'
-], function($, _, Backbone, Moment) {
+    'moment',
+    'variantLookup'
+], function($, _, Backbone, Moment, VariantLookup) {
 
     var GeneralStatsModel = Backbone.Model.extend({
         url: '/api/stats/general',
@@ -19,7 +20,8 @@ define([
                 lastVictoryUser: '',
                 lastStreakDate: '',
                 lastStreakLength: '',
-                lastStreakUser: ''
+                lastStreakUser: '',
+                variantName: ''
             }
         },
         parse: function (data) {
@@ -59,10 +61,12 @@ define([
         setVariantGeneralStats: function(variantCode) {
             this.useVariant = true;
             this.variantCode = variantCode;
+            this.set("variantName", VariantLookup.variants[this.variantCode].display);
             this.setUrl();
         },
         setAllVariantGeneralStats: function(variantCode) {
             this.useVariant = false;
+            this.set("variantName", "All Variants");
             this.setUrl();
         },
         setUrl: function() {

@@ -39,7 +39,6 @@ define([
         },
 
         setUserStats: function(user) {
-            console.log("setuserstats" + user);
             this.model.setUserGeneralStats(user);
             this.model.fetch();
         },
