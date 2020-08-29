@@ -172,11 +172,11 @@ button {
 }
 
 .ac-result {
-    font-size: 75%;
+    font-size: 80%;
 }
 
 .highlight {
-    color: #add8e6;
+    color: #ff0000;
 }
 
 @media screen and (min-width: 700px) {
