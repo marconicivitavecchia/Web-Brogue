@@ -89,10 +89,12 @@ define([
         renderOptions: function() {
 
             var variantData = _.values(variantLookup.variants);
+            var scoresTypeSelected = this.model.getScoresTypeSelected();
 
             this.$el.html(this.headingTemplate(
                 {   username: this.model.username,
-                    variants: variantData}));
+                    variants: variantData,
+                    scoresTypeSelected: scoresTypeSelected }));
         },
 
         render: function() {
@@ -107,6 +109,7 @@ define([
 
         refresh: function() {
             this.model.fetch();
+            this.render();
         },
 
         login: function(userName) {
@@ -138,7 +141,7 @@ define([
             event.preventDefault();
 
             this.model.setUserTopScores();
-            this.model.fetch();
+            this.refresh();
         },
 
         selectDailyScores: function(event) {
@@ -146,7 +149,7 @@ define([
             event.preventDefault();
 
             this.model.setDailyTopScores();
-            this.model.fetch();
+            this.refresh();
         },
 
         selectAllScoresOptions: function(event) {
@@ -167,7 +170,7 @@ define([
 
             if(code in variantLookup.variants) {
                 this.model.setVariantTopScores(code);
-                this.model.fetch();
+                this.refresh();
             }
         }
     });

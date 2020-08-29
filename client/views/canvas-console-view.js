@@ -345,16 +345,20 @@ define([
                 var wrapperHeight = document.getElementById("canvas-console-wrapper").offsetHeight;
                 var maxFontSize = this.d.computeFontSize(wrapperWidth, wrapperHeight);
 
-                this.d.setOptions({
-                    fontSize: maxFontSize, 
-                });  
+                if(this.d) {
+                    this.d.setOptions({
+                        fontSize: maxFontSize, 
+                    });
+                }  
             }
             else {
                 var wrapperWidth = document.getElementById("canvas-console-wrapper").offsetWidth;
                 var wrapperHeight = document.getElementById("canvas-console-wrapper").offsetHeight;
 
                 //Abused to set the convas style width
-                this.d.computeFontSize(wrapperWidth, wrapperHeight);
+                if(this.d) {
+                    this.d.computeFontSize(wrapperWidth, wrapperHeight);
+                }
             }
         },
         

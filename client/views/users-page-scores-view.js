@@ -15,8 +15,7 @@ define([
         headingTemplate: _.template($('#user-stats-scores-heading').html()),
 
         events: {
-            "click #user-stats-scores-daily" : "selectDailyScores",
-            "click #user-stats-scores-options-list" : "selectAllScoresOptions"
+            "click #user-stats-scores-options-list" : "selectAllScoresForUserOptions"
         },
 
         initialize: function() {
@@ -113,27 +112,17 @@ define([
         //Event handler
         userSelected: function(userName) {
             this.model.setUserName(userName);
-            this.model.setVariantTopScores(_.findWhere(_.values(variantLookup.variants), {default: true}).code);
-            this.model.fetch();
-            this.render();
+            this.setDefaultVariantScores();
         },
 
         setDefaultVariantScores: function() {
-            this.model.setVariantTopScores(_.findWhere(_.values(variantLookup.variants), {default: true}).code);
+            var defaultVariantCode = _.findWhere(_.values(variantLookup.variants), {default: true}).code;
+            this.model.setVariantTopScores(defaultVariantCode, true);
             this.model.fetch();
             this.render();
         },
 
-        selectDailyScores: function(event) {
-
-            event.preventDefault();
-
-            this.model.setDailyTopScores();
-            this.model.fetch();
-            this.render();
-        },
-
-        selectAllScoresOptions: function(event) {
+        selectAllScoresForUserOptions: function(event) {
             
             event.preventDefault();
 
@@ -150,7 +139,7 @@ define([
             var code = event.target.id.substring(codeAfterHyphenIndex + 1);
 
             if(code in variantLookup.variants) {
-                this.model.setVariantTopScores(code);
+                this.model.setVariantTopScores(code, true);
                 this.model.fetch();
                 this.render();
             }
