@@ -72,8 +72,8 @@ define([
             this.state.sortKey = "date";
             this.scoresTypeSelected = "User " + this.username + " scores for " + days + "previous days.";
         },
-        setAllTopScores: function() {
-            if(this.username) {
+        setAllTopScores: function(filterByUser) {
+            if(filterByUser) {
                 this.url = 'api/games?username=' + this.username;
                 this.scoresTypeSelected = "User " + this.username + " all scores";
             }
@@ -98,8 +98,8 @@ define([
             this.state.sortKey = "score";
             this.scoresTypeSelected = "Monthly scores";
         },
-        setVariantTopScores: function(variantCode) {
-            if(this.username) {
+        setVariantTopScores: function(variantCode, filterByUser) {
+            if(filterByUser) {
                 this.url = 'api/games?variant=' + variantCode + '&username=' + this.username;
                 this.scoresTypeSelected = "User " + this.username + " scores for " + this.lookupVariant(variantCode);
             }
