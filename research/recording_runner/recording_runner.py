@@ -23,7 +23,7 @@ def run_recording(brogue_path, recording_path):
 
     try:
         output = subprocess.check_output(
-            [brogue_path, '--no-menu', '--no-restart', '-v', recording_path],
+            [brogue_path, '--null', '-v', recording_path],
             stderr=subprocess.STDOUT,
             timeout=5*3600)
 
@@ -55,12 +55,12 @@ def main():
             logging.StreamHandler()
         ])
 
-    recordings_by_size = get_recordings_by_size(args.game_data_path, largest_first=True)
+    recordings_by_size = get_recordings_by_size(args.game_data_path, largest_first=False)
     print("Number of recordings pre filter {}".format(len(recordings_by_size)))
     recordings_filtered = filter_recordings(recordings_by_size)
     print("Number of recordings post filter {}".format(len(recordings_filtered)))
 
-    os.environ["ASAN_SYMBOLIZER_PATH"] = "/usr/bin/llvm-symbolizer-3.5"
+    #os.environ["ASAN_SYMBOLIZER_PATH"] = "/usr/bin/llvm-symbolizer-3.5"
 
     recordingStep = 1
     recordings_to_play = recordings_filtered[0::recordingStep]
