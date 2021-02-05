@@ -13,7 +13,7 @@ define([
                 consoleColumns: 100,
                 consoleRows: 34,
                 remapGlyphs: true,
-                tiles: false,
+                tiles: true,
                 default: true
             },
             "BROGUECEV18": {
