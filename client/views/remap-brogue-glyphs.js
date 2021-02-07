@@ -128,6 +128,12 @@ define([
     const G_ASHES = 249;
     const G_BEDROLL = 250;
     const G_BLOODWORT_POD = 251;
+    const G_VINE = 252;
+    const G_NET = 253;
+    const G_LICHEN = 254;
+    const G_PIPES = 255;
+    const G_SAC_ALTAR = 256;
+    const G_ORB_ALTAR = 257;
 
     const U_MIDDLE_DOT = '\u00b7';
     const U_FOUR_DOTS = '\u2237';
@@ -288,6 +294,12 @@ define([
             case G_ASHES: return '\'';
             case G_BEDROLL: return '=';
             case G_BLOODWORT_POD: return '*';
+            case G_VINE: return ':';
+            case G_NET: return ':';
+            case G_LICHEN: return '"';
+            case G_PIPES: return '+';
+            case G_SAC_ALTAR: return '|';
+            case G_ORB_ALTAR: return '|';
         } 
         
         return String.fromCharCode(glyphCode);
