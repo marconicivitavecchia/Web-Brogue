@@ -17,6 +17,14 @@ Table Of Contents
 
 /* 0.1 Base Styles ------------------*/
 
+@font-face {
+    font-family: BrogueCE;
+    src:
+        url('./assets/BrogueCE.woff2') format('woff2'),
+        url('./assets/BrogueCE.woff') format('woff'),
+        url('./assets/BrogueCE.ttf') format('truetype');
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -310,9 +318,10 @@ button {
 }
 
 .console-cell {
+    font-family: BrogueCE;
     position : absolute;
     overflow: hidden;
-    text-align: center;
+    text-align: left;
     cursor: default;
 }
 

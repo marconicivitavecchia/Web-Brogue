@@ -24,7 +24,7 @@ define([
     var _consoleCellHeightPercent;
     var _consoleCellCharSizePx;
     var _consoleCellCharPaddingPx;
-    var _consoleCellAspectRatio = 0.53;  //TODO: we may eventually want this to be adjustable
+    var _consoleCellAspectRatio = 16/29;
 
     // See BrogueCode/rogue.h for all brogue event definitions
     var KEYPRESS_EVENT_CHAR = 0;
@@ -241,8 +241,8 @@ define([
             }
 
             // Cell Character Positioning
-            _consoleCellCharSizePx = cellPixelHeight * 3 / 5;
-            _consoleCellCharPaddingPx = cellPixelHeight / 10;
+            _consoleCellCharSizePx = cellPixelHeight;
+            _consoleCellCharPaddingPx = 0;
         },
         render: function() {
 
