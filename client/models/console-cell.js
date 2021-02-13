@@ -17,27 +17,12 @@ define([
             backgroundBlue: 0,
             x: 0,
             y: 0,
-            charSizePx : 10,
-            charPaddingPx : 2,
-            widthPercent: 1,
-            heightPercent: 2,
-            leftPositionPercent: 0,
-            topPositionPercent: 0,
-            topOffsetPercent : 0,
-            leftOffsetPercent: 0
+            consoleWidth: 800,
+            consoleHeight: 600,
+            consoleColumns: 100,
+            consoleRows: 34
         },
 
-        initialize: function() {
-           this.calculatePositionAttributes();
-        },
-        
-        calculatePositionAttributes : function(){
-            this.set({
-                leftPositionPercent : this.get("x") * this.get("widthPercent") + this.get("leftOffsetPercent"),
-                topPositionPercent : this.get("y") * this.get("heightPercent") + this.get("topOffsetPercent")
-            });
-        },
-        
         clear : function(){
             this.set({
                 char: "",
@@ -49,7 +34,7 @@ define([
                 backgroundBlue: 0
             });
         }
-      
+
     });
 
     return ConsoleCellModel;

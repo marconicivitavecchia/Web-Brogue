@@ -18,13 +18,6 @@ define([
     var _consoleCells = [];
     var _consoleWidth;
     var _consoleHeight;
-    var _consoleCellTopOffsetPercent;
-    var _consoleCellLeftOffsetPercent;
-    var _consoleCellWidthPercent;
-    var _consoleCellHeightPercent;
-    var _consoleCellCharSizePx;
-    var _consoleCellCharPaddingPx;
-    var _consoleCellAspectRatio = 16/29;
 
     // See BrogueCode/rogue.h for all brogue event definitions
     var KEYPRESS_EVENT_CHAR = 0;
@@ -89,15 +82,15 @@ define([
             }
         },
 
-        keyupHandler : function(event){            
-            
+        keyupHandler : function(event){
+
             event.preventDefault();
 
             //Acknowledge non-direction keys on keyup (no repeat)
             var eventKey = event.key;
             var ctrlKey = event.ctrlKey;
             var shiftKey = event.shiftKey;
-            
+
             var returnCode;
 
             //Ignore keyup of modifiers
@@ -169,7 +162,7 @@ define([
             this.variant = variantLookup.variants[variantCode];
 
             this.remapGlyphs = this.variant.remapGlyphs;
-            
+
             this.consoleColumns = this.variant.consoleColumns;
             this.consoleRows = this.variant.consoleRows;
             this.initializeConsoleCells();
@@ -188,12 +181,10 @@ define([
                     var cellModel = new CellModel({
                         x: i,
                         y: j,
-                        widthPercent: _consoleCellWidthPercent,
-                        heightPercent: _consoleCellHeightPercent,
-                        charSizePx: _consoleCellCharSizePx,
-                        charPaddingPx: _consoleCellCharPaddingPx,
-                        topOffsetPercent: _consoleCellTopOffsetPercent,
-                        leftOffsetPercent: _consoleCellLeftOffsetPercent
+                        consoleWidth: _consoleWidth,
+                        consoleHeight: _consoleHeight,
+                        consoleColumns: this.consoleColumns,
+                        consoleRows: this.consoleRows
                     });
 
                     var cellView = new ConsoleCellView({
@@ -206,45 +197,15 @@ define([
                 }
                 _consoleCells.push(column);
             }
-            
+
             this.$el.append(consoleCellsFragment);
         },
+
         calculateConsoleSize: function() {
             _consoleWidth = this.$el.width();
             _consoleHeight = this.$el.height();
         },
-        calculateConsoleCellSize: function() {
 
-            _consoleCellWidthPercent = 100 / this.consoleColumns;
-
-            // Cell Aspect Ratio
-            var cellPixelWidth = _consoleWidth * (_consoleCellWidthPercent / 100);
-            var cellPixelHeight = cellPixelWidth / _consoleCellAspectRatio;
-
-            //If this height will make the console go off screen, recalculate size and horizontally center instead
-            if (cellPixelHeight * this.consoleRows > _consoleHeight) {
-                cellPixelHeight = _consoleHeight / this.consoleRows;
-                cellPixelWidth = cellPixelHeight * _consoleCellAspectRatio;
-
-                _consoleCellHeightPercent = 100 / this.consoleRows;
-                _consoleCellWidthPercent = 100 * cellPixelWidth / _consoleWidth;
-                _consoleCellTopOffsetPercent = 0;
-
-                var leftOffSetPx = (_consoleWidth - cellPixelWidth * this.consoleColumns) / 2;
-                _consoleCellLeftOffsetPercent = leftOffSetPx / _consoleWidth * 100;
-            }
-            else {
-                // Vertically center the console
-                _consoleCellHeightPercent = 100 * cellPixelHeight / _consoleHeight;
-                _consoleCellLeftOffsetPercent = 0;
-                var topOffSetPx = (_consoleHeight - cellPixelHeight * this.consoleRows) / 2;
-                _consoleCellTopOffsetPercent = topOffSetPx / _consoleHeight * 100;
-            }
-
-            // Cell Character Positioning
-            _consoleCellCharSizePx = cellPixelHeight;
-            _consoleCellCharPaddingPx = 0;
-        },
         render: function() {
 
             for (var i = 0; i < this.consoleColumns; i++) {
@@ -256,29 +217,24 @@ define([
 
         resize: function() {
             this.calculateConsoleSize();
-            this.calculateConsoleCellSize();
             this.setNewConsoleCellSize();
         },
+
         setNewConsoleCellSize : function() {
 
             for (var i = 0; i < this.consoleColumns; i++) {
                 for (var j = 0; j < this.consoleRows; j++) {
                     _consoleCells[i][j].model.set({
-                        widthPercent: _consoleCellWidthPercent,
-                        heightPercent: _consoleCellHeightPercent,
-                        charSizePx: _consoleCellCharSizePx,
-                        charPaddingPx: _consoleCellCharPaddingPx,
-                        topOffsetPercent: _consoleCellTopOffsetPercent,
-                        leftOffsetPercent: _consoleCellLeftOffsetPercent
+                        consoleWidth: _consoleWidth,
+                        consoleHeight: _consoleHeight,
                     });
-                    _consoleCells[i][j].model.calculatePositionAttributes();
                     _consoleCells[i][j].applySize();
                 }
             }
         },
-        
+
         queueUpdateCellModelData : function(data){
-            
+
             if ($("#console-holder").hasClass("inactive")) {
                 return;
             }
@@ -325,7 +281,7 @@ define([
                 var charToDraw = String.fromCharCode(combinedUTF16Char);
                 if(this.remapGlyphs) {
                     charToDraw = remapBrogueGlyphs(combinedUTF16Char, this.graphics);
-                }     
+                }
 
                 _consoleCells[dataXCoord][dataYCoord].model.set({
                     char: charToDraw,
@@ -340,7 +296,7 @@ define([
                 _consoleCells[dataXCoord][dataYCoord].render();
             }
         },
-        
+
         clearConsole : function(){
             for (var i = 0; i < this.consoleColumns; i++) {
                 for (var j = 0; j < this.consoleRows; j++) {
@@ -349,7 +305,7 @@ define([
                 }
             }
         },
-        
+
         exitToLobby : function(message){
             activate.lobby();
             dispatcher.trigger("currentGames");
