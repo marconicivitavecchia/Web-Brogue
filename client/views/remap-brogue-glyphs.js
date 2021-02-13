@@ -157,7 +157,7 @@ define([
     const U_OMEGA = '\u0196';
     const U_LIGHTNING_BOLT = '\u0199';
 
-    var remapGlyphsToText = function(glyphCode) {
+    var remapGlyphsToText = function(glyphCode, graphics) {
 
         //Map between brogue glyphs and unicode if we are in font-rendering
         //or use directly (mapping in display) in tile-rendering mode
@@ -311,7 +311,14 @@ define([
         if (glyphCode >= 130) return String.fromCharCode(glyphCode + 126); // graphic tiles
     }
 
-    // TODO: may want to use one or the other with a checkbox. The "G: Enable Graphics" in-game toggle seems to have no effect.
-    //return remapGlyphsToText;
-    return remapGlyphsToGraphics;
+    var remapGlyphs = function(glyphCode, graphics) {
+        if (graphics) {
+            return remapGlyphsToGraphics(glyphCode);
+        }
+        else {
+            return remapGlyphsToText(glyphCode);
+        }
+    }
+
+    return remapGlyphs;
 });

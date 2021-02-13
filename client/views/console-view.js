@@ -155,6 +155,7 @@ define([
 
         initialize: function() {
             this.$el.addClass("full-height");
+            this.graphics = true;
         },
 
         initialiseForNewGame: function(data) {
@@ -289,7 +290,9 @@ define([
         },
 
         processServerMetadataUpdate : function (data) {
-
+            if('graphics' in data) {
+                this.graphics = !!data.graphics;
+            }
         },
 
         updateCellModelData: function (data) {
@@ -321,7 +324,7 @@ define([
 
                 var charToDraw = String.fromCharCode(combinedUTF16Char);
                 if(this.remapGlyphs) {
-                    charToDraw = remapBrogueGlyphs(combinedUTF16Char);
+                    charToDraw = remapBrogueGlyphs(combinedUTF16Char, this.graphics);
                 }     
 
                 _consoleCells[dataXCoord][dataYCoord].model.set({
