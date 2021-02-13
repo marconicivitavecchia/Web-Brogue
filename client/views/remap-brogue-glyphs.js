@@ -135,31 +135,29 @@ define([
     const G_SAC_ALTAR = 256;
     const G_ORB_ALTAR = 257;
 
-    const U_MIDDLE_DOT = '\u00b7';
-    const U_FOUR_DOTS = '\u2237';
-    const U_DIAMOND = '\u25c7';
-    const U_FLIPPED_V = '\u22CF';
-    const U_ESZETT = '\u00df';
-    const U_ANKH = '\u2640';
-    const U_MUSIC_NOTE = '\u266A';
-    const U_LIGHTNING_BOLT = '\u03DF';
-    const U_FILLED_CIRCLE = '\u25cf';
-    const U_NEUTER = '\u26b2';
+    const U_CURRENCY = '\u00a4';
     const U_U_ACUTE = '\u00da';
-    const U_CURRENCY = '\u00A4';
-    const U_UP_ARROW = '\u2191';
-    const U_DOWN_ARROW = '\u2193';
-    const U_LEFT_ARROW = '\u2190';
-    const U_RIGHT_ARROW = '\u2192';
-    const U_OMEGA = '\u03A9';
+    const U_ESZETT = '\u00df';
+    const U_MIDDLE_DOT = '\u0180';
+    const U_FOUR_DOTS = '\u0181';
+    const U_DIAMOND = '\u0182';
+    const U_FLIPPED_V = '\u0183';
+    const U_ARIES = '\u0184';
+    const U_ANKH = '\u0185';
+    const U_MUSIC_NOTE = '\u0186';
+    const U_CIRCLE = '\u0187';
+    const U_FILLED_CIRCLE = '\u0189';
+    const U_NEUTER = '\u018a';
+    const U_CIRCLE_BARS = '\u018c';
+    const U_FILLED_CIRCLE_BARS = '\u018d';
+    const U_UP_ARROW = '\u0190';
+    const U_DOWN_ARROW = '\u0191';
+    const U_LEFT_ARROW = '\u0192';
+    const U_RIGHT_ARROW = '\u0193';
+    const U_OMEGA = '\u0196';
+    const U_LIGHTNING_BOLT = '\u0199';
 
-    //Web-brogue specific mappings to avoid emojis and glyphs not in some fonts
-    const U_ARIES = '\u03C8';
-    const U_CIRCLE = 'o';
-    const U_CIRCLE_BARS = '\u25C6';
-    const U_FILLED_CIRCLE_BARS = '\u25C7';
-
-    var remapBrogueGlyphs = function(glyphCode) {
+    var remapGlyphsToText = function(glyphCode, graphics) {
 
         //Map between brogue glyphs and unicode if we are in font-rendering
         //or use directly (mapping in display) in tile-rendering mode
@@ -305,5 +303,22 @@ define([
         return String.fromCharCode(glyphCode);
     }
  
-    return remapBrogueGlyphs;
+    var remapGlyphsToGraphics = function(glyphCode) {
+        // Map Brogue glyphs to BrogueCE font
+        if (glyphCode <= 127) return String.fromCharCode(glyphCode);
+        if (glyphCode == 128) return '\u0190'; // Up arrow
+        if (glyphCode == 129) return '\u0191'; // Down arrow
+        if (glyphCode >= 130) return String.fromCharCode(glyphCode + 126); // graphic tiles
+    }
+
+    var remapGlyphs = function(glyphCode, graphics) {
+        if (graphics) {
+            return remapGlyphsToGraphics(glyphCode);
+        }
+        else {
+            return remapGlyphsToText(glyphCode);
+        }
+    }
+
+    return remapGlyphs;
 });

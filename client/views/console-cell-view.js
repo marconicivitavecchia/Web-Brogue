@@ -25,11 +25,11 @@ define([
             "click" : "handleClick",
             "mouseover" : "handleMouseover"
         },
-        
+
         initialize: function() {
             this.applySize();
         },
-        
+
         render: function() {
             var cellCharacter = this.model.get("char");
             var rgbForegroundString = "rgb(" +
@@ -46,36 +46,50 @@ define([
             this.el.style.backgroundColor = rgbBackgroundString;
             return this;
         },
-        
+
         applySize : function(){
-            this.el.style.width = this.model.get("widthPercent") + "%";
-            this.el.style.height = this.model.get("heightPercent") + "%";
-            this.el.style.left = this.model.get("leftPositionPercent") + "%";
-            this.el.style.top = this.model.get("topPositionPercent") + "%";
-            this.el.style.fontSize = this.model.get("charSizePx") + "px";
-            this.el.style.paddingTop = this.model.get("charPaddingPx") + "px";
+            var w = this.model.get("consoleWidth");
+            var h = this.model.get("consoleHeight");
+            var c = this.model.get("consoleColumns");
+            var r = this.model.get("consoleRows");
+            var x = this.model.get("x");
+            var y = this.model.get("y");
+            var ar = 16/29; // cell aspect ratio
+
+            // Characters line up better when height is an integer
+            var cellHeight = Math.floor(Math.min(h / r, w / (c * ar)));
+            var cellWidth = Math.round(cellHeight * ar * 4) / 4;
+            var leftPadding = Math.floor(0.5 * (w - cellWidth * c));
+            var topPadding = Math.floor(0.5 * (h - cellHeight * r));
+
+            this.el.style.top = (y * cellHeight + topPadding) + "px";
+            this.el.style.left = (x * cellWidth + leftPadding) + "px";
+            this.el.style.width = cellWidth + "px";
+            this.el.style.height = cellHeight + "px";
+            this.el.style.fontSize = cellHeight + "px";
+            this.el.style.lineHeight = cellHeight + "px";
         },
-        
+
         handleClick : function(event){
-            
+
             event.preventDefault();
-           
+
             sendMouseEvent(
-                MOUSE_DOWN_EVENT_CHAR, 
-                this.model.get("x"), 
-                this.model.get("y"), 
-                event.ctrlKey, 
+                MOUSE_DOWN_EVENT_CHAR,
+                this.model.get("x"),
+                this.model.get("y"),
+                event.ctrlKey,
                 event.shiftKey
             );
             sendMouseEvent(
-                MOUSE_UP_EVENT_CHAR, 
-                this.model.get("x"), 
-                this.model.get("y"), 
-                event.ctrlKey, 
+                MOUSE_UP_EVENT_CHAR,
+                this.model.get("x"),
+                this.model.get("y"),
+                event.ctrlKey,
                 event.shiftKey
             );
         },
-        
+
         handleMouseover : function(event){
 
             event.preventDefault();
