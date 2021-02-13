@@ -148,7 +148,7 @@ define([
 
         initialize: function() {
             this.$el.addClass("full-height");
-            this.graphics = true;
+            this.graphics = false;
         },
 
         initialiseForNewGame: function(data) {
