@@ -58,12 +58,7 @@ define([
 
             // Characters line up better when height is an integer
             var cellHeight = Math.floor(Math.min(h / r, w / (c * ar)));
-            var cellWidth = cellHeight * ar;
-            if (cellWidth < 1) {
-                cellWidth = 1;
-                cellHeight = 2;
-            }
-
+            var cellWidth = Math.round(cellHeight * ar * 4) / 4;
             var leftPadding = Math.floor(0.5 * (w - cellWidth * c));
             var topPadding = Math.floor(0.5 * (h - cellHeight * r));
 
@@ -71,7 +66,8 @@ define([
             this.el.style.left = (x * cellWidth + leftPadding) + "px";
             this.el.style.width = cellWidth + "px";
             this.el.style.height = cellHeight + "px";
-            this.el.style.fontSize = (cellHeight - 0.25) + "px"; // make font a tiny bit smaller to make sure the browser fits it correctly
+            this.el.style.fontSize = cellHeight + "px";
+            this.el.style.lineHeight = cellHeight + "px";
         },
 
         handleClick : function(event){
