@@ -320,7 +320,7 @@ button {
 .console-cell {
     font-family: BrogueCE;
     position : absolute;
-    overflow: hidden;
+    overflow: visible;
     text-align: left;
     cursor: default;
 }
