@@ -41,7 +41,7 @@ define([
                     this.model.get("backgroundGreen") + "," +
                     this.model.get("backgroundBlue") + ")";
 
-            this.el.innerHTML = cellCharacter;
+            this.el.textContent = cellCharacter;
             this.el.style.color = rgbForegroundString;
             this.el.style.backgroundColor = rgbBackgroundString;
             return this;
