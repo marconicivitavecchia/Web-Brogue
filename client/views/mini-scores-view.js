@@ -28,15 +28,21 @@ define([
                 columns: [
                     {
                         name: "username",
-                        label: "User name",
+                        label: "Player",
                         cell: "string",
-                        sortable: false,
+                        sortable: true,
                         editable: false
                     }, {
                         name: "prettyDate",
                         label: "Date",
                         cell: "string",
-                        sortable: false,
+                        sortable: true,
+                        editable: false
+                    }, {
+                        name: "seed",
+                        label: "Seed",
+                        cell: "string",
+                        sortable: true,
                         editable: false
                     }, {
                         name: "prettyVariant",
@@ -48,25 +54,19 @@ define([
                         name: "score",
                         label: "Score",
                         cell: "integer",
-                        sortable: false,
+                        sortable: true,
                         editable: false
                     }, {
                         name: "level",
                         label: "Level",
                         cell: TableCells.levelCell,
-                        sortable: false,
-                        editable: false
-                    }, {
-                        name: "seed",
-                        label: "Seed",
-                        cell: "string",
-                        sortable: false,
+                        sortable: true,
                         editable: false
                     }, {
                         name: "description",
-                        label: "Message",
+                        label: "Result",
                         cell: "string",
-                        sortable: false,
+                        sortable: true,
                         editable: false
                     }, {
                         name: "recording",

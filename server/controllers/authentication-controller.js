@@ -47,7 +47,7 @@ _.extend(AuthController.prototype, {
                         if (!user) {
                             self.sendMessage("auth", {
                                 result: "fail",
-                                data: "Username and password combination not found"
+                                data: "Invalid username or password!"
                             });
                             return;
                         }
@@ -59,7 +59,7 @@ _.extend(AuthController.prototype, {
                         else {
                             self.sendMessage("auth", {
                                 result: "fail",
-                                data: "Username and password combination not found"
+                                data: "Invalid username or password!"
                             });
                         }
                     }
@@ -74,7 +74,7 @@ _.extend(AuthController.prototype, {
                 if(!decodedToken) {
                     self.sendMessage("auth", {
                         result: "fail",
-                        data: "Token not recognised - use username / password login"
+                        data: "Token not recognised - use username / password login."
                     });
                     return;
                 }
@@ -89,7 +89,7 @@ _.extend(AuthController.prototype, {
                         if (!user) {
                             self.sendMessage("auth", {
                                 result: "fail",
-                                data: "Saved username not found in database"
+                                data: "Saved username not found in database!"
                             });
                             return;
                         }
@@ -101,7 +101,7 @@ _.extend(AuthController.prototype, {
                         if (expiryTime < new Date().getTime()) {
                             self.sendMessage("auth", {
                                 result: "fail",
-                                data: "Token has expired"
+                                data: "Token has expired!"
                             });
                             return;
                         }
@@ -117,7 +117,7 @@ _.extend(AuthController.prototype, {
             if(data.username.trim() === "" || data.password.trim() === "") {
                 self.sendMessage("auth", {
                     result: "fail",
-                    data: "Sorry, username or password cannot be blank"
+                    data: "Username and password are required."
                 });
                 return;
             }
@@ -125,7 +125,7 @@ _.extend(AuthController.prototype, {
             if(data.username.indexOf("<") > -1 || data.username.indexOf(">") > -1) {
                 self.sendMessage("auth", {
                     result: "fail",
-                    data: "Sorry, cannot use < > brackets in username"
+                    data: "'<' and '>' are not allowed in the username."
                 });
                 return;
             }
@@ -133,7 +133,7 @@ _.extend(AuthController.prototype, {
             if(data.username.length > 30) {
                 self.sendMessage("auth", {
                     result: "fail",
-                    data: "Sorry, usernames limited to 30 characters"
+                    data: "Usernames are limited to 30 characters."
                 });
                 return;
             }
@@ -141,7 +141,7 @@ _.extend(AuthController.prototype, {
             if (data.password !== data.repeat) {
                 self.sendMessage("auth", {
                     result: "fail",
-                    data: "Password fields do not match"
+                    data: "Password fields do not match!"
                 });
                 return;
             }
@@ -155,7 +155,7 @@ _.extend(AuthController.prototype, {
                 if (user) {
                     self.sendMessage("auth", {
                         result: "fail",
-                        data: "Sorry that username is already taken"
+                        data: "That username is already taken!"
                     });
                     return;
                 }

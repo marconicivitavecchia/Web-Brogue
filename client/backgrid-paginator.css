@@ -7,6 +7,8 @@
 */
 
 .backgrid-paginator {
+  width: 50vw;
+  max-width: 50em;
   text-align: center;
   border-top: none;
   -webkit-border-radius: 0 0 4px 4px;
@@ -36,23 +38,17 @@
   padding: 0;
   line-height: 30px;
   text-decoration: none;
-}
-
-.backgrid-paginator ul > li > a:hover,
-.backgrid-paginator ul > .active > a,
-.backgrid-paginator ul > .active > span {
-  background-color: #f5f5f5;
-}
-
-.backgrid-paginator ul > .active > a,
-.backgrid-paginator ul > .active > span {
-  color: #999999;
+  color: white;
   cursor: default;
+  border: 1px solid black;
 }
 
-.backgrid-paginator ul > .disabled > span,
-.backgrid-paginator ul > .disabled > a,
-.backgrid-paginator ul > .disabled > a:hover {
-  color: #999999;
-  cursor: default;
+.backgrid-paginator .active a {
+  background-color: #555555;
+  border: 1px solid #aaaaaa;
+}
+
+.backgrid-paginator ul > li > a:hover {
+  background-color: #aaaaaa;
+  border: 1px solid white;
 }

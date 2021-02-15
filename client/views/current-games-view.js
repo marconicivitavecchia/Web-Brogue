@@ -46,10 +46,10 @@ define([
             for (var incomingGameName in data) {
                 var update = data[incomingGameName];
 
-                var action = "Observe " + update.userName;
+                var action = 'Observe';
 
                 if(update.userName === this.userModel.get("username")) {
-                    action = "Continue game";
+                    action = 'Continue';
                 }
 
                 if (!rowViewCollection[incomingGameName]) {

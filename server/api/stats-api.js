@@ -30,6 +30,11 @@ module.exports = function(app, config) {
 
                     var allDeathGamesWithCause = stats.deathGamesWithCauses(allNormalModeGames);
 
+                    if(allDeathGamesWithCause.length == 0) {
+                        res.json({});
+                        return;
+                    }
+
                     var deathGamesByLevel = _.groupBy(allDeathGamesWithCause, "level");
 
                     var deathNumbersByLevel = _.mapObject(deathGamesByLevel, function(levelGames, level) {
@@ -78,6 +83,11 @@ module.exports = function(app, config) {
                     var allNormalModeGames = _.filter(games, function(game) { return game.easyMode != true; });
 
                     var allDeathGamesWithCause = stats.deathGamesWithCauses(allNormalModeGames);
+
+                    if(allDeathGamesWithCause.length == 0) {
+                        res.json({});
+                        return;
+                    }
 
                     var deathGamesByLevel = _.groupBy(allDeathGamesWithCause, "level");
 

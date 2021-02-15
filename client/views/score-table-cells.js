@@ -12,24 +12,9 @@ define([
 
     var LevelFormatter = _.extend({}, Backgrid.CellFormatter.prototype, {
         fromRaw: function (rawValue, model) {
-
-            var easyModeQualifier = "";
-
-            if(model.get("easyMode")) {
-                easyModeQualifier = "&";
-            }
-
-            if(rawValue == 0) {
-                if(model.get("easyMode")) {
-                    return "&Win!";
-                }
-                else {
-                    return "Win!";
-                }
-            }
-            else if(rawValue) {
-                return easyModeQualifier + "L" + rawValue.toString();
-            }
+            var result = rawValue === 0 ? "Win!" : rawValue > 0 ? rawValue.toString() : "";
+            var easyModeQualifier = model.get("easyMode") ? " (easy)" : "";
+            return result + easyModeQualifier;
         }
     });
 
@@ -82,7 +67,7 @@ define([
                     "data-gameid": formattedNameValue,
                     "data-variant": this.model.get("variant"),
                     "data-gamedescription": this.model.get("username") + "-" + this.model.get("seed") + "-" + formatDate(this.model.get("date"))
-                }).text("Watch"));
+                }).text('Watch'));
             }
 
             var downloadValue = this.model.get("download");
@@ -92,7 +77,9 @@ define([
                     href: 'api/' + downloadValue,
                     title: this.model.title,
                     id: 'download-game',
-                }).text("Download"));
+                }).text('Download'));
+            } else {
+                this.$el.append(' <div style="width:1.5em;display:inline-block"></div>');
             }
 
             var downloadValue = this.model.get("link");
@@ -102,7 +89,7 @@ define([
                     href: '#' + downloadValue,
                     title: this.model.title,
                     id: 'link-game',
-                }).text("Copy Link"));
+                }).text('Copy Link'));
             }
 
             this.delegateEvents();

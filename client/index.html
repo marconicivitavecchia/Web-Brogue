@@ -14,29 +14,43 @@
 <noscript> This page will not work without JavaScript. Sorry. Feel free to download brogue and play it on your own computer at <a href="//sites.google.com/site/broguegame/">sites.google.com/site/broguegame/</a> </noscript>
 <div id="header" class="header"></div>
 <div id="lobby">
-    <img class="banner" src="assets/brogue-banner.png" />
-    <div id="loading" class="loading">Loading...</div>
-    <div id="auth" class="auth"></div>
-    <div id="play" class="play"></div>
-    <div id="lobby-chat" class="lobby-chat"></div>
-    <div id="about" class="about inactive">
-        <h2> WebBrogue </h2>
-        <p>Play Brogue the roguelike in your browser!</p>
-        <p><a href="https://www.google.com/chrome/">Chrome</a> is <strong>strongly recommended</strong>. Other browsers (e.g. <a href="http://www.mozilla.org">Firefox</a>) should work but may be slower.</p>
-        <p>This site is based in the EU (London). Too much lag? - try the <a href="http://brogue.lumenstone.org">US site</a>.</p>
-        <p><strong>Brogue CE</strong> is a community-lead effort to keep improving <a href="https://sites.google.com/site/broguegame/">Brogue</a>, a game originally by Brian Walker. <a href="https://github.com/tmewett/BrogueCE/releases">Downloadable builds</a> are also available.</p>
-        <p><a href="https://github.com/gbelo/gBrogue">gBrogue</a> is a fork of Brogue 1.7.4 by Greg Reed. <a href="http://roguelikedeveloper.blogspot.com/search/label/unbrogue">unBrogue</a> is a fork of Brogue 1.7.1 by Andrew Doull.</p>
-        <p>web-brogue is maintained by flend.  Kip Raske built the original version and runs the <a href="http://brogue.lumenstone.org">US site</a>. Fork the code <a href="//github.com/flend/web-brogue">on github</a>, and post an issue or make a pull request.</p>
-        <p>Downloadable builds of v1.7.5 are available for <a href="https://github.com/flend/brogue-windows/releases/tag/v1.7.5-292427f6a">Windows</a> and <a href="https://github.com/rawlins/web-brogue/releases/tag/v1.7.5-osx-hotfix1">Mac OS X v1.7.5</a> with important <a href="https://github.com/flend/brogue-windows/commits/master">fixes</a> made to the <a href="https://sites.google.com/site/broguegame/">original v1.7.5 version</a>.</p>
-        <p>Have fun and get that amulet and those lumenstones!</p>
+    <div class="lobby-top">
+        <img class="banner" src="assets/brogue-banner.png" />
     </div>
-    <div id="current-games" class="current-games"></div>
-    <div id="mini-scores" class="mini-scores"></div>
-    <div id="all-scores" class="all-scores inactive"></div>
-    <div id="server-statistics" class="server-statistics inactive"></div>
-    <div id="users-page" class="users-page inactive"></div>
-    <div id="site-news" class="site-news"></div>
-
+    <div class="lobby-main">
+        <div class="lobby-left">
+            <div id="auth" class="auth"></div>
+            <div id="play" class="play"></div>
+            <div id="lobby-chat" class="lobby-chat"></div>
+            <div id="about" class="about inactive">
+                <h2> WebBrogue </h2>
+                <p>Play Brogue the roguelike in your browser!</p>
+                <p><a href="https://www.google.com/chrome/">Google Chrome</a> is strongly recommended. Other browsers should work too but have been less tested.</p>
+                <p>This site is based in the EU (London). Too much lag? - try the <a href="http://brogue.lumenstone.org">US site</a>.</p>
+                <ul>
+                    <li><a href="https://sites.google.com/site/broguegame/">Brogue</a> is a roguelike masterpiece by Brian Walker. Version 1.7.5 with important
+                        <a href="https://github.com/flend/brogue-windows/commits/master">fixes</a> is available for
+                        <a href="https://github.com/flend/brogue-windows/releases/tag/v1.7.5-292427f6a">Windows</a> and
+                        <a href="https://github.com/rawlins/web-brogue/releases/tag/v1.7.5-osx-hotfix1">macOS</a>.
+                    </li>
+                    <li><a href="https://github.com/tmewett/BrogueCE/releases">Brogue CE</a> is a community-lead effort to keep improving Brogue.</li>
+                    <li><a href="https://github.com/gbelo/gBrogue">gBrogue</a> is a fork of Brogue 1.7.4 by Greg Reed.</li>
+                    <li><a href="http://roguelikedeveloper.blogspot.com/search/label/unbrogue">unBrogue</a> is a fork of Brogue 1.7.1 by Andrew Doull.</li>
+                </ul>
+                <p>WebBrogue is maintained by flend. Fork the code <a href="//github.com/flend/web-brogue">on github</a>, and post an issue or make a pull request. Kip Raske built the original version and runs the <a href="http://brogue.lumenstone.org">US site</a>.</p>
+                <p>Have fun and get that amulet and some lumenstones!</p>
+            </div>
+        </div>
+        <div class="lobby-right">
+            <div id="loading" class="loading">Loading...</div>
+            <div id="current-games" class="current-games"></div>
+            <div id="mini-scores" class="mini-scores"></div>
+            <div id="all-scores" class="all-scores inactive"></div>
+            <div id="server-statistics" class="server-statistics inactive"></div>
+            <div id="users-page" class="users-page inactive"></div>
+            <div id="site-news" class="site-news"></div>
+        </div>
+    </div>
 </div>
 <div id="console-holder" class="console-holder inactive">
     <div id="console-chat" class="console-chat"></div>
@@ -64,53 +78,51 @@
 
 <!-- Templates -->
 <script id="main-menu-template" type="text/template">
-    <h2>Main Menu</h2>
-    <ul id="play-brogue-list">
-        <%if(loggedIn) {%>
-        <%_.forEach(variants, function (i) {%>
-        <%if(!i.disabled) {%>
+    <%if(loggedIn) {%>
+        <h2>Play Brogue</h2>
+        <ul id="play-brogue-list">
+        <%_.forEach(variants, function (i) { if(!i.disabled) {%>
             <li>
-        <%if(i.default) {%>
-            <strong><%=i.display%></strong>
-        <%} else {%>
-            <%=i.display%>
-        <%}%>
-            <a id="start-brogue-<%=i.code%>" href="#start-brogue-<%=i.code%>">(play)</a>
-            <a id="start-brogue-seed-<%=i.code%>" href="#start-broge-seed-<%=i.code%>">(seed)</a>
-        </li>
+                <a id="start-brogue-<%=i.code%>" href="#start-brogue-<%=i.code%>">Play</a> /
+                <a id="start-brogue-seed-<%=i.code%>" href="#start-broge-seed-<%=i.code%>">seed</a>
+                <%if(i.default) {%>
+                    <strong><%=i.display%></strong>
+                <%} else {%>
+                    <%=i.display%>
+                <%}%>
+            </li>
         <%}})%>
-        <%}%>
-        <li><a id="show-current-games" href="#show-current-games">Current Games </a></li>
+        </ul>
+        <p>Need help? Have a look at the <a href="https://brogue.fandom.com/wiki/Brogue_Wiki" alt="Brogue Wiki" target="_blank">Wiki</a>.</p>
+    <%}%>
+    <h2>Statistics</h2>
+    <ul>
+        <li><a id="show-current-games" href="#show-current-games">Current Games</a></li>
         <li><a id="show-high-scores" href="#show-high-scores">High Scores</a></li>
         <li><a id="show-stats" href="#show-stats">Game Statistics</a></li>
-        <li><a id="show-users-page" href="#show-users-page">User Statistics</a></li>
+        <li><a id="show-users-page" href="#show-users-page">Player Statistics</a></li>
     </ul>
 </script>
 
 <script id="login" type="text/template">
     <h2>Login to Play</h2>
     <form>
-        <label for="username">User Name: </label>
-        <input type="text" name="username" id="username" />
-        <label for="password">Password: </label>
-        <input type="password" name="password" id="password" />
-        <a id="to-register" href="#register">Register</a>
+        <input type="text" name="username" id="username" placeholder="Username" />
+        <input type="password" name="password" id="password" placeholder="Password" />
         <button type="submit" id="login-button">Login</button>
+        <p>New player? <a id="to-register" href="#register">Register</a><p>
         <div id="auth-message"></div>
     </form>
 </script>
 
 <script id="register" type="text/template">
-    <h2>Register a New User</h2>
+    <h2>Create an Account</h2>
     <form>
-        <label for="username">User Name: </label>
-        <input type="text" name="username" id="username" />
-        <label for="password">Password: </label>
-        <input type="password" name="password" id="password" />
-        <label for="password-repeat">Repeat Password: </label>
-        <input type="password" name="password-repeat" id="password-repeat" />
-        <a id="to-login" href="#login">Login</a>
+        <input type="text" name="username" id="username" placeholder="Username" />
+        <input type="password" name="password" id="password" placeholder="Password" />
+        <input type="password" name="password-repeat" id="password-repeat" placeholder="Repeat password" />
         <button type="submit" id="register-button">Register</button>
+        <p>Already registered? <a id="to-login" href="#login">Login</a><p>
         <div id="auth-message"></div>
     </form>
 </script>
@@ -124,13 +136,13 @@
 </script>
 
 <script id="console-chat-template" type="text/template">
-    <button id="<%= prefix %>-chat-show-button" class="console-chat-buttons <%=chatHiddenStatus%>">Show Chat</button>
+    <button id="<%= prefix %>-chat-show-button" class="console-chat-buttons <%=chatHiddenStatus%>">Chat</button>
     <button id="<%= prefix %>-chat-hide-button" class="console-chat-buttons <%=chatShownStatus%>">Hide Chat</button>
     <div id="<%= prefix %>-chat-inner" class="console-chat-inner <%=chatShownStatus%>">
-        <h2>Chat</h2>
         <ul id="<%= prefix %>-chat-messages" class="console-chat-messages"><%= messageListItems %></ul>
         <form action="">
-            <input id="<%= prefix %>-chat-input" autocomplete="off" /><button type="submit", id="<%= prefix %>-chat-send-button">Send</button>
+            <input id="<%= prefix %>-chat-input" autocomplete="off" />
+            <button type="submit", id="<%= prefix %>-chat-send-button">Send</button>
         </form>
     </div>
 </script>
@@ -139,12 +151,14 @@
     <h2>High Scores</h2>
     <ul id="all-scores-options-list">
         <li id="all-scores-daily-list-item"><a id="all-scores-daily" href="#all-scores-daily">Daily Top Scores</a></li>
-        <%_.forEach(variants, function (i) {%>
-        <li><a id="all-scores-variant-<%=i.code%>" href="#all-scores-variant-<%=i.code%>">All-time Top Scores (<%=i.display%>)</a></li>
-        <%})%>
         <% if (username) { %>
-        <li><a id="all-scores-user" href="#all-scores-user">My Top Scores (<%= username %>)</a></li>
+        <li><a id="all-scores-user" href="#all-scores-user">My Top Scores</a></li>
         <% } %>
+        <li>All-time Top Scores:
+            <%_.forEach(variants, function (i,j) {%><% if (j) { %> &bull; <% } %>
+            <a id="all-scores-variant-<%=i.code%>" href="#all-scores-variant-<%=i.code%>"><%=i.display%></a>
+            <%})%>
+        </li>
     </ul>
     <p><%= scoresTypeSelected %></p>
     <div id="all-scores-grid" />
@@ -156,7 +170,7 @@
     <ul>
         <li><a id="mini-scores-all" href="#all-scores">All games</a></li>
         <% if (username) { %>
-        <li><a id="mini-scores-user" href="#user-scores">My games (<%= username %>)</a></li>
+        <li><a id="mini-scores-user" href="#user-scores">My games</a></li>
         <% } %>
     </ul>
     <div id="mini-scores-grid" />
@@ -164,13 +178,23 @@
 </script>
 
 <script id="welcome" type="text/template">
-    <div><% if (observing) { %>Observing <%= observingUsername %> | <% } %><% if (playing) { %>Playing | <% } %><% if (recording) { %>Watching <%= recordingId %> | <% } %><%= username %><% if (showLobby) { %> | <a id="headerLobby" href="#lobbyLink">Lobby</a> <% } %><% if (loggedIn) { %> | <a id="logout" href="#logout">Logout</a> <% } %></div>
+    <div>
+        <% if (showLobby) { %>
+            <a id="headerLobby" href="#lobbyLink">Lobby</a> &bull;
+            <a href="https://brogue.fandom.com/wiki/Brogue_Wiki" alt="Brogue Wiki" target="_blank">Wiki</a> &bull;
+        <% } %>
+        <%= username %>
+        <% if (observing) { %> &bull; Observing <%= observingUsername %><% } %>
+        <% if (playing) { %> &bull; Playing<% } %>
+        <% if (recording) { %> &bull; Watching <%= recordingId %><% } %>
+        <% if (loggedIn) { %> &bull; <a id="logout" href="#logout">Logout</a> <% } %>
+    </div>
 </script>
 
 <script id="site-news-heading" type ="text/template">
     <h2>Site News</h2>
     <% if (isEmpty) { %>
-    <p> There is no site news at this time</p>
+    <p> There is no site news at this time.</p>
     <% } else { %>
     <ul id="site-news-table">
     </ul>
@@ -184,16 +208,17 @@
 <script id="current-games-heading" type ="text/template">
     <h2>Current Games</h2>
     <% if (isEmpty) { %>
-    <p> There are no other users playing at this time</p>
+    <p> There are no other users playing at this time.</p>
     <% } else { %>
     <table id="current-games-table">
         <tr>
-            <th>User</th>
+            <th>Player</th>
+            <th>Seed</th>
             <th>Version</th>
-            <th>Idle</th>
             <th>Level</th>
             <th>Gold</th>
-            <th>Seed</th>
+            <th>Idle</th>
+            <th></th>
         </tr>
     </table>
     <% } %>
@@ -201,11 +226,11 @@
 
 <script id="current-games-row" type="text/template">
     <td><%= userName %></td>
+    <td><%= seed %></td>
     <td><%= prettyVariant %></td>
-    <td><%= formattedIdle %></td>
     <td><% if (easyMode) { %>&<% } %><%= deepestLevel %></td>
     <td><%= prettyScore %></td>
-    <td><%= seed %></td>
+    <td><%= formattedIdle %></td>
     <td><a id="observe-game" data-username="<%= userName %>" href="#brogue"><%= action %></a></td>
 </script>
 
@@ -225,53 +250,53 @@
     </ul>
     <div id="general-statistics" class="general-statistics"></div>
     <div id="level-statistics" class="level-statistics"></div>
-    <canvas id="level-statistics-chart" width="200" height="200"></canvas>
+    <div id="level-statistics-chart"></div>
     <div id="level-probability" class="level-probability"></div>
-    <canvas id="level-probability-chart" width="200" height="200"></canvas>
+    <div id="level-probability-chart"></div>
     <div id="cause-statistics" class="cause-statistics"></div>
 </script>
 
 <script id="cause-statistics-template" type="text/template">
     <h3>Deaths by Cause</h3>
-    <ul id="deaths-by-cause-list">
-        <%_.forEach(variants, function (i) {%>
-        <li><a id="deaths-by-cause-variant-<%=i.code%>" href="#deaths-by-cause-variant-<%=i.code%>">Deaths by cause (<%=i.display%>)</a></li>
+    <p id="deaths-by-cause-list">
+        <%_.forEach(variants, function (i,j) {%><% if (j) { %> &bull; <% } %>
+        <a id="deaths-by-cause-variant-<%=i.code%>" href="#deaths-by-cause-variant-<%=i.code%>"><%=i.display%></a>
         <%})%>
-    </ul>
-    <p>The top 3 causes of death by the level on which they happened.</p>
+    </p>
+    <p>The top 3 causes of death by the level on which they happened, in <span id="death-cause-name">variant</span>.</p>
     <div id="cause-stats-grid" />
 </script>
 
 <script id="level-statistics-template" type="text/template">
     <h3>Deaths by Level</h3>
-    <ul id="deaths-by-level-list">
-            <%_.forEach(variants, function (i) {%>
-            <li><a id="deaths-by-level-variant-<%=i.code%>" href="#deaths-by-level-variant-<%=i.code%>">Deaths by level (<%=i.display%>)</a></li>
-            <%})%>
-    </ul>
-    <p>Number of deaths per level.</p>
+    <p id="deaths-by-level-list">
+        <%_.forEach(variants, function (i,j) {%><% if (j) { %> &bull; <% } %>
+        <a id="deaths-by-level-variant-<%=i.code%>" href="#deaths-by-level-variant-<%=i.code%>"><%=i.display%></a>
+        <%})%>
+    </p>
+    <p>Number of deaths per level in <span id="deaths-by-level-name">variant</span>:</p>
     <div id="level-stats-grid" />
 </script>
 
 <script id="level-probability-template" type="text/template">
     <h3>Probability of Death by Level</h3>
-    <ul id="probability-deaths-by-level-list">
-            <%_.forEach(variants, function (i) {%>
-            <li><a id="deaths-probability-by-level-variant-<%=i.code%>" href="#deaths-probability-by-level-variant-<%=i.code%>">Death probability by level (<%=i.display%>)</a></li>
-            <%})%>
-    </ul>
-    <p>The probability of dying on a particular level, having reached that level. An analogue of perceived difficulty.</p>
+    <p id="probability-deaths-by-level-list">
+        <%_.forEach(variants, function (i,j) {%><% if (j) { %> &bull; <% } %>
+        <a id="deaths-probability-by-level-variant-<%=i.code%>" href="#deaths-probability-by-level-variant-<%=i.code%>"><%=i.display%></a>
+        <%})%>
+    </p>
+    <p>The probability of dying on a particular level, having reached that level, in <span id="death-prob-name">variant</span>. An analogue of perceived difficulty.</p>
     <div id="level-probability-grid" />
 </script>
 
 <script id="general-statistics-template" type="text/template">
     <h3>General Statistics</h3>
-    <ul id="general-stats-by-level-list">
-        <li><a id="general-stats-by-level-variant-all" href="#deaths-probability-by-level-variant-all">Statistics for all games</a></li>    
-        <%_.forEach(variants, function (i) {%>
-            <li><a id="general-stats-by-level-variant-<%=i.code%>" href="#general-stats-by-level-variant-<%=i.code%>">Statistics for (<%=i.display%>)</a></li>
+    <p id="general-stats-by-level-list">
+        <a id="general-stats-by-level-variant-all" href="#deaths-probability-by-level-variant-all">All games</a></li>    
+        <%_.forEach(variants, function (i) {%> &bull;
+            <a id="general-stats-by-level-variant-<%=i.code%>" href="#general-stats-by-level-variant-<%=i.code%>"><%=i.display%></a>
         <%})%>
-    </ul>
+    </p>
     <p>Variant: <%= stats.variantName %></p>
     <ul>
         <li>Total games played: <%= stats.totalGames %> (easy mode: <%= stats.totalEasyModeGames %>)</li>
@@ -301,20 +326,20 @@
 
 <script id="user-stats-scores-heading" type="text/template">
     <h2>High Scores</h2>
-    <ul id="user-stats-scores-options-list">
-        <%_.forEach(variants, function (i) {%>
-        <li><a id="user-stats-scores-variant-<%=i.code%>" href="#user-stats-scores-variant-<%=i.code%>">All-time Top Scores (<%=i.display%>)</a></li>
+    <p id="user-stats-scores-options-list">
+        <%_.forEach(variants, function (i,j) {%><% if (j) { %> &bull; <% } %>
+        <a id="user-stats-scores-variant-<%=i.code%>" href="#user-stats-scores-variant-<%=i.code%>"><%=i.display%></a>
         <%})%>
-    </ul>
+    </p>
     <p><%= scoresTypeSelected %></p>
     <div id="user-stats-scores-grid" />
     <div id="user-stats-scores-paginator" />
 </script>
 
 <script id="seed-popup" type="text/template">
-    <div id="popup-close" class="close"> X </div>
+    <div id="popup-close" class="close">&#215;</div>
     <form>
-        <label for="seed">Seed: </label>
+        <label for="seed">Seed:</label>
         <input id="seed" name="seed" type="text" />
         <button type="submit" id="seed-button">Play Brogue</button>
         <div id='seed-validation'></div>

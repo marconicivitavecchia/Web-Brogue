@@ -17,9 +17,9 @@
 }
 
 .backgrid {
-  width: 100%;
+  margin: 0.5em 0;
   max-width: 100%;
-  background-color: transparent;
+  background-color: black;
   border-collapse: collapse;
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
@@ -30,15 +30,15 @@
 .backgrid td {
   display: none;
   height: 20px;
-  max-width: 250px;
-  padding: 4px 5px;
+  max-width: 30em;
+  padding: 0.2em 0.6em;
   overflow: hidden;
   line-height: 20px;
   text-align: left;
   text-overflow: ellipsis;
   white-space: nowrap;
   vertical-align: middle;
-  border-bottom: 1px solid #DDD;
+  border-bottom: 1px solid #555555;
 }
 
 .backgrid th.renderable,
@@ -49,6 +49,7 @@
 .backgrid th {
   font-weight: bold;
   text-align: center;
+  border-bottom: 1px solid #aaaaaa;
 }
 
 .backgrid th.sortable a {
@@ -86,8 +87,8 @@
 
 .backgrid td.editor,
 .backgrid tbody tr:nth-child(odd) td.editor {
-  background-color: rgba(82, 168, 236, 0.1);
-  outline: 1px solid rgba(82, 168, 236, 0.8);
+  background-color: #555555;
+  outline: 1px solid #cccccc;
   outline-offset: -1px;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -153,13 +154,13 @@
   vertical-align: baseline;
   border-top: none;
   border-right: 4px solid transparent;
-  border-bottom: 4px solid #000000;
+  border-bottom: 4px solid black;
   border-left: 4px solid transparent;
 }
 
 .backgrid .descending .sort-caret {
   vertical-align: super;
-  border-top: 4px solid #000000;
+  border-top: 4px solid black;
   border-right: 4px solid transparent;
   border-bottom: none;
   border-left: 4px solid transparent;

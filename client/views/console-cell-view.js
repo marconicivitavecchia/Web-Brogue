@@ -67,7 +67,6 @@ define([
             this.el.style.width = cellWidth + "px";
             this.el.style.height = cellHeight + "px";
             this.el.style.fontSize = cellHeight + "px";
-            this.el.style.lineHeight = cellHeight + "px";
         },
 
         handleClick : function(event){
