@@ -36,29 +36,15 @@ define([
             $('#users-page').removeClass('inactive');
         },
         
-        selectTilesConsole : function(tilesConsole) {
-            this.tilesConsole = tilesConsole;
-        },
-
         console : function(){
             $('#lobby').addClass("inactive");
-
-            if(this.tilesConsole) {
-                $("#canvas-console-holder").removeClass("inactive");
-                $("#console-holder").addClass("inactive");
-                $("#canvas-console-canvas").focus();
-            }
-            else {
-                $("#console-holder").removeClass("inactive");
-                $("#canvas-console-holder").addClass("inactive");
-                $("#console").focus();
-            }
+            $("#console-holder").removeClass("inactive");
+            $("#console").focus();
         },
         
         lobby: function(){
             $('#lobby').removeClass("inactive");
             $("#console-holder").addClass("inactive");
-            $("#canvas-console-holder").addClass("inactive");
 
         },
         
@@ -67,7 +53,7 @@ define([
         },
         
         resetAll: function(){
-            $('#all-scores, #console-holder, #canvas-console-holder, #server-statistics, #users-page').addClass("inactive");
+            $('#all-scores, #console-holder, #server-statistics, #users-page').addClass("inactive");
             $('#lobby, #auth, #current-games, #mini-scores').removeClass("inactive");
         }
     };

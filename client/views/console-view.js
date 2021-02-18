@@ -21,6 +21,7 @@ define([
 
     // See BrogueCode/rogue.h for all brogue event definitions
     var KEYPRESS_EVENT_CHAR = 0;
+    var REFRESH_EVENT_CHAR = 50;
 
     var Console = Backbone.View.extend({
         el: "#console",
@@ -248,6 +249,7 @@ define([
         processServerMetadataUpdate : function (data) {
             if('graphics' in data) {
                 this.graphics = !!data.graphics;
+                sendKeypressEvent(REFRESH_EVENT_CHAR, 0, 0, 0);
             }
         },
 
