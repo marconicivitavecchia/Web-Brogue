@@ -68,8 +68,8 @@ define([
                 return this;
             }
 
-            Chart.defaults.global.defaultFontColor = 'white';
-            Chart.defaults.global.defaultFontFamily = '"Source Code Pro", monospace';
+            Chart.defaults.global.defaultFontColor = '#dddddd';
+            Chart.defaults.global.defaultFontFamily = 'Rubik, "Source Sans Pro", Arial, Helvetica, sans-serif';
 
             new Chart(ctx, {
                 type: 'bar',
@@ -78,8 +78,8 @@ define([
                     datasets: [{
                         label: 'probability',
                         data: probabilityData,
-                        backgroundColor: 'rgba(255,99,132,0.2)',
-                        borderColor: 'rgba(255,99,132,1)',
+                        backgroundColor: 'rgba(255,85,85,0.4)',
+                        borderColor: '#ff3264',
                         borderWidth: 1
                     }]
                 },

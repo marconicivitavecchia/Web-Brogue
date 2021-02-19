@@ -29,24 +29,71 @@ body {
     margin: 0;
     padding: 0;
     background-color: black;
-    font-family: "Source Code Pro", monospace;
-    color: white;
+    font-family: Rubik, "Source Sans Pro", Arial, Helvetica, sans-serif;
+    font-size: 110%;
+    line-height: 1.3;
+    color: #bbbbbb;
+    background-color: #101010;
     width: 100vw;
     overflow-x: hidden;
 }
 
-a, a:hover, a:active, a:visited {
-    color: #aaaaaa;
+h1, h2, h3 {
+    font-family: Fondamento, "Source Sans Pro", Arial, Helvetica, sans-serif;
+    color: #db1d1d;
+    margin: 0.5em 0 0.3em 0;
+}
+
+ul, ol {
+    margin: 0.2em 0;
+}
+
+li {
+    margin: 0.2em 0;
+}
+
+a, a:visited {
+    color: inherit;
+    text-decoration: underline #80addb;
 }
 
 a:hover, a:active {
-    color: white;
+    color: #61b0ff;
 }
 
 * {
+    scrollbar-color: #263e52 #0f1418;
     word-wrap: break-word;
     box-sizing: border-box;
     -moz-box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f1418;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #263e52;
+    border-radius: 8px;
+    border: 2px solid #0f1418;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: #0f1418;
+}
+
+*::-moz-selection {
+    color: white;
+    background: #3c58a5;
+}
+
+*::selection {
+    color: white;
+    background: #3c58a5;
 }
 
 /* 0.2 Control Styles ---------------*/
@@ -66,7 +113,14 @@ label {
 input {
     display: block;
     margin-bottom: 0.7em;
-    border: 1px solid #aaaaaa;
+    color: white;
+    background-color: #406080;
+    border: 1px solid #80addb;
+    font-family: inherit;
+}
+
+input::placeholder {
+    color: #80addb;
 }
 
 input[type="radio"] {
@@ -75,7 +129,17 @@ input[type="radio"] {
 
 button {
     display: block;
+    color: white;
+    background-color: #406080;
+    border: 1px solid #80addb;
+    font-family: inherit;
 }
+
+button:hover {
+    border-color: white;
+    background-color: #6090c0;
+}
+
 
 th, td {
     padding: 0.1em 0.5em;
@@ -87,22 +151,36 @@ th, td {
  *===================================*/
 
 .header {
-    margin-right: 2.5%;
-    text-align: right;
-    color: white;
-    background-color: black;
+    margin: 0;
+    text-align: center;
+    color: #999999;
+    background-color: #102030;
 }
 
 .lobby-top {
-    background-color: black;
+    display: flex;
+    flex-direction: row;
+    background-color: #202020;
+    background-image: url(./assets/corridor.jpg);
+    background-position: 50% 10%;
+    background-repeat: no-repeat;
+    background-size: 100vw 30vw;
+    background-attachment: local;
+    min-height: 15vw;
+}
+
+.banner-container {
+    flex: auto;
+    max-width: 70vw;
+    margin: auto;
+    padding: 1em;
 }
 
 .banner {
     display: block;
-    width: 70vw;
+    width: 100%;
     max-width: 561px;
-    margin: 0 auto;
-    padding: 1em 0;
+    margin: auto;
 }
 
 .lobby-main {
@@ -112,8 +190,9 @@ th, td {
 
 .lobby-left {
     flex: none;
-    width: 25vw;
-    min-width: 25em;
+    background-color: #102030;
+    width: 20vw;
+    min-width: 20em;
 }
 
 .lobby-right {
@@ -138,6 +217,10 @@ th, td {
 .server-statistics,
 .user-statistics {
     margin: 0 1em;
+}
+
+.about p, .about ul {
+    font-size: 80%;
 }
 
 .auth input {
@@ -167,8 +250,8 @@ th, td {
     margin: 0;
     overflow: auto;
     font-size: 75%;
-    border: 1px solid #aaaaaa;
-    background-color: black;
+    border: 1px solid #35485a;
+    background-color: #00000060;
 }
 
 .lobby-chat-messages {
@@ -197,8 +280,8 @@ th, td {
     content: attr(tooltip);
     position: absolute;
     color: #aaaaaa;
-    background-color: black;
-    border: 1px solid #aaaaaa;
+    background-color: #222222;
+    border: 1px solid #555555;
     padding: 0 0.3em;
     border-radius: 0.3em;
     transform: translateX(-100%) translate(1.8em, -1.8em);
@@ -253,6 +336,8 @@ th, td {
 .console-holder {
     height: calc(100vh - 1.3em);
     margin: 0;
+    background-image: url(./assets/marble.jpg);
+    background-repeat: repeat;
 }
 
 .console.full-height {
@@ -360,7 +445,7 @@ th, td {
     transform: translate(-50%, -50%);
     padding: 2em;
     border: 1px solid white;
-    background-color: black;
+    background-color: #102030;
 }
 
 .popup .close {

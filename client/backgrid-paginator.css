@@ -40,15 +40,15 @@
   text-decoration: none;
   color: white;
   cursor: default;
-  border: 1px solid black;
+  border: 0;
 }
 
 .backgrid-paginator .active a {
-  background-color: #555555;
-  border: 1px solid #aaaaaa;
+  background-color: #152a3f;
+  border: 1px solid #406080;
 }
 
 .backgrid-paginator ul > li > a:hover {
-  background-color: #aaaaaa;
-  border: 1px solid white;
+  background-color: #406080;
+  border: 1px solid #80addb;
 }

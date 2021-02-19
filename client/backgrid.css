@@ -19,7 +19,7 @@
 .backgrid {
   margin: 0.5em 0;
   max-width: 100%;
-  background-color: black;
+  background-color: #181818;
   border-collapse: collapse;
   -webkit-border-radius: 4px;
      -moz-border-radius: 4px;
@@ -49,7 +49,11 @@
 .backgrid th {
   font-weight: bold;
   text-align: center;
-  border-bottom: 1px solid #aaaaaa;
+  border-bottom: 1px solid #6ba3c9;
+}
+
+.backgrid th, .backgrid td {
+  font-size: 80%;
 }
 
 .backgrid th.sortable a {
@@ -60,7 +64,7 @@
 
 .backgrid thead th {
   vertical-align: bottom;
-  background-color: #555555;
+  background-color: #152a3f;
 }
 
 .backgrid thead th a {
@@ -87,8 +91,8 @@
 
 .backgrid td.editor,
 .backgrid tbody tr:nth-child(odd) td.editor {
-  background-color: #555555;
-  outline: 1px solid #cccccc;
+  background-color: #102030;
+  outline: 1px solid #306090;
   outline-offset: -1px;
   -webkit-box-sizing: border-box;
      -moz-box-sizing: border-box;
@@ -210,7 +214,6 @@
   padding: 4px 5px;
   margin: 0;
   line-height: 28px;
-  vertical-align: middle;
   background-color: white;
   border: 0;
   outline: 0;
