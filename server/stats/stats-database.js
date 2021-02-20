@@ -97,7 +97,7 @@ module.exports = {
             //Sort by longestStreak then date
             var streakData = _.filter(victoryStreaksByUser, function(v) { return v.longestStreak > 0 });
             if(streakData.length > 0) {
-                var longestStreaks = _.sortBy( _.sortBy(streakData, function (v) { v.lastVictory.date } ), 'longestStreak');
+                var longestStreaks = _.sortBy( _.sortBy(streakData, function (v) { return v.lastVictory.date; } ), 'longestStreak');
                 var longestStreak = _.last(longestStreaks);
 
                 lastStreakData = { date: longestStreak.lastVictory.date, username: longestStreak.lastVictory.username, length: longestStreak.longestStreak };
