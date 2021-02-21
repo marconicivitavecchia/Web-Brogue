@@ -306,9 +306,9 @@ define([
     var remapGlyphsToGraphics = function(glyphCode) {
         // Map Brogue glyphs to BrogueCE font
         if (glyphCode <= 127) return String.fromCharCode(glyphCode);
-        if (glyphCode == 128) return '\u0190'; // Up arrow
-        if (glyphCode == 129) return '\u0191'; // Down arrow
-        if (glyphCode >= 130) return String.fromCharCode(glyphCode + 126); // graphic tiles
+        if (glyphCode == 128) return U_UP_ARROW;
+        if (glyphCode == 129) return U_DOWN_ARROW;
+        if (glyphCode >= 130) return String.fromCharCode(glyphCode - 130 + 0x4000); // graphic tiles
     }
 
     var remapGlyphs = function(glyphCode, graphics) {
