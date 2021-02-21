@@ -750,6 +750,18 @@ describe("stats/levels/monsters", function() {
     });
 });
 
+describe("stats/levels/monsters with no game records", function() {
+
+    it("returns an empty object", function (done) {
+        request(server)
+            .get("/api/stats/levels/monsters")
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect({}, done)
+    });
+});
+
 describe("stats/levelProbabilities", function() {
 
     beforeEach(function (done) {
@@ -948,13 +960,13 @@ describe("stats/levelProbabilities", function() {
 
 describe("stats/levelProbabilities with no game records", function() {
 
-
-    it("returns status 200", function (done) {
+    it("returns an empty object", function (done) {
         request(server)
             .get("/api/stats/levelProbability")
             .set('Accept', 'application/json')
             .expect('Content-Type', /json/)
-            .expect(200, done)
+            .expect(200)
+            .expect({}, done)
     });
 });
 
@@ -1112,5 +1124,17 @@ describe("stats/levels", function() {
 
                 done();
             });
+    });
+});
+
+describe("stats/levels with no game records", function() {
+
+    it("returns an empty object", function (done) {
+        request(server)
+            .get("/api/stats/levels")
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200)
+            .expect({}, done)
     });
 });

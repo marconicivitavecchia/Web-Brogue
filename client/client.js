@@ -58,7 +58,6 @@ require([
     "views/auth-view",
     "views/chat-view",
     "views/console-chat-view",
-    "views/canvas-console-chat-view",
     "views/play-view",
     "views/header-view",
     "views/current-games-view",
@@ -66,7 +65,6 @@ require([
     "views/all-scores-view",
     "views/site-news-view",
     "views/console-view",
-    "views/canvas-console-view",
     "views/popups/seed-popup-view",
     "views/statistics-view",
     "views/level-stats-view",
@@ -81,8 +79,8 @@ require([
     "views/users-page-scores-view"
 ], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, pageRouter,
      HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, AuthenticationModel, UserDetailsCollection, recordings,
-     activate, AuthView, ChatView, ConsoleChatView, CanvasConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
-     ConsoleView, CanvasConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
+     activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
+     ConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
      DPadButtonView, DPadButtonVisibilityView, UsersPageView, UsersPageSelectView, UserPageSelectedUserView, UsersPageScoresView){
     
     // initialize each model and view;
@@ -137,10 +135,6 @@ require([
     var consoleView = new ConsoleView();
     var consoleChatView = new ConsoleChatView({el: "#console-chat", model: new ChatModel()});
 
-    //Canvas console
-    var consoleCanvasView = new CanvasConsoleView();
-    var consoleCanvasChatView = new CanvasConsoleChatView({el: "#canvas-console-chat", model: new ChatModel()});
-
     //DPad - console
     var dPadVisibilityButton = new DPadButtonVisibilityView({el: "#console-dpad"});
     dPadVisibilityButton.setDPadPrefix('console-');
@@ -157,31 +151,13 @@ require([
     var rightRightXView = new DPadButtonView({el: "#console-right-right", model: new DPadButtonModel({ keyToSend: "x".charCodeAt(0) })});
     var downRightRightZView = new DPadButtonView({el: "#console-down-right-right", model: new DPadButtonModel({ keyToSend: "Z".charCodeAt(0) })});
 
-    //DPad - canvas console
-    var dPadVisibilityButtonCanvas = new DPadButtonVisibilityView({el: "#canvas-console-dpad"});
-    dPadVisibilityButtonCanvas.setDPadPrefix('canvas-console-');
-    new DPadButtonView({el: "#canvas-console-up", model: new DPadButtonModel({ keyToSend: 63232 })});
-    new DPadButtonView({el: "#canvas-console-up-right", model: new DPadButtonModel({ keyToSend: 117 })});
-    new DPadButtonView({el: "#canvas-console-right", model: new DPadButtonModel({ keyToSend: 63235 })});
-    new DPadButtonView({el: "#canvas-console-down-right", model: new DPadButtonModel({ keyToSend: 110 })});
-    new DPadButtonView({el: "#canvas-console-down", model: new DPadButtonModel({ keyToSend: 63233 })});
-    new DPadButtonView({el: "#canvas-console-down-left", model: new DPadButtonModel({ keyToSend: 98 })});
-    new DPadButtonView({el: "#canvas-console-left", model: new DPadButtonModel({ keyToSend: 63234 })});
-    new DPadButtonView({el: "#canvas-console-up-left", model: new DPadButtonModel({ keyToSend: 121 })});
-    new DPadButtonView({el: "#canvas-console-centre", model: new DPadButtonModel({ keyToSend: 53 })});
-    new DPadButtonView({el: "#canvas-console-up-right-right", model: new DPadButtonModel({ keyToSend: "i".charCodeAt(0) })});
-    new DPadButtonView({el: "#canvas-console-right-right", model: new DPadButtonModel({ keyToSend: "x".charCodeAt(0) })});
-    new DPadButtonView({el: "#canvas-console-down-right-right", model: new DPadButtonModel({ keyToSend: "Z".charCodeAt(0) })});
-
     // use dispatcher to co-ordinate multi-view/service actions on routed commands
     // direct calls to activate should be replaced by this mechanism
 
     dispatcher.on("quit", highScoresView.quit, highScoresView);
-    dispatcher.on("quit", consoleCanvasView.exitToLobby, consoleCanvasView);
     dispatcher.on("quit", consoleView.exitToLobby, consoleView);
 
     dispatcher.on("fail", highScoresView.quit, highScoresView);
-    dispatcher.on("fail", consoleCanvasView.exitToLobby, consoleCanvasView);
     dispatcher.on("fail", consoleView.exitToLobby, consoleView);
 
     dispatcher.on("login", headerView.login, headerView);
@@ -189,7 +165,6 @@ require([
     dispatcher.on("login", allScoresView.login, allScoresView);
     dispatcher.on("login", chatView.login, chatView);
     dispatcher.on("login", consoleChatView.login, consoleChatView);
-    dispatcher.on("login", consoleCanvasChatView.login, consoleCanvasChatView);
     dispatcher.on("login", playView.login, playView);
     dispatcher.on("login", currentGamesView.login, currentGamesView);
     dispatcher.on("login", pageRouter.login, router);
@@ -198,13 +173,11 @@ require([
     dispatcher.on("anon-login", headerView.anonymousLogin, headerView);
     dispatcher.on("anon-login", chatView.login, chatView);
     dispatcher.on("anon-login", consoleChatView.login, consoleChatView);
-    dispatcher.on("anon-login", consoleCanvasChatView.login, consoleCanvasChatView);
     dispatcher.on("anon-login", pageRouter.login, router);
 
     dispatcher.on("logout", highScoresView.logout, highScoresView);
     dispatcher.on("logout", allScoresView.logout, allScoresView);
     dispatcher.on("logout", consoleChatView.logout, consoleChatView);
-    dispatcher.on("logout", consoleCanvasChatView.logout, consoleCanvasChatView);
     dispatcher.on("logout", chatView.logout, chatView);
     dispatcher.on("logout", currentGamesView.logout, currentGamesView);
     dispatcher.on("logout", authView.logout, authView);
@@ -226,46 +199,35 @@ require([
 
     dispatcher.on("chat", chatView.chatMessage, chatView);
     dispatcher.on("chat", consoleChatView.chatMessage, consoleChatView);
-    dispatcher.on("chat", consoleCanvasChatView.chatMessage, consoleCanvasChatView);
 
     dispatcher.on("showConsole", activate.console, activate);
-    dispatcher.on("showConsole", consoleCanvasView.resize, consoleCanvasView);
     dispatcher.on("showConsole", consoleView.resize, consoleView);
 
-    dispatcher.on("showChat", consoleCanvasView.resize, consoleCanvasView);
     dispatcher.on("showChat", consoleView.resize, consoleView);
 
-    dispatcher.on("hideChat", consoleCanvasView.resize, consoleCanvasView);
     dispatcher.on("hideChat", consoleView.resize, consoleView);
 
     dispatcher.on("startGame", headerView.startGame, headerView);
-    dispatcher.on("startGame", consoleCanvasView.initialiseForNewGame, consoleCanvasView);
     dispatcher.on("startGame", consoleView.initialiseForNewGame, consoleView);
 
     dispatcher.on("observeGame", headerView.observeGame, headerView);
-    dispatcher.on("observeGame", consoleCanvasView.initialiseForNewGame, consoleCanvasView);
     dispatcher.on("observeGame", consoleView.initialiseForNewGame, consoleView);
 
     dispatcher.on("recordingGame", recordings.startRecording, recordings);
     dispatcher.on("recordingGame", headerView.recordingGame, headerView);
-    dispatcher.on("recordingGame", consoleCanvasView.initialiseForNewGame, consoleCanvasView);
     dispatcher.on("recordingGame", consoleView.initialiseForNewGame, consoleView);
 
     dispatcher.on("leaveGame", headerView.leaveGame, headerView);
 
     dispatcher.on("reconnect", authView.requestLogin, authView);
-    dispatcher.on("reconnect", consoleCanvasView.exitToLobby, consoleCanvasView);
     dispatcher.on("reconnect", consoleView.exitToLobby, consoleView);
 
-    dispatcher.on("focusConsole", consoleCanvasView.giveKeyboardFocus, consoleCanvasView);
     dispatcher.on("focusConsole", consoleView.giveKeyboardFocus, consoleView);
 
     dispatcher.on("showSeedPopup", popups.seedView.showSeedPopup, popups.seedView);
 
-    dispatcher.on("brogue", consoleCanvasView.queueUpdateCellModelData, consoleCanvasView);
     dispatcher.on("brogue", consoleView.queueUpdateCellModelData, consoleView);
 
-    dispatcher.on("meta", consoleCanvasView.processServerMetadataUpdate, consoleCanvasView);
     dispatcher.on("meta", consoleView.processServerMetadataUpdate, consoleView);
 
     // set up routes for the messages from the websocket connection (only)
@@ -296,7 +258,6 @@ require([
     
     // responsive resizing
     var throttledResize = _.debounce(function(){
-            consoleCanvasView.resize();
             consoleView.resize();
         }, 100);
     $(window).resize(throttledResize);
@@ -306,9 +267,6 @@ require([
         window.visualViewport.addEventListener('scroll', dPadVisibilityButton.positionDPad.bind(dPadVisibilityButton));
         window.visualViewport.addEventListener('resize', dPadVisibilityButton.positionDPad.bind(dPadVisibilityButton));
         window.addEventListener('scroll', dPadVisibilityButton.positionDPad.bind(dPadVisibilityButton));
-        window.visualViewport.addEventListener('scroll', dPadVisibilityButtonCanvas.positionDPad.bind(dPadVisibilityButtonCanvas));
-        window.visualViewport.addEventListener('resize', dPadVisibilityButtonCanvas.positionDPad.bind(dPadVisibilityButtonCanvas));
-        window.addEventListener('scroll', dPadVisibilityButtonCanvas.positionDPad.bind(dPadVisibilityButtonCanvas));
     } 
 
     activate.endLoading();

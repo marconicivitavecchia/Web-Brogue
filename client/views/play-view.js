@@ -58,13 +58,6 @@ define([
 
             if(code in variantLookup.variants) {
 
-                if(event.target.id.includes("tiles")) {
-                    activate.selectTilesConsole(true);
-                }
-                else {
-                    activate.selectTilesConsole(false);
-                }
-
                 if(event.target.id.includes("seed")) {
                     dispatcher.trigger("showSeedPopup", code);
                 }

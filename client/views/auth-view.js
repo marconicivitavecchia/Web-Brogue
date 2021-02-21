@@ -77,7 +77,7 @@ define([
                 $('#auth-message')
                     .removeClass()
                     .addClass("error")
-                    .html("Username or password cannot be blank");
+                    .html("Please fill in all the boxes.");
                 return;
             }
 

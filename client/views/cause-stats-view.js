@@ -65,6 +65,7 @@ define([
 
         render: function() {
 
+            document.getElementById("death-cause-name").textContent = this.variantName;
             $("#cause-stats-grid").append(this.grid.render().$el);
             return this;
         },
@@ -74,8 +75,11 @@ define([
         },
 
         setDefaultVariantCauses: function() {
-            this.model.setVariantForCauseStats(_.findWhere(_.values(variantLookup.variants), {default: true}).code);
+            var code = _.findWhere(_.values(variantLookup.variants), {default: true}).code;
+            this.variantName = variantLookup.variants[code].display;
+            this.model.setVariantForCauseStats(code);
             this.model.fetch();
+            this.render();
         },
 
         selectAllCausesOptions: function(event) {
@@ -95,8 +99,10 @@ define([
             var code = event.target.id.substring(codeAfterHyphenIndex + 1);
 
             if(code in variantLookup.variants) {
+                this.variantName = variantLookup.variants[code].display;
                 this.model.setVariantForCauseStats(code);
                 this.model.fetch();
+                this.render();
             }
         }
     });

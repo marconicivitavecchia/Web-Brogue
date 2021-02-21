@@ -28,7 +28,10 @@ define([
 
             var parsedData = _.pick(data, 'totalGames', 'totalEasyModeGames', 'totalNormalModeVictories', 'totalNormalModeSuperVictories', 'totalLumenstones', 'totalLevels');
             if(data.lastVictory.date !== 'Never') {
-                parsedData.lastVictoryDate = Moment(data.lastVictory.date).format('MMMM Do YYYY, h:mm:ss a');
+                var date = Moment(data.lastVictory.date);
+                parsedData.lastVictoryDate = (date.format('YYYY') == Moment().format('YYYY') ? 
+                    date.format('MMM DD, h a') :
+                    date.format('MMM DD, YYYY, h a'));
             }
             else {
                 parsedData.lastVictoryDate = data.lastVictory.date;
@@ -37,7 +40,10 @@ define([
             parsedData.lastVictoryUser = data.lastVictory.username;
 
             if(data.lastStreak.date !== 'Never') {
-                parsedData.lastStreakDate = Moment(data.lastStreak.date).format('MMMM Do YYYY, h:mm:ss a');
+                var date = Moment(data.lastStreak.date);
+                parsedData.lastStreakDate = (date.format('YYYY') == Moment().format('YYYY') ? 
+                    date.format('MMM DD, h a') :
+                    date.format('MMM DD, YYYY, h a'));
                 parsedData.lastStreakUser = data.lastStreak.username;
                 parsedData.lastStreakLength = data.lastStreak.length;
             }

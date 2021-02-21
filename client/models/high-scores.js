@@ -28,7 +28,16 @@ define([
         },
 
         formatDate: function(date) {
-            return Moment(date).format('MMMM Do YYYY, h:mm:ss a');
+            var d0 = Moment();
+            var d1 = Moment(date);
+            // same day: only show the time
+            if (d1.format('YYYY-MM-DD') == d0.format('YYYY-MM-DD'))
+                return d1.format('LT');
+            // same year, or less than 6 months ago: show month and day
+            if (d1.format('YYYY') == d0.format('YYYY') || d0.diff(d1, 'days') < 180)
+                return d1.format('MMM DD');
+            // show month, day, year
+            return d1.format('ll');
         },
 
         lookupVariant: function(variant) {
@@ -70,12 +79,12 @@ define([
         setUserScoresForPreviousDays: function(days) {
             this.url = 'api/games/' + this.username + '?previousdays=' + days;
             this.state.sortKey = "date";
-            this.scoresTypeSelected = "User " + this.username + " scores for " + days + "previous days.";
+            this.scoresTypeSelected = "Player " + this.username + "'s scores for " + days + "previous days.";
         },
         setAllTopScores: function(filterByUser) {
             if(filterByUser) {
                 this.url = 'api/games?username=' + this.username;
-                this.scoresTypeSelected = "User " + this.username + " all scores";
+                this.scoresTypeSelected = "Player " + this.username + "'s top scores";
             }
             else {
                 this.url = 'api/games';
@@ -86,7 +95,7 @@ define([
         setUserTopScores: function() {
             this.url = 'api/games/' + this.username;
             this.state.sortKey = "score";
-            this.scoresTypeSelected = "User " + this.username + " all scores";
+            this.scoresTypeSelected = "Player " + this.username + "'s top scores";
         },
         setDailyTopScores: function() {
             this.url = 'api/dailygames';
@@ -101,7 +110,7 @@ define([
         setVariantTopScores: function(variantCode, filterByUser) {
             if(filterByUser) {
                 this.url = 'api/games?variant=' + variantCode + '&username=' + this.username;
-                this.scoresTypeSelected = "User " + this.username + " scores for " + this.lookupVariant(variantCode);
+                this.scoresTypeSelected = "Player " + this.username + "'s scores for " + this.lookupVariant(variantCode);
             }
             else {
                 this.url = 'api/games?variant=' + variantCode;

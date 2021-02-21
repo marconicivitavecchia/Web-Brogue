@@ -28,17 +28,72 @@ Table Of Contents
 body {
     margin: 0;
     padding: 0;
-    background-color: #000000;
-    font-family: Source Code Pro, monospace;
-    color: #ffffff;
+    background-color: black;
+    font-family: Rubik, "Source Sans Pro", Arial, Helvetica, sans-serif;
+    font-size: 110%;
+    line-height: 1.3;
+    color: #bbbbbb;
+    background-color: #101010;
+    width: 100vw;
+    overflow-x: hidden;
 }
 
-a {
-    color: #aaaaaa;
+h1, h2, h3 {
+    font-family: Fondamento, "Source Sans Pro", Arial, Helvetica, sans-serif;
+    color: #db1d1d;
+    margin: 0.5em 0 0.3em 0;
 }
 
-a:hover {
-    color: #ffffff;
+ul, ol {
+    margin: 0.2em 0;
+}
+
+li {
+    margin: 0.2em 0;
+}
+
+a, a:visited {
+    color: inherit;
+    text-decoration: underline #80addb;
+}
+
+a:hover, a:active {
+    color: #61b0ff;
+}
+
+* {
+    scrollbar-color: #263e52 #0f1418;
+    word-wrap: break-word;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 16px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0f1418;
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #263e52;
+    border-radius: 8px;
+    border: 2px solid #0f1418;
+}
+
+::-webkit-scrollbar-corner {
+    background-color: #0f1418;
+}
+
+*::-moz-selection {
+    color: white;
+    background: #3c58a5;
+}
+
+*::selection {
+    color: white;
+    background: #3c58a5;
 }
 
 /* 0.2 Control Styles ---------------*/
@@ -57,8 +112,15 @@ label {
 
 input {
     display: block;
-    margin-bottom: 10px;
+    margin-bottom: 0.7em;
+    color: white;
+    background-color: #406080;
+    border: 1px solid #80addb;
+    font-family: inherit;
+}
 
+input::placeholder {
+    color: #80addb;
 }
 
 input[type="radio"] {
@@ -67,25 +129,80 @@ input[type="radio"] {
 
 button {
     display: block;
+    color: white;
+    background-color: #406080;
+    border: 1px solid #80addb;
+    font-family: inherit;
+}
+
+button:hover {
+    border-color: white;
+    background-color: #6090c0;
+}
+
+
+th, td {
+    padding: 0.1em 0.5em;
+    text-align: left;
 }
 
 /*=====================================
  * 1.0 Lobby
  *===================================*/
 
-.loading {
+.header {
+    margin: 0;
     text-align: center;
+    color: #999999;
+    background-color: #102030;
 }
 
-.header {
-    margin: 0 2.5%;
-    text-align: right;
+.lobby-top {
+    display: flex;
+    flex-direction: row;
+    background-color: #202020;
+    background-image: url(./assets/corridor.jpg);
+    background-position: 50% 10%;
+    background-repeat: no-repeat;
+    background-size: 100vw 30vw;
+    background-attachment: local;
+    min-height: 15vw;
+}
+
+.banner-container {
+    flex: auto;
+    max-width: 70vw;
+    margin: auto;
+    padding: 1em;
 }
 
 .banner {
     display: block;
     width: 100%;
-    margin: 1em 0 0 0;
+    max-width: 561px;
+    margin: auto;
+}
+
+.lobby-main {
+    display: flex;
+    flex-direction: row;
+}
+
+.lobby-left {
+    flex: none;
+    background-color: #102030;
+    width: 20vw;
+    min-width: 20em;
+}
+
+.lobby-right {
+    flex: auto;
+    min-width: 30em;
+}
+
+.loading {
+    margin: 3em;
+    text-align: center;
 }
 
 .auth,
@@ -99,22 +216,11 @@ button {
 .users-page,
 .server-statistics,
 .user-statistics {
-    margin: 0 2.5%;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    word-wrap: break-word;
+    margin: 0 1em;
 }
 
-.auth,
-.play,
-.about,
-.lobby-chat {
-    width: 375px;
-}
-
-.auth form {
-    width: 100%;
-    margin: 0 auto;
+.about p, .about ul {
+    font-size: 80%;
 }
 
 .auth input {
@@ -125,9 +231,8 @@ button {
     float: right;
 }
 
-.lobby-chat form {
-    width: 100%;
-    margin: 0 auto;
+.lobby-chat {
+    max-width: 25em;
 }
 
 .lobby-chat input {
@@ -135,48 +240,27 @@ button {
 }
 
 .lobby-chat button {
-    float: right;
+    margin-left: auto;
 }
 
-.lobby-chat-messages {
+.lobby-chat-messages,
+.console-chat-messages {
     list-style-type: none;
     padding: 0;
     margin: 0;
-    height: 20vh;
-    max-height: 20vh;
     overflow: auto;
     font-size: 75%;
+    border: 1px solid #35485a;
+    background-color: #00000060;
 }
 
-.current-games,
-.mini-scores,
-.all-scores,
-.users-page {
-    width: 100%;
-}
-
-.current-games table,
-.mini-scores table,
-.all-scores table,
-.users-page table {
-    width: 100%;
+.lobby-chat-messages {
+    height: 15em;
+    max-height: 15em;
 }
 
 .server-statistics table {
     width: auto;
-}
-
-.current-games th,
-.current-games td,
-.mini-scores th,
-.mini-scores td,
-.all-scores th,
-.all-scores td,
-.users-page th,
-.users-page td,
-.server-statistics th,
-.server-statistics td {
-    text-align: left;
 }
 
 .ac-result {
@@ -187,50 +271,46 @@ button {
     color: #ff0000;
 }
 
-@media screen and (min-width: 700px) {
-    .banner {
-        width: auto;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .auth,
-    .play,
-    .lobby-chat,
-    .about {
-        float: left;
-        clear: left;
-    }
-
-    .auth form {
-        margin: 0 10%;
-    }
-
-    .auth.logged-in {
-        float: none;
-        clear: both;
-        width: auto;
-        text-align: right;
-    }
-
-    .current-games,
-    .mini-scores,
-    .site-news,
-    .all-scores,
-    .users-page {
-        margin: 0 2.5% 0 7.5%;
-        padding-left: 400px;
-        /* accounts for margin */
-        width: 90%;
-    }
-
-    .server-statistics,
-    .user-statistics {
-        margin: 0 2.5% 0 7.5%;
-        padding-left: 400px;
-    }
+.with-tooltip {
+    display: inline;
 }
 
+.with-tooltip:before {
+    visibility: hidden;
+    content: attr(tooltip);
+    position: absolute;
+    color: #aaaaaa;
+    background-color: #222222;
+    border: 1px solid #555555;
+    padding: 0 0.3em;
+    border-radius: 0.3em;
+    transform: translateX(-100%) translate(1.8em, -1.8em);
+}
+
+.with-tooltip:hover:before {
+    visibility: visible;
+}
+
+#current-games-table,
+#all-scores-grid,
+#mini-scores-grid,
+#user-stats-scores-grid {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+@media screen and (max-width:50em) {
+    .lobby-main {
+        flex-direction: column;
+    }
+    .lobby-right,
+    .lobby-left {
+        background-color: inherit;
+        width: 100%;
+        min-width: 100%;
+    }
+}
 
 
 /*=====================================
@@ -239,12 +319,8 @@ button {
 
 .console-wrapper {
     position : relative;
-    box-sizing : border-box;
-    -moz-box-sizing: border-box;
     overflow : hidden;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
+    user-select: none;
     outline: none;
     height: 95vh;
 }
@@ -252,99 +328,82 @@ button {
 .console {
     outline: none;
     position : relative;
-    box-sizing : border-box;
-    -moz-box-sizing: border-box;
     overflow : hidden;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
-    outline: none;
-}
-
-.console-canvas {
-    position : absolute;
-    box-sizing : border-box;
-    -moz-box-sizing: border-box;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    overflow : hidden;
-    font-family: Source Code Pro, monospace;
-    -moz-user-select: none;
-    -webkit-user-select: none;
-    -ms-user-select: none;
+    user-select: none;
     outline: none;
 }
 
 .console-holder {
-    height: 95vh;
-    width: 100%;
+    height: calc(100vh - 1.3em);
+    margin: 0;
+    background-image: url(./assets/marble.jpg);
+    background-repeat: repeat;
 }
 
 .console.full-height {
     height : 100%;
 }
 
+.console-button-dpad,
 .console-button {
     z-index: 5000;
-    color: #fff;
+    opacity: 50%;
+    color: white;
     position: fixed;
-    bottom: "auto";
+    bottom: 0;
     left: 0;
-    top: 0;
+    width: 4rem;
+    height: 4rem;
     font-size: 2rem;
     line-height: 1;
     padding: 1rem;
-    border-radius: 0 0 0 0;
-    /* The scaling must happen about the TL corner otherwise the subsequent translation is offset by (1 - 1 / scale) * centre-origin / 2 */
-    transform-origin: 0% 0%;
     text-align: center;
 }
 
-.console-button-dpad {
-    z-index: 5000;
-    color: #fff;
-    position: fixed;
-    bottom: "auto";
-    left: 0;
-    top: 0;
-    font-size: 1rem;
-    line-height: 1;
-    padding: 1rem;
-    border-radius: 0 0 0 0;
-    /* The scaling must happen about the TL corner otherwise the subsequent translation is offset by (1 - 1 / scale) * centre-origin / 2 */
-    transform-origin: 0% 0%;
-    text-align: center;
-}
+.console-button-dpad { font-size: 1rem; width: auto; height: 3rem; }
+.console-button#console-up { bottom: 11rem; left: 4rem; }
+.console-button#console-left { bottom: 7rem; }
+.console-button#console-down { bottom: 3rem; left: 4rem; }
+.console-button#console-right { bottom: 7rem; left: 8rem; }
+.console-button#console-centre { bottom: 7rem; left: 4rem; }
+.console-button#console-up-left { bottom: 11rem; }
+.console-button#console-up-right { bottom: 11rem; left: 8rem; }
+.console-button#console-down-left { bottom: 3rem; }
+.console-button#console-down-right { bottom: 3rem; left: 8rem; }
+.console-button#console-right-right { bottom: 7rem; left: 12rem; }
+.console-button#console-up-right-right { bottom: 11rem; left: 12rem; }
+.console-button#console-down-right-right { bottom: 3rem; left: 12rem; }
 
 .console-cell {
-    font-family: BrogueCE;
+    font-family: BrogueCE, "Source Code Pro", Monaco, Consolas, Noto Sans, monospace;
     position : absolute;
     overflow: visible;
-    text-align: left;
+    text-align: center;
     cursor: default;
+    line-height: 1;
 }
 
 .console-chat {
     visibility: hidden;
     display: none;
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
     word-wrap: break-word;
-    height: 90%;
+    height: 100%;
 }
 
 .console-chat-inner {
     height: 100%;
+    padding: 1em 0.5em 0.5em 0.5em;
+    width: 25vw;
+    max-width: 25em;
 }
 
 .console-chat form {
-    width: 95%;
+    width: 100%;
     margin: 0 auto;
 }
 
 .console-chat input {
-    width: 95%;
+    width: 100%;
 }
 
 .console-chat button {
@@ -352,18 +411,18 @@ button {
     clear: left;
 }
 
-.console-chat-messages {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    overflow: auto;
-    height: calc( 100% - 100px );
-    max-height: calc( 100% - 100px );
-    font-size: 75%;
-    width: 300px;
-    box-sizing: border-box;
+.console-chat-buttons {
+    position: absolute;
+    z-index: 5000;
+    right: 1em;
+    top: 2em;
 }
 
+.console-chat-messages {
+    height: calc(100% - 10em);
+    width: 100%;
+    margin-top: 3em;
+}
 
 @media screen and (min-width: 700px) {
 
@@ -373,6 +432,7 @@ button {
         display: inherit;
     }
 }
+
 /*=====================================
  * 3.0 Popup
  *===================================*/
@@ -383,24 +443,25 @@ button {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 5px;
-    border: 3px double #ffffff;
-    background-color: #000000;
+    padding: 2em;
+    border: 1px solid white;
+    background-color: #102030;
 }
 
 .popup .close {
     position: absolute;
     top: 0;
     right: 0;
-    transform: translate(50%, -50%);
-    border: 1px solid #ffffff;
-    background-color: #000000;
-    padding-top: 2px;
-    width: 15px;
-    height: 15px;
-    line-height: 15px;
-    font-size: 12px;
+    transform: translate(30%, -30%);
+    border: 1px solid white;
+    background-color: black;
+    color: white;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    font-size: 1.5em;
     text-align: center;
+    vertical-align: middle;
     font-weight: bold;
     cursor: pointer;
 }

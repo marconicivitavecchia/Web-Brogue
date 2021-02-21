@@ -40,7 +40,6 @@ define([
 
             this.renderOptions();
             this.setDefaultDeathsProbabilityStats();
-            this.refresh();
         },
 
         renderOptions: function() {
@@ -54,13 +53,23 @@ define([
 
         render: function() {
 
+            document.getElementById("death-prob-name").textContent = this.variantName;
             $("#level-probability-grid").append(this.grid.render().$el);
 
             //Level probability chart
 
             var ctx = document.getElementById("level-probability-chart");
+            ctx.innerHTML = "<canvas></canvas>";
+            ctx = ctx.childNodes[0];
             var levelData = this.model.pluck("level");
             var probabilityData = this.model.pluck("probability");
+            if (!levelData || levelData.length < 2) {
+                ctx.style.display = "none";
+                return this;
+            }
+
+            Chart.defaults.global.defaultFontColor = '#dddddd';
+            Chart.defaults.global.defaultFontFamily = 'Rubik, "Source Sans Pro", Arial, Helvetica, sans-serif';
 
             new Chart(ctx, {
                 type: 'bar',
@@ -69,15 +78,18 @@ define([
                     datasets: [{
                         label: 'probability',
                         data: probabilityData,
-                        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-                        borderColor: 'rgba(255,99,132,1)',
+                        backgroundColor: 'rgba(255,85,85,0.4)',
+                        borderColor: '#ff3264',
                         borderWidth: 1
                     }]
                 },
                 options: {
+                    aspectRatio: 4,
                     title: {
-                        display: true,
-                        text: 'Death probability by level'
+                        display: false,
+                    },
+                    legend: {
+                        display: false,
                     },
                     scales: {
                         xAxes: [{
@@ -87,12 +99,16 @@ define([
                             }
                         }],
                         yAxes: [{
+                            gridLines: {
+                                color: 'rgba(128,128,128,0.2)',
+                                zeroLineColor: 'rgba(128,128,128,0.4)'
+                            },
                             scaleLabel: {
                                 display: true,
-                                labelString: 'Frequency'
+                                labelString: 'Probability of death'
                             },
                             ticks: {
-                                beginAtZero:true
+                                beginAtZero: true
                             }
                         }]
                     }
@@ -108,8 +124,11 @@ define([
         },
 
         setDefaultDeathsProbabilityStats: function() {
-            this.model.setVariantForLevelProbabilityStats(_.findWhere(_.values(variantLookup.variants), {default: true}).code);
+            var code = _.findWhere(_.values(variantLookup.variants), {default: true}).code;
+            this.variantName = variantLookup.variants[code].display;
+            this.model.setVariantForLevelProbabilityStats(code);
             this.model.fetch();
+            this.render();
         },
         
         selectAllLevelsOptions: function(event) {
@@ -129,8 +148,10 @@ define([
             var code = event.target.id.substring(codeAfterHyphenIndex + 1);
 
             if(code in variantLookup.variants) {
+                this.variantName = variantLookup.variants[code].display;
                 this.model.setVariantForLevelProbabilityStats(code);
                 this.model.fetch();
+                this.render();
             }
         }
     });

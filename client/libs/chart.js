@@ -4085,6 +4085,7 @@ module.exports = function(Chart) {
 			var options = me.options;
 			var canvas = chart.canvas;
 			var aspectRatio = (options.maintainAspectRatio && chart.aspectRatio) || null;
+			if (!canvas.parentNode) return; // to suppress spurious console errors related to responsive feature
 
 			// the canvas render width and height will be casted to integers so make sure that
 			// the canvas display style uses the same integer values to avoid blurring effect.

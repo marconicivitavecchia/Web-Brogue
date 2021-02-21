@@ -26,13 +26,19 @@ define([
                 columns: [
                     {
                         name: "username",
-                        label: "User name",
+                        label: "Player",
                         cell: "string",
-                        sortable: false,
+                        sortable: true,
                         editable: false
                     }, {
                         name: "prettyDate",
                         label: "Date",
+                        cell: "string",
+                        sortable: true,
+                        editable: false
+                    }, {
+                        name: "seed",
+                        label: "Seed",
                         cell: "string",
                         sortable: true,
                         editable: false
@@ -55,16 +61,10 @@ define([
                         sortable: true,
                         editable: false
                     }, {
-                        name: "seed",
-                        label: "Seed",
+                        name: "description",
+                        label: "Result",
                         cell: "string",
                         sortable: true,
-                        editable: false
-                    }, {
-                        name: "description",
-                        label: "Message",
-                        cell: "string",
-                        sortable: false,
                         editable: false
                     }, {
                         name: "recording",
