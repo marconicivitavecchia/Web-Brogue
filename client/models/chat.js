@@ -23,7 +23,7 @@ define([
         },
 
         addChatMessageWithThisUserAndTime: function(message) {
-            this.addChatMessageWithUserAndTime(this.get("username"), message);
+            this.addChatMessageWithUserAndTime(this.get("username"), message.replace(/&/g, '&amp;').replace(/</g, '&lt;'));
         },
 
         addChatMessageWithUserAndTime: function(username, message) {
