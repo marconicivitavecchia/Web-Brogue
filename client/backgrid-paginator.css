@@ -7,9 +7,6 @@
 */
 
 .backgrid-paginator {
-  width: 50vw;
-  max-width: 50em;
-  text-align: center;
   border-top: none;
   -webkit-border-radius: 0 0 4px 4px;
      -moz-border-radius: 0 0 4px 4px;
@@ -23,6 +20,8 @@
   display: inline-block;
   *display: inline;
   margin: 5px 0;
+  padding-left: 2em;
+  text-align: center;
   *zoom: 1;
 }
 

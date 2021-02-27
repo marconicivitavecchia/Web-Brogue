@@ -23,7 +23,7 @@ define([
         },
 
         addChatMessageWithThisUserAndTime: function(message) {
-            this.addChatMessageWithUserAndTime(this.get("username"), message);
+            this.addChatMessageWithUserAndTime(this.get("username"), message.replace(/&/g, '&amp;').replace(/</g, '&lt;'));
         },
 
         addChatMessageWithUserAndTime: function(username, message) {
@@ -38,7 +38,7 @@ define([
             return "[" + this.formatDate(new Date()) + " " + message + "]";
         },
         formatChatMessage: function(username, date, message) {
-            return "(" + this.formatDate(date) + ") " + username + ": " + message;
+            return "(" + this.formatDate(date) + ") " + this.colorize(username) + ": " + message;
         },
         formatDate: function(date) {
 
@@ -51,6 +51,33 @@ define([
 
             formattedDate += Moment(date).format('HH:mm');
             return formattedDate;
+        },
+
+        colorize: function(str) {
+            // string hash (FNV-1a)
+            let hash = 2166136261;
+            const s = str + 'abcd';
+            for (let i = 0; i < s.length; ++i) {
+                hash = ((hash ^ s.charCodeAt(i)) * 16777619) >>> 0;
+            }
+            // random color in linear RGB (range 0..1)
+            let r = 0.001 + (hash % 1000) / 1000;
+            let g = 0.001 + ((hash >>> 10) % 1000) / 1000;
+            let b = 0.001 + ((hash >>> 20) % 1000) / 1000;
+            // enforce a specific brightness
+            while (true) {
+                luma = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+                if (luma >= 0.55 && luma <= 0.65) break;
+                k = 0.6 / luma;
+                r = Math.min(1, r * k);
+                g = Math.min(1, g * k);
+                b = Math.min(1, b * k);
+            }
+            // gamma-compressed RGB (range 0..255)
+            const R = Math.round(255 * Math.pow(r, 0.4545));
+            const G = Math.round(255 * Math.pow(g, 0.4545));
+            const B = Math.round(255 * Math.pow(b, 0.4545));
+            return '<span style="color:rgb(' + R + ',' + G + ',' + B + ')">' + str + '</span>';
         },
 
         setUsername: function(username) {

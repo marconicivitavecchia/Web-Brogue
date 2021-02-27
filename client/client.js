@@ -11,8 +11,7 @@ require.config({
         backgrid: "libs/backgrid",
         backgridPaginator: "libs/backgrid-paginator",
         io: "socket.io/socket.io.js",
-        chart: "libs/chart",
-        rot: "libs/rot"
+        chart: "libs/chart"
     },
     shim: {
         'backbone': {
