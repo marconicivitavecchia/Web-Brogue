@@ -22,6 +22,7 @@ define([
     // See BrogueCode/rogue.h for all brogue event definitions
     var KEYPRESS_EVENT_CHAR = 0;
     var REFRESH_EVENT_CHAR = 50;
+    var QUERY_GRAPHICS_EVENT_CHAR = 51;
 
     var Console = Backbone.View.extend({
         el: "#console",
@@ -168,6 +169,9 @@ define([
             this.consoleRows = this.variant.consoleRows;
             this.initializeConsoleCells();
             this.resize();
+
+            //Query whether to use graphics. If the game supports this query it will reply and follow the usual switch route
+            sendKeypressEvent(QUERY_GRAPHICS_EVENT_CHAR, 0, 0, 0);
         },
 
         initializeConsoleCells: function() {
