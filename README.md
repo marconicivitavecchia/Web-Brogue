@@ -1,7 +1,7 @@
 Web Brogue
 ==========
 
-A web server for playing the Brogue over the internet.  Brogue is a game for Mac OS X, Windows, and Linux by Brian Walker.  For more information go https://sites.google.com/site/broguegame/.  The server only can be run on a POSIX environment at the moment.
+A web[sockets] server for playing the Brogue over the internet.  Brogue is a game for Mac OS X, Windows, and Linux by Brian Walker.  For more information go https://sites.google.com/site/broguegame/.  The server only can be run on a POSIX environment at the moment.
 
 Build Instructions
 -----------------------
@@ -20,6 +20,7 @@ Brogue binaries are either compiled and referenced in place, or stored in the `b
 * Brogue (1.7.5): `cd brogue-1.7.5` `make web`
 * gBrogue: `cd gbrogue` `make -f Makefile.linux web`
 * unBrogue: `cd unBrogue` `make web`
+* broguePlus: `cd brogueplus` `make web`
 * Brogue CE (1.8): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue`. `make bin/brogue` then copy binary to `binaries/brogue-ce18`
 * Brogue CE (1.9): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v19`. `make bin/brogue` then copy binary to `binaries/brogue-ce19-c813284` (or similar filename)
 
@@ -47,12 +48,3 @@ In particular, make sure to get the client and server to agree on the websocketP
 Tests
 ----------------------------
 An API test suite can be run using `npm test` in the `server` directory.
-
-Upgrade notes
---------------------------------
-
-If you have been running an older version of the server and are upgrading to a version with variant support (from 03b2d80 onward) you need to patch the DB to add the correct variant to existing entries:
-
-```
-db.gamerecords.update({variant: { $exists: false }}, { $set: { variant: "BROGUEV174" } }, {multi: true})
-```
