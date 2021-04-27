@@ -54,6 +54,12 @@ define([
                 display: "unBrogue v1.1.6",
                 consoleColumns: 100,
                 consoleRows: 34
+            },
+            "BROGUEPLUSV1741": {
+                code: "BROGUEPLUSV1741",
+                display: "Brogue+ v1.7.4.1",
+                consoleColumns: 100,
+                consoleRows: 34
             }
         }
     };

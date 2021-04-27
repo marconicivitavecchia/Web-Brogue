@@ -2431,21 +2431,23 @@ void executeKeystroke(signed long keystroke, boolean controlKey, boolean shiftKe
 		case REST_KEY:
 		case PERIOD_KEY:
 		case NUMPAD_5:
+        case SEARCH_KEY:
 			considerCautiousMode();
 			rogue.justRested = true;
 			recordKeystroke(REST_KEY, false, false);
+			search(rogue.awarenessBonus < 0 ? 40 : 80);
 			playerTurnEnded();
 			break;
 		case AUTO_REST_KEY:
 			rogue.justRested = true;
 			autoRest();
 			break;
-		case SEARCH_KEY:
+		/*case SEARCH_KEY:
 			recordKeystroke(SEARCH_KEY, false, false);
 			considerCautiousMode();
 			search(rogue.awarenessBonus < 0 ? 40 : 80);
 			playerTurnEnded();
-			break;
+			break;*/
 		case INVENTORY_KEY:
 			displayInventory(ALL_ITEMS, 0, 0, true, true);
 			break;
@@ -4113,6 +4115,9 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
 	};
 	const char statusStrings[NUMBER_OF_STATUS_EFFECTS][COLS] = {
         "Donning Armor",
+        "Petrifying",   //new
+        "Respiring",    //new
+        "Slipping",     //new
 		"Weakened: -",
 		"Telepathic",
 		"Hallucinating",
@@ -4136,6 +4141,8 @@ short printMonsterInfo(creature *monst, short y, boolean dim, boolean highlight)
 		"Lifespan",
 		"Shielded",
         "Invisible",
+        "", // STATUS_AGGRAVATING
+        "", // STATUS_ENRAGED
 	};
 	
 	if (y >= ROWS - 1) {

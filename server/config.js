@@ -7,6 +7,13 @@ var config = {
         HTTP : 8080
     },
     brogueVariants : {
+        "BROGUEPLUSV1741": {
+            binaryPath: "brogueplus/bin/brogue",
+            version: "1.7.4.1",
+            versionGroup: "1.7.4.1",
+            modernCmdLine: false,    //Uses v1.8.x+ standard command line
+            supportsDownloads: true //Replays should work with desktop version
+        },
         "BROGUECEV19": {
             binaryPath: "binaries/brogue-ce193-d22c4a1",
             version: "1.9.3",
