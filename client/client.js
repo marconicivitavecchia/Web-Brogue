@@ -148,7 +148,7 @@ require([
     var centreArrowView = new DPadButtonView({el: "#console-centre", model: new DPadButtonModel({ keyToSend: 53 })});
     var downRightRightZView = new DPadButtonView({el: "#console-down-right-right", model: new DPadButtonModel({ keyToSend: "Z".charCodeAt(0) })});
     var rightRightXView = new DPadButtonView({el: "#console-right-right", model: new DPadButtonModel({ keyToSend: "x".charCodeAt(0) })});
-    var upRightRightIView = new DPadButtonView({el: "#console-up-right-right", model: new DPadButtonModel({ keyToSend: "S".charCodeAt(0) })});
+    var upRightRightIView = new DPadButtonView({el: "#console-up-right-right", model: new DPadButtonModel({ keyToSend: "s".charCodeAt(0) })});
     var upupRightRightView = new DPadButtonView({el: "#console-up-up-right-right", model: new DPadButtonModel({ keyToSend: 13 })});
     var upupRightView = new DPadButtonView({el: "#console-up-up-right", model: new DPadButtonModel({ keyToSend: "i".charCodeAt(0) })});
     var upupLeftESCView = new DPadButtonView({el: "#console-up-up-left", model: new DPadButtonModel({ keyToSend: "a".charCodeAt(0) })});
