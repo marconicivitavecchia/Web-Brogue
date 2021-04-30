@@ -286,16 +286,42 @@ describe("stats/general", function(){
 
     beforeEach(function(done) {
 
-        var gameRecord1 = {
-            username: "xxx",
-            date: new Date("2012-06-26T07:56:00.123Z"),
-            score: 100,
-            seed: 200,
-            level: 26,
-            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+        var gameRecord5 = {
+            username: "yyy",
+            date: new Date("2011-05-25T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
             easyMode: false,
-            description: "Escaped the Dungeons of Doom!",
-            recording: "file1",
+            description: "Mastered the Dungeons of Doom!",
+            recording: "file5",
+            variant: "BROGUE"
+        };
+
+        var gameRecord4 = {
+            username: "yyy",
+            date: new Date("2011-05-26T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly",
+            recording: "file4",
+            variant: "BROGUE"
+        };
+        
+        var gameRecord3 = {
+            username: "yyy",
+            date: new Date("2011-05-27T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Mastered the Dungeons of Doom!",
+            recording: "file3",
             variant: "BROGUE"
         };
 
@@ -312,43 +338,43 @@ describe("stats/general", function(){
             variant: "BROGUE"
         };
 
-        var gameRecord3 = {
+        var gameRecord9 = {
             username: "yyy",
-            date: new Date("2011-05-27T07:56:00.123Z"),
+            date: new Date("2011-06-29T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped the Dungeons of Doom!",
+            recording: "file2",
+            variant: "BROGUE"
+        };
+
+       
+        var gameRecord8 = {
+            username: "xxx",
+            date: new Date("2010-05-25T07:56:00.123Z"),
+            score: 150,
+            seed: 250,
+            level: 40,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped the Dungeons of Doom!",
+            recording: "file8",
+            variant: "BROGUE"
+        };
+
+        var gameRecord7 = {
+            username: "xxx",
+            date: new Date("2010-05-26T07:56:00.123Z"),
             score: 150,
             seed: 250,
             level: 40,
             result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
             easyMode: false,
             description: "Mastered the Dungeons of Doom!",
-            recording: "file3",
-            variant: "BROGUE"
-        };
-
-        var gameRecord4 = {
-            username: "yyy",
-            date: new Date("2011-05-26T07:56:00.123Z"),
-            score: 150,
-            seed: 250,
-            level: 40,
-            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
-            easyMode: false,
-            description: "Killed by a pink jelly",
-            recording: "file4",
-            variant: "BROGUE"
-        };
-
-
-        var gameRecord5 = {
-            username: "yyy",
-            date: new Date("2011-05-25T07:56:00.123Z"),
-            score: 150,
-            seed: 250,
-            level: 40,
-            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
-            easyMode: false,
-            description: "Mastered the Dungeons of Doom!",
-            recording: "file5",
+            recording: "file7",
             variant: "BROGUE"
         };
 
@@ -365,35 +391,21 @@ describe("stats/general", function(){
             variant: "BROGUE"
         };
 
-
-        var gameRecord7 = {
+        var gameRecord1 = {
             username: "xxx",
-            date: new Date("2010-05-26T07:56:00.123Z"),
-            score: 150,
-            seed: 250,
-            level: 40,
-            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
-            easyMode: false,
-            description: "Mastered the Dungeons of Doom!",
-            recording: "file7",
-            variant: "BROGUE"
-        };
-
-        var gameRecord8 = {
-            username: "xxx",
-            date: new Date("2010-05-25T07:56:00.123Z"),
-            score: 150,
-            seed: 250,
-            level: 40,
+            date: new Date("2012-06-26T07:56:00.123Z"),
+            score: 100,
+            seed: 200,
+            level: 26,
             result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
             easyMode: false,
-            description: "Mastered the Dungeons of Doom!",
-            recording: "file8",
+            description: "Escaped the Dungeons of Doom!",
+            recording: "file1",
             variant: "BROGUE"
         };
 
 
-        gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4, gameRecord5, gameRecord6, gameRecord7, gameRecord8], function() {
+        gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4, gameRecord5, gameRecord6, gameRecord7, gameRecord8, gameRecord9], function() {
             done();
         });
     });
@@ -423,9 +435,22 @@ describe("stats/general", function(){
             .set('Accept', 'application/json')
             .end(function(err, res) {
                 var bodyObj = JSON.parse(res.text);
-                expect(bodyObj).to.have.deep.property('lastStreak.date', "2011-06-28T07:56:00.123Z");
-                expect(bodyObj).to.have.deep.property('lastStreak.length', 2);
+                expect(bodyObj).to.have.deep.property('lastStreak.date', "2011-06-29T07:56:00.123Z");
+                expect(bodyObj).to.have.deep.property('lastStreak.length', 3);
                 expect(bodyObj).to.have.deep.property('lastStreak.username', "yyy");
+                done();
+            });
+    });
+
+    it("identifies mastery streaks, longest set of consecutive supervictories only", function(done) {
+        request(server)
+            .get("/api/stats/general")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var bodyObj = JSON.parse(res.text);
+                expect(bodyObj).to.have.deep.property('lastMasteryStreak.date', "2011-06-28T07:56:00.123Z");
+                expect(bodyObj).to.have.deep.property('lastMasteryStreak.length', 2);
+                expect(bodyObj).to.have.deep.property('lastMasteryStreak.username', "yyy");
                 done();
             });
     });

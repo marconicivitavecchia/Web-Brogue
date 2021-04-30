@@ -21,6 +21,30 @@ module.exports = {
 
     calculateGeneralStats: function(res, variant, username) {
     
+        let calculateVictoryStreak = function(normalModeGamesByUser, streakCondition) {
+            return _.map(normalModeGamesByUser, function (games, username) {
+                var longestStreakLastVictory;
+                var streakCounter = 0;
+                var longestStreakCounter = 0;
+    
+                var usersGames = _.sortBy(games, 'date');
+                _.each(usersGames, function(v, index) {
+                    if(streakCondition(v.result)) {
+                        streakCounter++;
+                        if(streakCounter >= longestStreakCounter) {
+                            longestStreakCounter = streakCounter;
+                            longestStreakLastVictory = v;
+                        }
+                    }
+                    else {
+                        streakCounter = 0;
+                    }
+                });
+                
+                return { username: username, longestStreak: longestStreakCounter, lastVictory: longestStreakLastVictory }
+            });
+        };
+
         const query = this.generateCalculateGeneralStatsQuery(variant, username);
         
         GameRecord.find(query).lean().exec(function (err, games) {
@@ -70,29 +94,10 @@ module.exports = {
             }
 
             var normalModeGamesByUser = _.groupBy(allNormalModeGames, 'username');
-            var victoryStreaksByUser = _.map(normalModeGamesByUser, function (games, username) {
-                var longestStreakLastVictory;
-                var streakCounter = 0;
-                var longestStreakCounter = 0;
+            var victoryStreaksByUser = calculateVictoryStreak(normalModeGamesByUser, f => f === brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY || f === brogueConstants.notifyEvents.GAMEOVER_VICTORY);
+            var masteryStreaksByUser = calculateVictoryStreak(normalModeGamesByUser, f => f === brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY);
 
-                var usersGames = _.sortBy(games, 'date');
-                _.each(usersGames, function(v, index) {
-                    if(v.result === brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY || v.result === brogueConstants.notifyEvents.GAMEOVER_VICTORY) {
-                        streakCounter++;
-                        if(streakCounter >= longestStreakCounter) {
-                            longestStreakCounter = streakCounter;
-                            longestStreakLastVictory = v;
-                        }
-                    }
-                    else {
-                        streakCounter = 0;
-                    }
-                });
-                
-                return { username: username, longestStreak: longestStreakCounter, lastVictory: longestStreakLastVictory }
-            });
-
-            var lastStreakData;
+            var lastStreakData, masteryStreakData;
 
             //Sort by longestStreak then date
             var streakData = _.filter(victoryStreaksByUser, function(v) { return v.longestStreak > 0 });
@@ -104,6 +109,17 @@ module.exports = {
             }
             else {
                 lastStreakData = { date: "Never", username: "No-one", length: 0 };
+            }
+
+            var masteryStreakData = _.filter(masteryStreaksByUser, function(v) { return v.longestStreak > 0 });
+            if(masteryStreakData.length > 0) {
+                var longestStreaks = _.sortBy( _.sortBy(masteryStreakData, function (v) { return v.lastVictory.date; } ), 'longestStreak');
+                var longestStreak = _.last(longestStreaks);
+
+                lastMasteryStreakData = { date: longestStreak.lastVictory.date, username: longestStreak.lastVictory.username, length: longestStreak.longestStreak };
+            }
+            else {
+                lastMasteryStreakData = { date: "Never", username: "No-one", length: 0 };
             }
             
             var statsSummary = {};
@@ -128,6 +144,8 @@ module.exports = {
 
             statsSummary.lastVictory = lastVictoryData;
             statsSummary.lastStreak = lastStreakData;
+            statsSummary.lastMasteryStreak = lastMasteryStreakData;
+
 
             res.json(statsSummary);
         });

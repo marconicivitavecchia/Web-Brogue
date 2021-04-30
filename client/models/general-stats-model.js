@@ -21,6 +21,9 @@ define([
                 lastStreakDate: '',
                 lastStreakLength: '',
                 lastStreakUser: '',
+                lastMasteryStreakDate: '',
+                lastMasteryStreakLength: '',
+                lastMasteryStreakUser: '',
                 variantName: ''
             }
         },
@@ -51,6 +54,20 @@ define([
                 parsedData.lastStreakDate = data.lastStreak.date;
                 parsedData.lastStreakUser = data.lastStreak.username;
                 parsedData.lastStreakLength = "None";
+            }
+
+            if(data.lastMasteryStreak.date !== 'Never') {
+                var date = Moment(data.lastMasteryStreak.date);
+                parsedData.lastMasteryStreakDate = (date.format('YYYY') == Moment().format('YYYY') ? 
+                    date.format('MMM DD, h a') :
+                    date.format('MMM DD, YYYY, h a'));
+                parsedData.lastMasteryStreakUser = data.lastMasteryStreak.username;
+                parsedData.lastMasteryStreakLength = data.lastMasteryStreak.length;
+            }
+            else {
+                parsedData.lastMasteryStreakDate = data.lastMasteryStreak.date;
+                parsedData.lastMasteryStreakUser = data.lastMasteryStreak.username;
+                parsedData.lastMasteryStreakLength = "None";
             }
 
             return parsedData;
