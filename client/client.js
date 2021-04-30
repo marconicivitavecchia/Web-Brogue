@@ -146,9 +146,14 @@ require([
     var leftArrowView = new DPadButtonView({el: "#console-left", model: new DPadButtonModel({ keyToSend: 63234 })});
     var upLeftArrowView = new DPadButtonView({el: "#console-up-left", model: new DPadButtonModel({ keyToSend: 121 })});
     var centreArrowView = new DPadButtonView({el: "#console-centre", model: new DPadButtonModel({ keyToSend: 53 })});
-    var upRightRightIView = new DPadButtonView({el: "#console-up-right-right", model: new DPadButtonModel({ keyToSend: "i".charCodeAt(0) })});
-    var rightRightXView = new DPadButtonView({el: "#console-right-right", model: new DPadButtonModel({ keyToSend: "x".charCodeAt(0) })});
     var downRightRightZView = new DPadButtonView({el: "#console-down-right-right", model: new DPadButtonModel({ keyToSend: "Z".charCodeAt(0) })});
+    var rightRightXView = new DPadButtonView({el: "#console-right-right", model: new DPadButtonModel({ keyToSend: "x".charCodeAt(0) })});
+    var upRightRightIView = new DPadButtonView({el: "#console-up-right-right", model: new DPadButtonModel({ keyToSend: "S".charCodeAt(0) })});
+    var upupRightRightView = new DPadButtonView({el: "#console-up-up-right-right", model: new DPadButtonModel({ keyToSend: 13 })});
+    var upupRightView = new DPadButtonView({el: "#console-up-up-right", model: new DPadButtonModel({ keyToSend: "i".charCodeAt(0) })});
+    var upupLeftESCView = new DPadButtonView({el: "#console-up-up-left", model: new DPadButtonModel({ keyToSend: "a".charCodeAt(0) })});
+    var upupView = new DPadButtonView({el: "#console-up-up", model: new DPadButtonModel({ keyToSend: "t".charCodeAt(0) })});
+    var upupupLeftESCView = new DPadButtonView({el: "#console-up-up-up-left", model: new DPadButtonModel({ keyToSend: 27 })});
 
     // use dispatcher to co-ordinate multi-view/service actions on routed commands
     // direct calls to activate should be replaced by this mechanism
