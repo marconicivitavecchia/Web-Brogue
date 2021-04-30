@@ -380,7 +380,7 @@ th, td {
     transform-origin: 0% 0%;
     text-align: center;
 }
-
+/*
 .console-button#console-up { bottom: 11rem; left: 1rem; }
 .console-button#console-left { bottom: 7rem; }
 .console-button#console-down { bottom: 3rem; left: 1rem; }
@@ -393,7 +393,7 @@ th, td {
 .console-button#console-right-right { bottom: 7rem; left: 3rem; }
 .console-button#console-up-right-right { bottom: 11rem; left: 3rem; }
 .console-button#console-down-right-right { bottom: 3rem; left: 3rem; }
-
+*/
 .console-cell {
     font-family: BrogueCE, "Source Code Pro", Monaco, Consolas, Noto Sans, monospace;
     position : absolute;

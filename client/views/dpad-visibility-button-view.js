@@ -53,7 +53,7 @@ define([
                 let thisButtonRect = dPadButtonElement.getBoundingClientRect();
 
                 let translateX = visualViewport.offsetLeft + dPadLeftOffset + buttonLeftOffset + (buttonRect.width - thisButtonRect.width) / 2;
-                let translateY = visualViewport.offsetTop + dPadTopOffset + buttonTopOffset + (buttonRect.height - thisButtonRect.height) / 2;;
+                let translateY = visualViewport.offsetTop + dPadTopOffset + buttonTopOffset + (buttonRect.height - thisButtonRect.height) / 2;
 
                 applyScaledTranslation(dPadButtonElement, translateX, translateY);
             };
