@@ -343,35 +343,56 @@ th, td {
     height : 100%;
 }
 
-.console-button-dpad,
 .console-button {
     z-index: 5000;
     opacity: 50%;
     color: white;
     position: fixed;
-    bottom: 0;
+    bottom: "auto";
     left: 0;
+    top: 0;
     width: 4rem;
     height: 4rem;
     font-size: 2rem;
     line-height: 1;
     padding: 1rem;
+    border-radius: 0 0 0 0;
+    /* The scaling must happen about the TL corner otherwise the subsequent translation is offset by (1 - 1 / scale) * centre-origin / 2 */
+    transform-origin: 0% 0%;
     text-align: center;
 }
 
-.console-button-dpad { font-size: 1rem; width: auto; height: 3rem; }
-.console-button#console-up { bottom: 11rem; left: 4rem; }
+.console-button-dpad {
+    z-index: 5000;
+    opacity: 50%;
+    color: white;
+    position: fixed;
+    bottom: "auto";
+    left: 0;
+    top: 0;
+    width: auto;
+    height: 3rem;
+    font-size: 1rem;
+    line-height: 1;
+    padding: 1rem;
+    border-radius: 0 0 0 0;
+    /* The scaling must happen about the TL corner otherwise the subsequent translation is offset by (1 - 1 / scale) * centre-origin / 2 */
+    transform-origin: 0% 0%;
+    text-align: center;
+}
+
+.console-button#console-up { bottom: 11rem; left: 1rem; }
 .console-button#console-left { bottom: 7rem; }
-.console-button#console-down { bottom: 3rem; left: 4rem; }
-.console-button#console-right { bottom: 7rem; left: 8rem; }
-.console-button#console-centre { bottom: 7rem; left: 4rem; }
+.console-button#console-down { bottom: 3rem; left: 1rem; }
+.console-button#console-right { bottom: 7rem; left: 2rem; }
+.console-button#console-centre { bottom: 7rem; left: 1rem; }
 .console-button#console-up-left { bottom: 11rem; }
-.console-button#console-up-right { bottom: 11rem; left: 8rem; }
+.console-button#console-up-right { bottom: 11rem; left: 2rem; }
 .console-button#console-down-left { bottom: 3rem; }
-.console-button#console-down-right { bottom: 3rem; left: 8rem; }
-.console-button#console-right-right { bottom: 7rem; left: 12rem; }
-.console-button#console-up-right-right { bottom: 11rem; left: 12rem; }
-.console-button#console-down-right-right { bottom: 3rem; left: 12rem; }
+.console-button#console-down-right { bottom: 3rem; left: 2rem; }
+.console-button#console-right-right { bottom: 7rem; left: 3rem; }
+.console-button#console-up-right-right { bottom: 11rem; left: 3rem; }
+.console-button#console-down-right-right { bottom: 3rem; left: 3rem; }
 
 .console-cell {
     font-family: BrogueCE, "Source Code Pro", Monaco, Consolas, Noto Sans, monospace;
