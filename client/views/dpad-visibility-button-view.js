@@ -86,8 +86,8 @@ define([
 
             let dPadLeftOffset = Math.max(0, (visualViewport.width - dPadWidth) * dPadOffsetLeftRatio);
 
-            let dpadRect = consoleActiveDPadButton.getBoundingClientRect();
-            applyScaledTranslation(consoleActiveDPadButton, visualViewport.offsetLeft + dPadLeftOffset, visualViewport.offsetTop + visualViewport.height - dpadRect.height);
+            let dpadActivateRect = consoleActiveDPadButton.getBoundingClientRect();
+            applyScaledTranslation(consoleActiveDPadButton, visualViewport.offsetLeft + visualViewport.width - dpadActivateRect.width, visualViewport.offsetTop + visualViewport.height - dpadActivateRect.height);
 
             let dpadButtonsTopOffset = dPadTopOffset;
             let dpadButtonsLeftOffset = dPadLeftOffset;

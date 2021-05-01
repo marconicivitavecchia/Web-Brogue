@@ -206,6 +206,7 @@ require([
 
     dispatcher.on("showConsole", activate.console, activate);
     dispatcher.on("showConsole", consoleView.resize, consoleView);
+    dispatcher.on("showConsole", dPadVisibilityButton.positionDPad, dPadVisibilityButton);
 
     dispatcher.on("showChat", consoleView.resize, consoleView);
 
