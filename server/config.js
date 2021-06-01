@@ -62,7 +62,14 @@ var config = {
             versionGroup: "1.7.4b",
             modernCmdLine: false,
             supportsDownloads: false
-        }
+        },
+        "RAPIDBROGUEV100": {
+            binaryPath: "binaries/rapid-brogue-v100",
+            version: "1.0.0",
+            versionGroup: "1.0.x",
+            modernCmdLine: true,    //Uses v1.8.x+ standard command line
+            supportsDownloads: false //Replays should work with desktop version
+        },
     },
     defaultBrogueVariant: "BROGUECEV18",
     path : {

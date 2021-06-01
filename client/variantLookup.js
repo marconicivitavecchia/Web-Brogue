@@ -22,7 +22,8 @@ define([
                 consoleColumns: 100,
                 consoleRows: 34,
                 remapGlyphs: true,
-                tiles: true
+                tiles: true,
+                disabled: true
             },
             "BROGUEV175": {
                 code: "BROGUEV175",
@@ -43,6 +44,14 @@ define([
                 consoleColumns: 100,
                 consoleRows: 34
             },
+            "RAPIDBROGUEV100": {
+                code: "RAPIDBROGUEV100",
+                display: "Rapid Brogue v1.0.0",
+                consoleColumns: 100,
+                consoleRows: 34,
+                remapGlyphs: true,
+                tiles: true,
+            },
             "GBROGUEV1180211": {
                 code: "GBROGUEV1180211",
                 display: "gBrogue v1.18.02.11",
@@ -60,7 +69,7 @@ define([
                 display: "Brogue+ v1.7.4.1",
                 consoleColumns: 100,
                 consoleRows: 34
-            }
+            },
         }
     };
     return VariantLookup;
