@@ -68,7 +68,7 @@ var config = {
             version: "1.0.0",
             versionGroup: "1.0.x",
             modernCmdLine: true,    //Uses v1.8.x+ standard command line
-            supportsDownloads: false //Replays should work with desktop version
+            supportsDownloads: true //Replays should work with desktop version
         },
     },
     defaultBrogueVariant: "BROGUECEV18",
