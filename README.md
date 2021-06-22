@@ -22,7 +22,8 @@ Brogue binaries are either compiled and referenced in place, or stored in the `b
 * unBrogue: `cd unBrogue` `make web`
 * broguePlus: `cd brogueplus` `make web`
 * Brogue CE (1.8): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue`. `make bin/brogue` then copy binary to `binaries/brogue-ce18`
-* Brogue CE (1.9): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v19`. `make bin/brogue` then copy binary to `binaries/brogue-ce19-c813284` (or similar filename)
+* Brogue CE (1.9): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v193`. `make bin/brogue` then copy binary to `binaries/brogue-ce19-c813284` (or similar filename)
+* Brogue CE (1.10): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v110`. `make bin/brogue` then copy binary to `binaries/brogue-ce110` (or similar filename)
 * Rapid Brogue: Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/rapid-brogue-v100`. `make bin/brogue` then copy binary to `binaries/rapid-brogue-v100` (or similar filename)
 
 Starting the Server
