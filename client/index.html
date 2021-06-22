@@ -99,7 +99,7 @@
             <li>
                 <a id="start-brogue-<%=i.code%>" href="#start-brogue-<%=i.code%>">Play</a> /
                 <a id="start-brogue-seed-<%=i.code%>" href="#start-broge-seed-<%=i.code%>">seed</a>
-                <%if(i.default) {%>
+                <%if(i.default || i.highlight) {%>
                     <strong><%=i.display%></strong>
                 <%} else {%>
                     <%=i.display%>

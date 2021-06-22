@@ -14,6 +14,13 @@ var config = {
             modernCmdLine: false,    //Uses v1.8.x+ standard command line
             supportsDownloads: true //Replays should work with desktop version
         },
+        "BROGUECEV110": {
+            binaryPath: "binaries/brogue-ce110",
+            version: "1.10",
+            versionGroup: "1.10.x",
+            modernCmdLine: true,    //Uses v1.8.x+ standard command line
+            supportsDownloads: true //Replays should work with desktop version
+        },
         "BROGUECEV19": {
             binaryPath: "binaries/brogue-ce193-d22c4a1",
             version: "1.9.3",

@@ -7,6 +7,15 @@ define([
     //Includes all historical variants, so the API response can be prettified
     var VariantLookup = {
         variants: {
+            "BROGUECEV110": {
+                code: "BROGUECEV110",
+                display: "BrogueCE 1.10",
+                consoleColumns: 100,
+                consoleRows: 34,
+                remapGlyphs: true,
+                tiles: true,
+                default: true
+            },
             "BROGUECEV19": {
                 code: "BROGUECEV19",
                 display: "BrogueCE 1.9.3",
@@ -14,7 +23,6 @@ define([
                 consoleRows: 34,
                 remapGlyphs: true,
                 tiles: true,
-                default: true
             },
             "BROGUECEV18": {
                 code: "BROGUECEV18",
@@ -42,7 +50,8 @@ define([
                 code: "BROGUEV174DISCORD",
                 display: "Brogue 1.7.4",
                 consoleColumns: 100,
-                consoleRows: 34
+                consoleRows: 34,
+                disabled: true
             },
             "RAPIDBROGUEV100": {
                 code: "RAPIDBROGUEV100",
@@ -51,6 +60,7 @@ define([
                 consoleRows: 34,
                 remapGlyphs: true,
                 tiles: true,
+                highlight: true
             },
             "GBROGUEV1180211": {
                 code: "GBROGUEV1180211",
