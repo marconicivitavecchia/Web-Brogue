@@ -4,6 +4,10 @@ define([
     'backbone'
 ], function($, _, Backbone) {
 
+    const TEXT_GRAPHICS = 0;
+    const TILES_GRAPHICS = 1;
+    const HYBRID_GRAPHICS = 2;
+
     const G_UP_ARROW = 128;
     const G_DOWN_ARROW = 129;
     const G_POTION = 130;
@@ -311,8 +315,45 @@ define([
         if (glyphCode >= 130) return String.fromCharCode(glyphCode - 130 + 0x4000); // graphic tiles
     }
 
+    var isEnvironmentGlyph = function(glyphCode) {
+        switch (glyphCode) {
+            // items
+            case G_AMULET: case G_ARMOR: case G_BEDROLL: case G_CHARM:
+            case G_DEWAR: case G_EGG: case G_FOOD: case G_GEM: case G_BLOODWORT_POD:
+            case G_GOLD: case G_KEY: case G_POTION: case G_RING:
+            case G_SCROLL: case G_STAFF: case G_WAND: case G_WEAPON:
+                return false;
+    
+            // creatures
+            case G_ANCIENT_SPIRIT: case G_BAT: case G_BLOAT: case G_BOG_MONSTER:
+            case G_CENTAUR: case G_CENTIPEDE: case G_DAR_BATTLEMAGE: case G_DAR_BLADEMASTER:
+            case G_DAR_PRIESTESS: case G_DEMON: case G_DRAGON: case G_EEL:
+            case G_FLAMEDANCER: case G_FURY: case G_GOBLIN: case G_GOBLIN_CHIEFTAN:
+            case G_GOBLIN_MAGIC: case G_GOLEM: case G_GUARDIAN: case G_IFRIT:
+            case G_IMP: case G_JACKAL: case G_JELLY: case G_KOBOLD:
+            case G_KRAKEN: case G_LICH: case G_MONKEY: case G_MOUND:
+            case G_NAGA: case G_OGRE: case G_OGRE_MAGIC: case G_PHANTOM:
+            case G_PHOENIX: case G_PIXIE: case G_PLAYER: case G_RAT:
+            case G_REVENANT: case G_SALAMANDER: case G_SPIDER: case G_TENTACLE_HORROR:
+            case G_TOAD: case G_TROLL: case G_UNDERWORM: case G_UNICORN:
+            case G_VAMPIRE: case G_WARDEN: case G_WINGED_GUARDIAN: case G_WISP:
+            case G_WRAITH: case G_ZOMBIE:
+                return false;
+    
+            // everything else is considered part of the environment
+            default:
+                return true;
+        }
+    }
+
     var remapGlyphs = function(glyphCode, graphics) {
-        if (graphics) {
+        if (graphics == HYBRID_GRAPHICS) {
+            if (isEnvironmentGlyph(glyphCode)) {
+                return remapGlyphsToGraphics(glyphCode);
+            }
+            return remapGlyphsToText(glyphCode);
+        }
+        else if (graphics == TILES_GRAPHICS) {
             return remapGlyphsToGraphics(glyphCode);
         }
         else {

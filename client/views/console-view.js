@@ -24,6 +24,10 @@ define([
     var REFRESH_EVENT_CHAR = 50;
     var QUERY_GRAPHICS_EVENT_CHAR = 51;
 
+    const TEXT_GRAPHICS = 0;
+    const TILES_GRAPHICS = 1;
+    const HYBRID_GRAPHICS = 2;
+
     var Console = Backbone.View.extend({
         el: "#console",
         events: {
@@ -150,7 +154,7 @@ define([
 
         initialize: function() {
             this.$el.addClass("full-height");
-            this.graphics = false;
+            this.graphics = TEXT_GRAPHICS;
         },
 
         initialiseForNewGame: function(data) {
@@ -252,7 +256,7 @@ define([
 
         processServerMetadataUpdate : function (data) {
             if('graphics' in data) {
-                this.graphics = !!data.graphics;
+                this.graphics = data.graphics;
                 sendKeypressEvent(REFRESH_EVENT_CHAR, 0, 0, 0);
             }
         },
