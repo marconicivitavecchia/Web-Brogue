@@ -70,6 +70,7 @@ define([
                 consoleRows: 34,
                 remapGlyphs: true,
                 tiles: true,
+                disabled: true
             },
             "GBROGUEV1180211": {
                 code: "GBROGUEV1180211",
