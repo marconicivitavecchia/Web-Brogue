@@ -54,6 +54,15 @@ define([
                 consoleRows: 34,
                 disabled: true
             },
+            "RAPIDBROGUEV120": {
+                code: "RAPIDBROGUEV120",
+                display: "Rapid Brogue v1.2.0",
+                consoleColumns: 100,
+                consoleRows: 34,
+                remapGlyphs: true,
+                tiles: true,
+                highlight: true
+            },
             "RAPIDBROGUEV110": {
                 code: "RAPIDBROGUEV110",
                 display: "Rapid Brogue v1.1.0",
@@ -61,7 +70,7 @@ define([
                 consoleRows: 34,
                 remapGlyphs: true,
                 tiles: true,
-                highlight: true
+                highlight: false
             },
             "RAPIDBROGUEV100": {
                 code: "RAPIDBROGUEV100",
