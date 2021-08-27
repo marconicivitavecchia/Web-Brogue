@@ -44,6 +44,14 @@ define([
             this.renderHeadingOnEmptyChange();
             
             if (data) {
+
+                // delete old rows (ordering may have changed)
+                for (var existingUserName in rowViewCollection) {
+                    rowViewCollection[existingUserName].remove();
+                    delete rowViewCollection[existingUserName];
+                }
+
+                // add new rows
                 var dataLength = data.length;
                 for (var i = 0; i < dataLength; i++) {
 
@@ -65,30 +73,16 @@ define([
                             '</path></svg>Resume';
                     }
 
-                    if (!rowViewCollection[incomingGameName]) {
-                        var rowData = _.extend(update, {
-                            action: action
-                        });
-                        
-                        var rowModel = new CurrentGamesRowModel(rowData);
-                        var newRowView = rowViewCollection[incomingGameName] = new CurrentGamesRowView({
-                            model : rowModel,
-                            id : "game-row-" + incomingGameName
-                        });
-                        this.$tableElement.append(newRowView.render().el);
-                    }
-                    else {
-                        rowViewCollection[incomingGameName].model.set(update);
-                        rowViewCollection[incomingGameName].render();
-                    }   
-                }
-            }
-            
-            // clean up stale users
-            for (var existingUserName in rowViewCollection) {
-                if (_.isEmpty(data) || !data.some(function(x) { return x.gameName === existingUserName })) {
-                    rowViewCollection[existingUserName].remove();
-                    delete rowViewCollection[existingUserName];
+                    var rowData = _.extend(update, {
+                        action: action
+                    });
+                    
+                    var rowModel = new CurrentGamesRowModel(rowData);
+                    var newRowView = rowViewCollection[incomingGameName] = new CurrentGamesRowView({
+                        model : rowModel,
+                        id : "game-row-" + incomingGameName
+                    });
+                    this.$tableElement.append(newRowView.render().el);
                 }
             }
         },

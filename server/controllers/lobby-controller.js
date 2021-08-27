@@ -54,7 +54,7 @@ _.extend(LobbyController.prototype, {
             rawLobbyData.push(thisLobbyData);
         }
 
-        rawLobbyData.sort( function( a, b ) { return b.idle - a.idle; } )
+        rawLobbyData.sort( function( a, b ) { return a.idle - b.idle; } )
         
         // In the event our periodic calling tries to send data to a closed socket
         this.sendMessage("lobby", rawLobbyData, function(err){
