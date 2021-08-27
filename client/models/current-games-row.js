@@ -17,7 +17,8 @@ define([
             deepestLevel : 0,
             seed : 0,
             gold : 0,
-            easyMode : false
+            easyMode : false,
+            gameName: ""
         },
 
         setPrettyScore : function() {

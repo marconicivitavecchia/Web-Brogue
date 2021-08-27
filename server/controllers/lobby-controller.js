@@ -37,25 +37,27 @@ _.extend(LobbyController.prototype, {
     sendAllUserData: function(){
         
         var self = this;
-        var returnLobbyData;
+        var rawLobbyData = [];
 
         for (var gameName in allUsers.users) {
 
-            // Only send data to the lobby of the users who are actually playing a game
-            if (!returnLobbyData) {
-                returnLobbyData = {};
-            }
+            // Send status of all tracked games to the lobby
 
             var userEntry = allUsers.users[gameName];
-            returnLobbyData[gameName] = userEntry.lobbyData;
-
+            var thisLobbyData = userEntry.lobbyData
+            thisLobbyData["gameName"] = gameName;
+            
             // update idle time
             var timeDiff = process.hrtime(userEntry.lastUpdateTime)[0];
-            returnLobbyData[gameName]["idle"] = timeDiff;
+            thisLobbyData["idle"] = timeDiff;
+
+            rawLobbyData.push(thisLobbyData);
         }
+
+        rawLobbyData.sort( function( a, b ) { return b.timeDiff - a.timeDiff; } )
         
         // In the event our periodic calling tries to send data to a closed socket
-        this.sendMessage("lobby", returnLobbyData, function(err){
+        this.sendMessage("lobby", rawLobbyData, function(err){
             if (!err){
                 return;
             }

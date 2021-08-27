@@ -31,6 +31,7 @@ define([
             this.model.calculateFormattedIdleTime();
             this.model.setPrettyVariant();
             this.model.setPrettyScore();
+
             this.$el.html(this.template(this.model.toJSON()));
             return this;
         },

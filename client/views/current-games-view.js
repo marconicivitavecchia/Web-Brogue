@@ -34,7 +34,7 @@ define([
 
         updateRowModelData: function(data){                    
             // handle incoming user data
-            if (data) {
+            if (!_.isEmpty(data)) {
                 this.tableState.set("isEmpty", false);
             }
             else {
@@ -43,46 +43,50 @@ define([
             
             this.renderHeadingOnEmptyChange();
             
-            for (var incomingGameName in data) {
-                var update = data[incomingGameName];
+            if (data) {
+                var dataLength = data.length;
+                for (var i = 0; i < dataLength; i++) {
 
-                var action = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="1.5em" height="1em" style="vertical-align:text-bottom">' +
-                '<path fill="#6cf" fill-rule="evenodd" d="M1.679 7.932c.412-.621 1.242-1.75 2.366-2.717C5.175 4.242 6.527 3.5 8 3.5c1.473 0 2.824.742 3.955 1.715 ' +
-                '1.124.967 1.954 2.096 2.366 2.717a.119.119 0 010 .136c-.412.621-1.242 1.75-2.366 2.717C10.825 11.758 9.473 12.5 8 12.5c-1.473 ' +
-                '0-2.824-.742-3.955-1.715C2.92 9.818 2.09 8.69 1.679 8.068a.119.119 0 010-.136zM8 2c-1.981 0-3.67.992-4.933 2.078C1.797 5.169.88 ' +
-                '6.423.43 7.1a1.619 1.619 0 000 1.798c.45.678 1.367 1.932 2.637 3.024C4.329 13.008 6.019 14 8 14c1.981 0 3.67-.992 4.933-2.078 ' +
-                '1.27-1.091 2.187-2.345 2.637-3.023a1.619 1.619 0 000-1.798c-.45-.678-1.367-1.932-2.637-3.023C11.671 2.992 9.981 2 8 2zm0 8a2 2 0 100-4 2 2 0 000 4z">' +
-                '</path></svg>Watch';
+                    var update = data[i];
+                    var incomingGameName = update["gameName"];
 
-                if(update.userName === this.userModel.get("username")) {
-                    action = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="1.5em" height="1em" style="vertical-align:text-bottom">' +
-                        '<path fill="#7d7" fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zM6.379 ' +
-                        '5.227A.25.25 0 006 5.442v5.117a.25.25 0 00.379.214l4.264-2.559a.25.25 0 000-.428L6.379 5.227z">' +
-                        '</path></svg>Resume';
+                    var action = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="1.5em" height="1em" style="vertical-align:text-bottom">' +
+                    '<path fill="#6cf" fill-rule="evenodd" d="M1.679 7.932c.412-.621 1.242-1.75 2.366-2.717C5.175 4.242 6.527 3.5 8 3.5c1.473 0 2.824.742 3.955 1.715 ' +
+                    '1.124.967 1.954 2.096 2.366 2.717a.119.119 0 010 .136c-.412.621-1.242 1.75-2.366 2.717C10.825 11.758 9.473 12.5 8 12.5c-1.473 ' +
+                    '0-2.824-.742-3.955-1.715C2.92 9.818 2.09 8.69 1.679 8.068a.119.119 0 010-.136zM8 2c-1.981 0-3.67.992-4.933 2.078C1.797 5.169.88 ' +
+                    '6.423.43 7.1a1.619 1.619 0 000 1.798c.45.678 1.367 1.932 2.637 3.024C4.329 13.008 6.019 14 8 14c1.981 0 3.67-.992 4.933-2.078 ' +
+                    '1.27-1.091 2.187-2.345 2.637-3.023a1.619 1.619 0 000-1.798c-.45-.678-1.367-1.932-2.637-3.023C11.671 2.992 9.981 2 8 2zm0 8a2 2 0 100-4 2 2 0 000 4z">' +
+                    '</path></svg>Watch';
+
+                    if(update.userName === this.userModel.get("username")) {
+                        action = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" width="1.5em" height="1em" style="vertical-align:text-bottom">' +
+                            '<path fill="#7d7" fill-rule="evenodd" d="M1.5 8a6.5 6.5 0 1113 0 6.5 6.5 0 01-13 0zM8 0a8 8 0 100 16A8 8 0 008 0zM6.379 ' +
+                            '5.227A.25.25 0 006 5.442v5.117a.25.25 0 00.379.214l4.264-2.559a.25.25 0 000-.428L6.379 5.227z">' +
+                            '</path></svg>Resume';
+                    }
+
+                    if (!rowViewCollection[incomingGameName]) {
+                        var rowData = _.extend(update, {
+                            action: action
+                        });
+                        
+                        var rowModel = new CurrentGamesRowModel(rowData);
+                        var newRowView = rowViewCollection[incomingGameName] = new CurrentGamesRowView({
+                            model : rowModel,
+                            id : "game-row-" + incomingGameName
+                        });
+                        this.$tableElement.append(newRowView.render().el);
+                    }
+                    else {
+                        rowViewCollection[incomingGameName].model.set(update);
+                        rowViewCollection[incomingGameName].render();
+                    }   
                 }
-
-                if (!rowViewCollection[incomingGameName]) {
-                    var rowData = _.extend(update, {
-                        userName: update.userName,
-                        action: action
-                    });
-                    
-                    var rowModel = new CurrentGamesRowModel(rowData);
-                    var newRowView = rowViewCollection[incomingGameName] = new CurrentGamesRowView({
-                        model : rowModel,
-                        id : "game-row-" + incomingGameName
-                    });
-                    this.$tableElement.append(newRowView.render().el);
-                }
-                else {
-                    rowViewCollection[incomingGameName].model.set(update);
-                    rowViewCollection[incomingGameName].render();
-                }   
             }
             
             // clean up stale users
-            for (var existingUserName in rowViewCollection){
-                if (!data || !data[existingUserName]){
+            for (var existingUserName in rowViewCollection) {
+                if (_.isEmpty(data) || !data.some(function(x) { return x.gameName === existingUserName })) {
                     rowViewCollection[existingUserName].remove();
                     delete rowViewCollection[existingUserName];
                 }
