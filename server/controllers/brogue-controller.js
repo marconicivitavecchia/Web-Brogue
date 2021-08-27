@@ -331,10 +331,12 @@ _.extend(BrogueController.prototype, {
                 if (data.username === this.controllers.auth.authenticatedUserName) {
                     this.brogueGameChatId = this.getCurrentGameChatId(usernameForGame, data.variant);
                     mode = brogueMode.GAME;
+                    this.brogueCurrentGamesId = currentGames.getGameName(username, data.variant);
                 }
                 else {
                     usernameForGame = data.username;
                     this.brogueGameChatId = this.getCurrentGameChatId(usernameForGame, data.variant);
+                    this.brogueCurrentGamesId = null;
                 }
 
                 this.startBrogueSession(usernameForGame, data.variant, data, mode);
