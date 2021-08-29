@@ -54,7 +54,21 @@ _.extend(LobbyController.prototype, {
             rawLobbyData.push(thisLobbyData);
         }
 
-        rawLobbyData.sort( function( a, b ) { return a.idle - b.idle; } )
+        //Only change ordering if > 5s idle difference; if equal sort by game name
+        rawLobbyData.sort( function( a, b ) {
+            const roundedIdleDiff = Math.floor(Math.abs(a.idle - b.idle) / 60) * 60;
+            if (roundedIdleDiff == 0) {
+                if (a.gameName < b.gameName) {
+                    return -1;
+                }
+                if (a.gameName > b.gameName) {
+                    return 1;
+                }
+
+                return 0;
+            }
+            else return roundedIdleDiff;
+        } );
         
         // In the event our periodic calling tries to send data to a closed socket
         this.sendMessage("lobby", rawLobbyData, function(err){
