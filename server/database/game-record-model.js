@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var mongoosePaginate = require('mongoose-paginate');
+var mongoosePaginate = require('mongoose-paginate-v2');
 
 var gameRecordSchema = mongoose.Schema({
     username: String,

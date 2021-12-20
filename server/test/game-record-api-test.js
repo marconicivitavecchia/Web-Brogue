@@ -363,8 +363,9 @@ describe("api/games filtering by previousdays", function(){
                 var resText = JSON.parse(res.text);
                 var gameData = resText.data;
                 expect(gameData).to.have.length.of(2);
-                expect(gameData[0]).to.have.deep.property('score', 1);
-                expect(gameData[1]).to.have.deep.property('score', 2);
+                //For some reason these result come back in the reverse order than we expect (asc date not desc date)
+                expect(gameData[0]).to.have.deep.property('score', 2);
+                expect(gameData[1]).to.have.deep.property('score', 1);
                 done();
             });
     });

@@ -9,12 +9,7 @@ module.exports = function(app, config) {
 
     var sortFromQueryParams = function(req, defaultSort) {
         if (req.query.sort) {
-            if (req.query.order && req.query.order === "desc") {
-                return "-" + sanitize(req.query.sort);
-            }
-            else {
-                return sanitize(req.query.sort);
-            }
+            return sanitize(req.query.sort);
         }
         else {
             return defaultSort;
@@ -81,15 +76,15 @@ module.exports = function(app, config) {
         GameRecord.paginate(query, {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
-            sortBy: sortFromQueryParams(req, '-date')
+            sortBy: sortFromQueryParams(req, { date: -1 })
         }, function (err, gameRecords, pageCount, itemCount) {
 
             if (err) return next(err);
-
+            
             res.format({
                 json: function () {
 
-                    var gameRecordsFiltered = filterGameRecords(gameRecords);
+                    var gameRecordsFiltered = filterGameRecords(gameRecords.docs);
 
                     res.json({
                         object: 'list',
@@ -127,12 +122,12 @@ module.exports = function(app, config) {
             query,
             {   page: sanitize(req.query.page),
                 limit: sanitize(req.query.limit),
-                sortBy: sortFromQueryParams(req, '-score')
+                sortBy: sortFromQueryParams(req, { score: -1 })
         }, function (err, gameRecords, pageCount, itemCount) {
 
             if (err) return next(err);
 
-            var gameRecordsFiltered = filterGameRecords(gameRecords);
+            var gameRecordsFiltered = filterGameRecords(gameRecords.docs);
 
             res.format({
                 json: function () {
@@ -172,12 +167,12 @@ module.exports = function(app, config) {
         GameRecord.paginate(query, {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
-            sortBy: sortFromQueryParams(req, '-date')
+            sortBy: sortFromQueryParams(req, { date: -1 })
         }, function (err, gameRecords, pageCount, itemCount) {
 
             if (err) return next(err);
 
-            var gameRecordsFiltered = filterGameRecords(gameRecords);
+            var gameRecordsFiltered = filterGameRecords(gameRecords.docs);
 
             res.format({
                 json: function () {
@@ -197,7 +192,7 @@ module.exports = function(app, config) {
         GameRecord.paginate({_id: sanitize(req.params.id)}, {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
-            sortBy: sortFromQueryParams(req, '-date')
+            sortBy: sortFromQueryParams(req, { date: -1 })
         }, function (err, gameRecords, pageCount, itemCount) {
 
             if (err) return next(err);
@@ -206,7 +201,7 @@ module.exports = function(app, config) {
                 json: function () {
                     res.json({
                         object: 'list',
-                        data: filterGameRecords(gameRecords),
+                        data: filterGameRecords(gameRecords.docs),
                         pageCount: pageCount,
                         itemCount: itemCount
                     });
