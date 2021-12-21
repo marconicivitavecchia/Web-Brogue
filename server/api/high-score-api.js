@@ -8,8 +8,14 @@ var stats = require('../stats/stats.js');
 module.exports = function(app, config) {
 
     var sortFromQueryParams = function(req, defaultSort) {
+        
         if (req.query.sort) {
-            return sanitize(req.query.sort);
+            if (req.query.order && req.query.order === "desc") {
+                return { [sanitize(req.query.sort)] : -1 }
+            }
+            else {
+                return { [sanitize(req.query.sort)] : 1 };
+            }
         }
         else {
             return defaultSort;
@@ -76,7 +82,7 @@ module.exports = function(app, config) {
         GameRecord.paginate(query, {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
-            sortBy: sortFromQueryParams(req, { date: -1 })
+            sort: sortFromQueryParams(req, { date: -1 })
         }, function (err, gameRecords, pageCount, itemCount) {
 
             if (err) return next(err);
@@ -122,7 +128,7 @@ module.exports = function(app, config) {
             query,
             {   page: sanitize(req.query.page),
                 limit: sanitize(req.query.limit),
-                sortBy: sortFromQueryParams(req, { score: -1 })
+                sort: sortFromQueryParams(req, { score: -1 })
         }, function (err, gameRecords, pageCount, itemCount) {
 
             if (err) return next(err);
@@ -167,7 +173,7 @@ module.exports = function(app, config) {
         GameRecord.paginate(query, {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
-            sortBy: sortFromQueryParams(req, { date: -1 })
+            sort: sortFromQueryParams(req, { date: -1 })
         }, function (err, gameRecords, pageCount, itemCount) {
 
             if (err) return next(err);
@@ -192,7 +198,7 @@ module.exports = function(app, config) {
         GameRecord.paginate({_id: sanitize(req.params.id)}, {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
-            sortBy: sortFromQueryParams(req, { date: -1 })
+            sort: sortFromQueryParams(req, { date: -1 })
         }, function (err, gameRecords, pageCount, itemCount) {
 
             if (err) return next(err);

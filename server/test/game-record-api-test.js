@@ -204,6 +204,113 @@ describe("api/games filtering by variant", function(){
     });
 });
 
+describe("api/games sorting", function(){
+
+    beforeEach(function(done) {
+
+        var gameRecord1 = {
+            username: "flend",
+            date: new Date("2012-05-26T07:56:00.123Z"),
+            score: 1004,
+            seed: 200,
+            level: 3,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly on depth 3.",
+            recording: "file1",
+            variant: "GBROGUE"
+        };
+
+        var gameRecord2 = {
+            username: "ccc",
+            date: new Date("2011-05-26T07:56:00.123Z"),
+            score: 1003,
+            seed: 2002,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "BROGUE"
+        };
+
+        var gameRecord3 = {
+            username: "dave",
+            date: new Date("2013-07-26T07:56:00.123Z"),
+            score: 12,
+            seed: 2004,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "BROGUE"
+        };
+
+        gameRecord.create([gameRecord1, gameRecord2, gameRecord3], function() {
+            done();
+        });
+    });
+
+    afterEach(function(done) {
+
+        gameRecord.remove({}, function() {
+            done();
+        });
+    });
+
+    it("sorts games by date ascending when no order given", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .query({ sort: 'date' })
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                expect(gameData).to.have.length.of(3);
+                expect(gameData[0]).to.have.deep.property('score', 1003);
+                expect(gameData[1]).to.have.deep.property('score', 1004);
+                expect(gameData[2]).to.have.deep.property('score', 12);
+
+                done();
+            });
+    });
+
+    it("sorts games by date descending when desc order given", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .query({ sort: 'date', order: 'desc' })
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                expect(gameData).to.have.length.of(3);
+                expect(gameData[0]).to.have.deep.property('score', 12);
+                expect(gameData[1]).to.have.deep.property('score', 1004);
+                expect(gameData[2]).to.have.deep.property('score', 1003);
+
+                done();
+            });
+    });
+
+    it("sorts games by score descending when desc order given", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .query({ sort: 'score', order: 'desc' })
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                expect(gameData).to.have.length.of(3);
+                expect(gameData[0]).to.have.deep.property('score', 1004);
+                expect(gameData[1]).to.have.deep.property('score', 1003);
+                expect(gameData[2]).to.have.deep.property('score', 12);
+
+                done();
+            });
+    });
+});
+
 describe("api/games filtering by variant and username", function(){
 
     beforeEach(function(done) {
@@ -363,9 +470,8 @@ describe("api/games filtering by previousdays", function(){
                 var resText = JSON.parse(res.text);
                 var gameData = resText.data;
                 expect(gameData).to.have.length.of(2);
-                //For some reason these result come back in the reverse order than we expect (asc date not desc date)
-                expect(gameData[0]).to.have.deep.property('score', 2);
-                expect(gameData[1]).to.have.deep.property('score', 1);
+                expect(gameData[0]).to.have.deep.property('score', 1);
+                expect(gameData[1]).to.have.deep.property('score', 2);
                 done();
             });
     });

@@ -6,8 +6,14 @@ var _ = require("underscore");
 module.exports = function(app) {
 
     var sortFromQueryParams = function(req, defaultSort) {
+        
         if (req.query.sort) {
-            return sanitize(req.query.sort);
+            if (req.query.order && req.query.order === "desc") {
+                return { [sanitize(req.query.sort)] : -1 }
+            }
+            else {
+                return { [sanitize(req.query.sort)] : 1 };
+            }
         }
         else {
             return defaultSort;
@@ -40,7 +46,7 @@ module.exports = function(app) {
         NewsRecord.paginate({}, {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
-            sortBy: sortFromQueryParams(req, { date: -1 })
+            sort: sortFromQueryParams(req, { date: -1 })
         }, function (err, newsRecords, pageCount, itemCount) {
 
             if (err) return next(err);

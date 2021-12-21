@@ -14,9 +14,9 @@
   },
   "main": "news.js",
   "dependencies": {
-    "mongoose": "^4.0.0",
-    "underscore": "^1.8.2",
-    "minimist": "1.2.0",
-    "async": "1.0.0"
+    "async": "1.0.0",
+    "minimist": "^1.2.5",
+    "mongoose": "^6.1.2",
+    "underscore": "^1.8.2"
   }
 }
