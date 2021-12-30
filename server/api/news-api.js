@@ -47,7 +47,7 @@ module.exports = function(app) {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
             sort: sortFromQueryParams(req, { date: -1 })
-        }, function (err, newsRecords, pageCount, itemCount) {
+        }, function (err, newsRecords) {
 
             if (err) return next(err);
 
@@ -56,8 +56,8 @@ module.exports = function(app) {
                     res.json({
                         object: 'list',
                         data: filterNewsRecords(newsRecords.docs, req.query.days),
-                        pageCount: pageCount,
-                        itemCount: itemCount
+                        pageCount: newsRecords.totalPages,
+                        itemCount: newsRecords.totalDocs
                     });
                 }
             });

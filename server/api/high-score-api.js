@@ -83,7 +83,7 @@ module.exports = function(app, config) {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
             sort: sortFromQueryParams(req, { date: -1 })
-        }, function (err, gameRecords, pageCount, itemCount) {
+        }, function (err, gameRecords) {
 
             if (err) return next(err);
             
@@ -95,8 +95,8 @@ module.exports = function(app, config) {
                     res.json({
                         object: 'list',
                         data: gameRecordsFiltered,
-                        pageCount: pageCount,
-                        itemCount: itemCount
+                        pageCount: gameRecords.totalPages,
+                        itemCount: gameRecords.totalDocs
                     });
                 }
             });
@@ -129,7 +129,7 @@ module.exports = function(app, config) {
             {   page: sanitize(req.query.page),
                 limit: sanitize(req.query.limit),
                 sort: sortFromQueryParams(req, { score: -1 })
-        }, function (err, gameRecords, pageCount, itemCount) {
+        }, function (err, gameRecords) {
 
             if (err) return next(err);
 
@@ -140,8 +140,8 @@ module.exports = function(app, config) {
                     res.json({
                         object: 'list',
                         data: gameRecordsFiltered,
-                        pageCount: pageCount,
-                        itemCount: itemCount
+                        pageCount: gameRecords.totalPages,
+                        itemCount: gameRecords.totalDocs
                     });
                 }
             });
@@ -174,7 +174,7 @@ module.exports = function(app, config) {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
             sort: sortFromQueryParams(req, { date: -1 })
-        }, function (err, gameRecords, pageCount, itemCount) {
+        }, function (err, gameRecords) {
 
             if (err) return next(err);
 
@@ -185,8 +185,8 @@ module.exports = function(app, config) {
                     res.json({
                         object: 'list',
                         data: gameRecordsFiltered,
-                        pageCount: pageCount,
-                        itemCount: itemCount
+                        pageCount: gameRecords.totalPages,
+                        itemCount: gameRecords.totalDocs
                     });
                 }
             });
@@ -199,7 +199,7 @@ module.exports = function(app, config) {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),
             sort: sortFromQueryParams(req, { date: -1 })
-        }, function (err, gameRecords, pageCount, itemCount) {
+        }, function (err, gameRecords) {
 
             if (err) return next(err);
 
@@ -208,8 +208,8 @@ module.exports = function(app, config) {
                     res.json({
                         object: 'list',
                         data: filterGameRecords(gameRecords.docs),
-                        pageCount: pageCount,
-                        itemCount: itemCount
+                        pageCount: gameRecords.totalPages,
+                        itemCount: gameRecords.totalDocs
                     });
                 }
             });
