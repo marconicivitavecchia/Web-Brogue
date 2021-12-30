@@ -311,6 +311,119 @@ describe("api/games sorting", function(){
     });
 });
 
+describe("api/games paging", function(){
+
+    beforeEach(function(done) {
+
+        var gameRecord1 = {
+            username: "flend",
+            date: new Date("2012-05-26T07:56:00.123Z"),
+            score: 1004,
+            seed: 200,
+            level: 3,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly on depth 3.",
+            recording: "file1",
+            variant: "GBROGUE"
+        };
+
+        var gameRecord2 = {
+            username: "ccc",
+            date: new Date("2013-05-26T07:56:00.123Z"),
+            score: 1003,
+            seed: 2002,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "BROGUE"
+        };
+
+        var gameRecord3 = {
+            username: "dave",
+            date: new Date("2014-07-26T07:56:00.123Z"),
+            score: 12,
+            seed: 2004,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file3",
+            variant: "BROGUE"
+        };
+
+        var gameRecord4 = {
+            username: "dave",
+            date: new Date("2015-07-26T07:56:00.123Z"),
+            score: 13,
+            seed: 2007,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file4",
+            variant: "GBROGUE"
+        };
+
+        var gameRecord5 = {
+            username: "dave",
+            date: new Date("2016-07-26T07:56:00.123Z"),
+            score: 17,
+            seed: 3007,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file4",
+            variant: "GBROGUE"
+        };
+
+        gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4, gameRecord5], function() {
+            done();
+        });
+    });
+
+    afterEach(function(done) {
+
+        gameRecord.remove({}, function() {
+            done();
+        });
+    });
+
+    it("returns correct pageCount and itemCount", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .query({ sort: 'date', page: 2, limit: 2 })
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var pageCount = resText.pageCount
+                var itemCount = resText.itemCount
+                expect(pageCount).to.equal(3);
+                expect(itemCount).to.equal(5);
+
+                done();
+            });
+        });
+
+    it("returns correct games in pages", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .query({ sort: 'date', page: 2, limit: 2 })
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                expect(gameData).to.have.length.of(2);
+                expect(gameData[0]).to.have.deep.property('score', 12);
+                expect(gameData[1]).to.have.deep.property('score', 13);
+                done();
+            });
+    });
+});
+
 describe("api/games filtering by variant and username", function(){
 
     beforeEach(function(done) {
