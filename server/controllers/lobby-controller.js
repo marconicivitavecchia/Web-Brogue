@@ -54,10 +54,12 @@ _.extend(LobbyController.prototype, {
             rawLobbyData.push(thisLobbyData);
         }
 
-        //Only change ordering if > 5s idle difference; if equal sort by game name
+        //Only change ordering if > idleDifference idle difference (secs); if equal sort by game name
+        const idleDifference = 15
+
         rawLobbyData.sort( function( a, b ) {
-            const roundedIdleDiff = Math.floor(Math.abs(a.idle - b.idle) / 60) * 60;
-            if (roundedIdleDiff == 0) {
+            const roundedIdleDiff = Math.round((a.idle - b.idle) / (idleDifference * 2));
+            if (roundedIdleDiff == 0 || roundedIdleDiff == -0) {
                 if (a.gameName < b.gameName) {
                     return -1;
                 }
