@@ -49,7 +49,7 @@ module.exports = function(app, config) {
 
     app.use(paginate.middleware(10, 50));
 
-    app.get("/api/games", function (req, res) {
+    app.get("/api/games", function (req, res, next) {
 
         var generateHighScoreStatsQuery = function(variant, username) {
             if (username && variant) {
@@ -103,7 +103,7 @@ module.exports = function(app, config) {
         });
     });
 
-    app.get("/api/dailygames", function (req, res) {
+    app.get("/api/dailygames", function (req, res, next) {
 
         var now = new Date();
         var startTime = now.setUTCHours(0,0,0,0);
@@ -148,7 +148,7 @@ module.exports = function(app, config) {
         });
     });
 
-    app.get("/api/games/:username", function (req, res) {
+    app.get("/api/games/:username", function (req, res, next) {
 
         var query = {
             username: sanitize(req.params.username)
@@ -193,7 +193,7 @@ module.exports = function(app, config) {
         });
     });
 
-    app.get("/api/games/id/:id", function (req, res) {
+    app.get("/api/games/id/:id", function (req, res, next) {
 
         GameRecord.paginate({_id: sanitize(req.params.id)}, {
             page: sanitize(req.query.page),

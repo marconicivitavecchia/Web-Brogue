@@ -42,7 +42,7 @@ module.exports = function(app) {
         return filteredNewsRecords;
     };
 
-    app.get("/api/news", function (req, res) {
+    app.get("/api/news", function (req, res, next) {
         NewsRecord.paginate({}, {
             page: sanitize(req.query.page),
             limit: sanitize(req.query.limit),

@@ -9,7 +9,7 @@ var _ = require("underscore");
 
 module.exports = function(app, config) {
 
-    app.get("/api/stats/levels/monsters", function (req, res) {
+    app.get("/api/stats/levels/monsters", function (req, res, next) {
 
         var maxCausesPerLevel = Number.MAX_SAFE_INTEGER;
 
@@ -69,7 +69,7 @@ module.exports = function(app, config) {
         });
     });
 
-    app.get("/api/stats/levels", function (req, res) {
+    app.get("/api/stats/levels", function (req, res, next) {
 
         var variant = config.defaultBrogueVariant;
         if(req.query.variant) {
@@ -106,7 +106,7 @@ module.exports = function(app, config) {
         });
     });
 
-    app.get("/api/stats/levelProbability", function (req, res) {
+    app.get("/api/stats/levelProbability", function (req, res, next) {
 
         var variant = config.defaultBrogueVariant;
         if(req.query.variant) {
@@ -179,7 +179,7 @@ module.exports = function(app, config) {
         });
     });
 
-    app.get("/api/stats/general", function (req, res) {
+    app.get("/api/stats/general", function (req, res, next) {
 
         res.format({
             json: function () {
