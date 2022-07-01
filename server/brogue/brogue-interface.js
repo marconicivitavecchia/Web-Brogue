@@ -219,6 +219,10 @@ BrogueInterface.prototype.newBrogueProcess = function(data, mode) {
                 args.push("-s");
                 args.push(seed);
             }
+
+            if (data.tournament) {
+                args.push("--hide-seed");
+            }
         }
     }
 

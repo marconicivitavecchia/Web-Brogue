@@ -91,7 +91,7 @@ module.exports = {
         }
 
         if (updateFlag === brogueStatus.SEED) {
-            // just need to report update once per push
+            // just need to report update once per push (SEED picked arbitrarily as one thing we update on a status update)
             this.users[gameName].lastUpdateTime = process.hrtime();
         }
         

@@ -62,7 +62,8 @@ define([
                     dispatcher.trigger("showSeedPopup", code);
                 }
                 else {    
-                    send("brogue", "start", {variant: code});
+                    send("brogue", "start", {variant: code,
+                                             tournament: document.getElementById("tournament-mode-check").checked });
                     dispatcher.trigger("startGame", { variant: code });
                     this.goToConsole();
                 }

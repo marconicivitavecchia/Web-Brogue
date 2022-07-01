@@ -43,7 +43,8 @@ define([
             var seedValue = $('#seed').val();  
             send("brogue", "start", {
                 seed: seedValue,
-                variant: this.variantCode
+                variant: this.variantCode,
+                tournament: document.getElementById("tournament-mode-check").checked
             });
         },
 

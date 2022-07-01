@@ -127,6 +127,12 @@ input[type="radio"] {
     display: inline;
 }
 
+input[type="checkbox"] {
+    vertical-align: middle;
+    position: relative;
+    bottom: 1px;
+}
+
 button {
     display: block;
     color: white;

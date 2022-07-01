@@ -11,6 +11,7 @@ var currentGames = require('../user/all-users');
 var brogueComms = require('../brogue/brogue-comms');
 var gameRecord = require('../database/game-record-model');
 var brogueConstants = require('../brogue/brogue-constants.js');
+var brogueStatus = require('../enum/brogue-status-types');
 
 var KEYPRESS_EVENT_CHAR = 0;
 
@@ -149,6 +150,11 @@ _.extend(BrogueController.prototype, {
 
             //We may have a different state due to logging in again in a different window, but ACTIVE should take priority
             this.setState(brogueState.ACTIVE);
+
+            //Don't send the seed for tournament games
+            if(this.tournamentMode && status.flag == brogueStatus.SEED) {
+                return;
+            }
             currentGames.updateLobbyStatus(
                 this.brogueCurrentGamesId,
                 status.flag,
@@ -315,6 +321,7 @@ _.extend(BrogueController.prototype, {
                 this.brogueCurrentGamesId = currentGames.addUser(username, data.variant);
                 this.startBrogueSession(username, data.variant, data, mode);
                 this.variant = data.variant;
+                this.tournamentMode = data.tournament;
                 currentGames.initialiseLobbyStatus(this.brogueCurrentGamesId, data.variant);
             }
             else {
