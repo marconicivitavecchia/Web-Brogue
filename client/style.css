@@ -105,13 +105,13 @@ a:hover, a:active {
 /* 0.3 Form Styles -------------------*/
 
 label {
-    display: block;
+    display: inline;
     font-weight: bold;
     font-size: 75%;
 }
 
 input {
-    display: block;
+    display: inline;
     margin-bottom: 0.7em;
     color: white;
     background-color: #406080;
@@ -490,6 +490,10 @@ th, td {
     vertical-align: middle;
     font-weight: bold;
     cursor: pointer;
+}
+
+.seed-popup {
+    display: block;
 }
 
 .popup-overlay {

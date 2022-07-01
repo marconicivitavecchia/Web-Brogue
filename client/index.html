@@ -107,7 +107,7 @@
             </li>
         <%}})%>
         </ul>
-        <input id="tournament-mode-check" type="checkbox" name="tournament" value="Tournament" /><label for="tournament">Tournament mode (hide seed)</label>
+        <div><input id="tournament-mode-check" type="checkbox" name="tournament" value="Tournament" /><label for="tournament">Tournament mode (hide seed)</label></div>
         
         <p>Need help? Have a look at the <a href="https://brogue.fandom.com/wiki/Brogue_Wiki" alt="Brogue Wiki" target="_blank">Wiki</a>.</p>
     <%}%>
@@ -357,7 +357,7 @@
     <div id="popup-close" class="close">&#215;</div>
     <form>
         <label for="seed">Seed:</label>
-        <input id="seed" name="seed" type="text" />
+        <input id="seed" name="seed" type="text" class="seed-popup" />
         <button type="submit" id="seed-button">Play Brogue</button>
         <div id='seed-validation'></div>
     </form>
