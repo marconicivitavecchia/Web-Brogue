@@ -50,6 +50,13 @@ Client configuration variables are defined in `client/config.js`.
 
 In particular, make sure to get the client and server to agree on the websocketPort.
 
+Restarting the server
+--------------------------------
+When you restart (kill and run again) the server to start running a new version, games in progress are not affected.
+However, the server will forget about its registry of games that it uses to kill inactive games from over 2 weeks ago.
+Therefore you probably want to kill old games.
+A good command is `killall --older-than 1M -r ".*brogue.*"` which kills all brogue process started more than 1 month ago.
+
 Tests
 ----------------------------
 An API test suite can be run using `npm test` in the `server` directory.
