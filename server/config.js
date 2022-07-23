@@ -8,7 +8,7 @@ var config = {
     },
     brogueVariants : {
         "BROGUEPLUSV1741": {
-            binaryPath: "brogueplus/bin/brogue",
+            binaryPath: "binaries/brogueplus-v1741",
             version: "1.7.4.1",
             versionGroup: "1.7.4.1",
             modernCmdLine: false,    //Uses v1.8.x+ standard command line
@@ -50,28 +50,28 @@ var config = {
             supportsDownloads: false
         },
         "GBROGUEV1180211": {
-            binaryPath: "gbrogue/bin/brogue",
+            binaryPath: "binaries/gbrogue-v1180211",
             version: "1.18.02.11",
             versionGroup: "1.18.02.11",
             modernCmdLine: false,
             supportsDownloads: false
         },
         "BROGUEV175": {
-            binaryPath: "brogue-1.7.5/bin/brogue",
+            binaryPath: "binaries/brogue-v175",
             version: "1.7.5",
             versionGroup: "1.7.5",
             modernCmdLine: false,
             supportsDownloads: false
         },
         "UNBROGUEV113": {
-            binaryPath: "unBrogue/bin/brogue",
+            binaryPath: "binaries/unbrogue-v116",
             version: "1.1.3",
             versionGroup: "1.1.3",
             modernCmdLine: false,
             supportsDownloads: false
         },
         "BROGUEV174DISCORD": {
-            binaryPath: "brogue/bin/brogue",
+            binaryPath: "binaries/brogue-v174",
             version: "1.7.4b",
             versionGroup: "1.7.4b",
             modernCmdLine: false,
