@@ -30,7 +30,8 @@ define([
         linkGame: function(event){
             event.preventDefault();
 
-            var gameLink = window.location.host + "/" + "#observeGame/" + this.model.get("userName") + "-" + this.model.get("variant");
+            var pathDir = window.location.pathname.substring(0, window.location.pathname.lastIndexOf("/") + 1)
+            var gameLink = window.location.host + pathDir + "#observeGame/" + this.model.get("userName") + "-" + this.model.get("variant");
             var $temp = $("<input>");
             $("body").append($temp);
             $temp.val(gameLink).select();
