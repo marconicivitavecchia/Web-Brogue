@@ -23,7 +23,8 @@ describe("api/games", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1",
-            variant: "BROGUE"
+            variant: "BROGUE",
+            seeded: true
         };
 
         var gameRecord2 = {
@@ -123,6 +124,59 @@ describe("api/games", function(){
             });
     });
 
+    it("return all expected static metadata about a game", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                var gameId = gameData[0]._id;
+
+                request(server)
+                    .get("/api/games/id/" + gameId)
+                    .set('Accept', 'application/json')
+                    .end(function(err, res) {
+
+                        var resText = JSON.parse(res.text);
+                        var gameData = resText.data;
+                        expect(gameData[0]).to.have.property('date', "2012-05-26T07:56:00.123Z");
+                        expect(gameData[0]).to.have.property('username', 'flend');
+                        expect(gameData[0]).to.have.property('score', 100);
+                        expect(gameData[0]).to.have.property('seed', 200);
+                        expect(gameData[0]).to.have.property('level', 3);
+                        expect(gameData[0]).to.have.property('result', brogueConstants.notifyEvents.GAMEOVER_DEATH);
+                        expect(gameData[0]).to.have.property('easyMode', false);
+                        expect(gameData[0]).to.have.property('description', "Killed by a pink jelly on depth 3.");
+                        expect(gameData[0]).to.have.property('variant', "BROGUE");
+                        expect(gameData[0]).to.have.property('seeded', true);
+                        done();
+                    });
+            });
+    });
+
+    it("returns false for missing seeded value in database", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                var gameId = gameData[1]._id;
+
+                request(server)
+                    .get("/api/games/id/" + gameId)
+                    .set('Accept', 'application/json')
+                    .end(function(err, res) {
+
+                        var resText = JSON.parse(res.text);
+                        var gameData = resText.data;
+                        expect(gameData[0]).to.have.property('seeded', false);
+                        done();
+                    });
+            });
+    });
+
     it("allows games to be retrieved by ID", function(done) {
         request(server)
             .get("/api/games")
@@ -161,7 +215,8 @@ describe("api/games filtering by variant", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1",
-            variant: "GBROGUE"
+            variant: "GBROGUE",
+            seeded: true
         };
 
         var gameRecord2 = {
@@ -174,7 +229,8 @@ describe("api/games filtering by variant", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file2",
-            variant: "BROGUE"
+            variant: "BROGUE",
+            seeded: false
         };
 
         gameRecord.create([gameRecord1, gameRecord2], function() {
@@ -218,7 +274,8 @@ describe("api/games sorting", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1",
-            variant: "GBROGUE"
+            variant: "GBROGUE",
+            seeded: true
         };
 
         var gameRecord2 = {
@@ -231,7 +288,8 @@ describe("api/games sorting", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file2",
-            variant: "BROGUE"
+            variant: "BROGUE",
+            seeded: false
         };
 
         var gameRecord3 = {
@@ -244,7 +302,8 @@ describe("api/games sorting", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file2",
-            variant: "BROGUE"
+            variant: "BROGUE",
+            seeded: true
         };
 
         gameRecord.create([gameRecord1, gameRecord2, gameRecord3], function() {
@@ -325,7 +384,8 @@ describe("api/games paging", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1",
-            variant: "GBROGUE"
+            variant: "GBROGUE",
+            seeded: true
         };
 
         var gameRecord2 = {
@@ -338,7 +398,8 @@ describe("api/games paging", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file2",
-            variant: "BROGUE"
+            variant: "BROGUE",
+            seeded: false
         };
 
         var gameRecord3 = {
@@ -351,7 +412,8 @@ describe("api/games paging", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file3",
-            variant: "BROGUE"
+            variant: "BROGUE",
+            seeded: true
         };
 
         var gameRecord4 = {
@@ -364,7 +426,8 @@ describe("api/games paging", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file4",
-            variant: "GBROGUE"
+            variant: "GBROGUE",
+            seeded: false
         };
 
         var gameRecord5 = {
@@ -377,7 +440,8 @@ describe("api/games paging", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file4",
-            variant: "GBROGUE"
+            variant: "GBROGUE",
+            seeded: true
         };
 
         gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4, gameRecord5], function() {
@@ -438,7 +502,8 @@ describe("api/games filtering by variant and username", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1",
-            variant: "GBROGUE"
+            variant: "GBROGUE",
+            seeded: true
         };
 
         var gameRecord2 = {
@@ -451,7 +516,8 @@ describe("api/games filtering by variant and username", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file2",
-            variant: "BROGUE"
+            variant: "BROGUE",
+            seeded: false
         };
 
         var gameRecord3 = {
@@ -464,7 +530,8 @@ describe("api/games filtering by variant and username", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file3",
-            variant: "BROGUE"
+            variant: "BROGUE",
+            seeded: false
         };
 
         gameRecord.create([gameRecord1, gameRecord2, gameRecord3], function() {
@@ -529,7 +596,8 @@ describe("api/games filtering by previousdays", function(){
             easyMode: false,
             description: "Killed by a pink jelly on depth 3.",
             recording: "file1",
-            variant: "GBROGUE"
+            variant: "GBROGUE",
+            seeded: true
         };
 
         var twoDaysAgo = new Date();
@@ -544,7 +612,8 @@ describe("api/games filtering by previousdays", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file2",
-            variant: "BROGUE"
+            variant: "BROGUE",
+            seeded: false
         };
 
         var threeDaysAgo = new Date();
@@ -559,7 +628,8 @@ describe("api/games filtering by previousdays", function(){
             easyMode: false,
             description: "Escaped.",
             recording: "file3",
-            variant: "BROGUE"
+            variant: "BROGUE",
+            seeded: false
         };
 
         gameRecord.create([gameRecord1, gameRecord2, gameRecord3], function() {

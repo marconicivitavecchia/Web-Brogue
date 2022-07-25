@@ -11,7 +11,8 @@ var gameRecordSchema = mongoose.Schema({
     result: Number,
     description: String,
     recording: String,
-    variant: String
+    variant: String,
+    seeded: Boolean
 });
 
 gameRecordSchema.index({ date: 1, username: -1 }, { unique: true });

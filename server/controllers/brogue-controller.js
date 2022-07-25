@@ -27,6 +27,7 @@ function BrogueController(socket) {
     this.brogueGameChatId = null;
     this.brogueCurrentGamesId = null;
     this.variant = null;
+    this.seededGame = null;
 }
 
 BrogueController.prototype = new Controller();
@@ -119,7 +120,8 @@ _.extend(BrogueController.prototype, {
                 easyMode: Boolean(event.easyMode),
                 description: event.message,
                 recording: event.recording,
-                variant: this.variant
+                variant: this.variant,
+                seeded: Boolean(this.seededGame)
             };
 
             //Create save game record
@@ -321,8 +323,12 @@ _.extend(BrogueController.prototype, {
                 this.brogueCurrentGamesId = currentGames.addUser(username, data.variant);
                 this.startBrogueSession(username, data.variant, data, mode);
                 this.variant = data.variant;
+                //Trusting the FE to tell us whether a game is seeded only works the first time - if you restart a non-seeded game as a seeded game (clicking seed)
+                //the server will then think the game is seeded.
+                //Should instead pull this data from the status update of the binary
+                this.seededGame = data.seeded;
                 this.tournamentMode = data.tournament;
-                currentGames.initialiseLobbyStatus(this.brogueCurrentGamesId, data.variant);
+                currentGames.initialiseLobbyStatus(this.brogueCurrentGamesId, data.variant, data.seeded);
             }
             else {
                 //Observing

@@ -63,6 +63,7 @@ define([
                 }
                 else {    
                     send("brogue", "start", {variant: code,
+                                             seeded: false,
                                              tournament: document.getElementById("tournament-mode-check").checked });
                     dispatcher.trigger("startGame", { variant: code });
                     this.goToConsole();

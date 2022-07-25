@@ -41,6 +41,14 @@ module.exports = function(app, config) {
                 filteredRecord.download = 'recordings/' + gameRecord._id;
             }
 
+            // Seeded may not be set for earlier records in the database
+            if('seeded' in gameRecord && gameRecord.seeded != undefined) {
+                filteredRecord.seeded = gameRecord.seeded;
+            }
+            else {
+                filteredRecord.seeded = false;
+            }
+
             filteredGameRecords.push(filteredRecord);
         });
 

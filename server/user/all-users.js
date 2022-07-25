@@ -27,6 +27,7 @@ module.exports = {
                 idle : 0,
                 deepestLevel : 0,
                 seed : 0,
+                seeded : false,
                 gold : 0,
                 easyMode : false,
                 userName: userName,
@@ -78,9 +79,10 @@ module.exports = {
         return gameName in this.users;
     },
 
-    initialiseLobbyStatus : function(gameName, variant) {
+    initialiseLobbyStatus : function(gameName, variant, seeded) {
         if(this.isUserValid(gameName)) {
             this.users[gameName].lobbyData['variant'] = variant;
+            this.users[gameName].lobbyData['seeded'] = seeded;
         }
     },
 

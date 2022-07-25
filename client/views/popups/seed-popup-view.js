@@ -44,6 +44,7 @@ define([
             send("brogue", "start", {
                 seed: seedValue,
                 variant: this.variantCode,
+                seeded: true,
                 tournament: document.getElementById("tournament-mode-check").checked
             });
         },
