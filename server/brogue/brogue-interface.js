@@ -18,7 +18,6 @@ var CELL_MESSAGE_SIZE = 10;
 
 var EVENT_BYTE_FLAG = 254;
 var EVENT_DATA_OFFSET = 2;
-var EVENT_DATA_LENGTH = 100;
 
 var STATUS_BYTE_FLAG = 255;
 var STATUS_DATA_OFFSET = 2;
@@ -286,8 +285,8 @@ BrogueInterface.prototype.attachChildEvents = function () {
         self.dataToSend = new Buffer.alloc(data.length + remainderLength);
         self.dataRemainder.copy(self.dataAccumulator);
         data.copy(self.dataAccumulator, remainderLength, 0);
-
         var fullDataLength = self.dataAccumulator.length;
+
 
         //check for status updates in data and update user object.
         var i = 0;
@@ -319,64 +318,176 @@ BrogueInterface.prototype.attachChildEvents = function () {
                 i += CELL_MESSAGE_SIZE;
             }
             else if(self.dataAccumulator[i] === EVENT_BYTE_FLAG) {
-                var eventId = self.dataAccumulator[i + EVENT_DATA_OFFSET];
 
-                if(i + EVENT_DATA_LENGTH > fullDataLength) {
+                if (i + 1 == fullDataLength) {
                     //Partial message, wait for next data
                     break;
                 }
 
-                // Parse standard event data
+                const protocolVersionId = 254 - self.dataAccumulator[i + 1];
 
-                // We need to send bytes over as unsigned long.  JS bitwise operations force a signed long, so we are forced to use a float here.
-                var eventData1 =
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 1] * 16777216 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 2] * 65536 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 3] * 256 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 4];
+                const protocolVersion0EventDataLength = 100;
+                const protocolVersion1EventDataLength = 105;
 
-                var level =
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 5] * 256 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 6];
-
-                var easyMode =
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 7] * 256 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 8];
-
-                var gold =
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 9] * 16777216 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 10] * 65536 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 11] * 256 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 12];
-
-                var seed =
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 13] * 16777216 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 14] * 65536 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 15] * 256 +
-                    self.dataAccumulator[i + EVENT_DATA_OFFSET + 16];
-
-                var message1Start = i + EVENT_DATA_OFFSET + 17;
-                var eventEnd = i + EVENT_DATA_LENGTH;
-
-                for(var j = message1Start; j < eventEnd; j++) {
-                    if(self.dataAccumulator[j] == 0) {
+                if (protocolVersionId == 0) {
+                    if (i + protocolVersion0EventDataLength > fullDataLength) {
+                        //Partial message, wait for next data
                         break;
                     }
                 }
 
-                var message1End = j;
-
-                var message2Start = i + EVENT_DATA_OFFSET + 68;
-                for(var k = message2Start; k < eventEnd; k++) {
-                    if(self.dataAccumulator[k] == 0) {
+                if (protocolVersionId == 1) {
+                    if (i + protocolVersion1EventDataLength > fullDataLength) {
+                        //Partial message, wait for next data
                         break;
                     }
                 }
+                
+                var eventId = self.dataAccumulator[i + EVENT_DATA_OFFSET];
 
-                var message2End = k;
+                const parseProtocolVersion0 = function (eventData) {
 
-                var eventStr1 = self.dataAccumulator.slice(message1Start, message1End).toString('utf8');
-                var eventStr2 = self.dataAccumulator.slice(message2Start, message2End).toString('utf8');
+                    const protocolVersion0EventDataLength = 100;
+
+                    var parsedData = {};
+                    // Parse standard event data
+
+                    // We need to send bytes over as unsigned long.  JS bitwise operations force a signed long, so we are forced to use a float here.
+                    parsedData.eventData1 =
+                        eventData[i + EVENT_DATA_OFFSET + 1] * 16777216 +
+                        eventData[i + EVENT_DATA_OFFSET + 2] * 65536 +
+                        eventData[i + EVENT_DATA_OFFSET + 3] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 4];
+
+                    parsedData.level =
+                        eventData[i + EVENT_DATA_OFFSET + 5] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 6];
+
+                    parsedData.easyMode =
+                        eventData[i + EVENT_DATA_OFFSET + 7] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 8];
+
+                    parsedData.gold =
+                        eventData[i + EVENT_DATA_OFFSET + 9] * 16777216 +
+                        eventData[i + EVENT_DATA_OFFSET + 10] * 65536 +
+                        eventData[i + EVENT_DATA_OFFSET + 11] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 12];
+
+                    //High bytes for 64-bit seeds
+                    parsedData.seedHigh = 0;
+
+                    parsedData.seed =
+                        eventData[i + EVENT_DATA_OFFSET + 13] * 16777216 +
+                        eventData[i + EVENT_DATA_OFFSET + 14] * 65536 +
+                        eventData[i + EVENT_DATA_OFFSET + 15] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 16];
+
+                    parsedData.seeded = 0; //Unknown since not in protocol
+
+                    var message1Start = i + EVENT_DATA_OFFSET + 17;
+                    var eventEnd = i + protocolVersion0EventDataLength;
+
+                    for(var j = message1Start; j < eventEnd; j++) {
+                        if(eventData[j] == 0) {
+                            break;
+                        }
+                    }
+
+                    var message1End = j;
+
+                    var message2Start = i + EVENT_DATA_OFFSET + 68;
+                    for(var k = message2Start; k < eventEnd; k++) {
+                        if(eventData[k] == 0) {
+                            break;
+                        }
+                    }
+
+                    var message2End = k;
+
+                    parsedData.eventStr1 = eventData.slice(message1Start, message1End).toString('utf8');
+                    parsedData.eventStr2 = eventData.slice(message2Start, message2End).toString('utf8');
+
+                    return parsedData;
+                };
+
+                const parseProtocolVersion1 = function (eventData) {
+
+                    const protocolVersion1EventDataLength = 105;
+                    var parsedData = {};
+                    // Parse standard event data
+
+                    // We need to send bytes over as unsigned long.  JS bitwise operations force a signed long, so we are forced to use a float here.
+                    parsedData.eventData1 =
+                        eventData[i + EVENT_DATA_OFFSET + 1] * 16777216 +
+                        eventData[i + EVENT_DATA_OFFSET + 2] * 65536 +
+                        eventData[i + EVENT_DATA_OFFSET + 3] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 4];
+
+                    parsedData.level =
+                        eventData[i + EVENT_DATA_OFFSET + 5] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 6];
+
+                    parsedData.easyMode =
+                        eventData[i + EVENT_DATA_OFFSET + 7] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 8];
+
+                    parsedData.gold =
+                        eventData[i + EVENT_DATA_OFFSET + 9] * 16777216 +
+                        eventData[i + EVENT_DATA_OFFSET + 10] * 65536 +
+                        eventData[i + EVENT_DATA_OFFSET + 11] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 12];
+
+                    //High bytes for 64-bit seeds
+                    parsedData.seedHigh =
+                        eventData[i + EVENT_DATA_OFFSET + 13] * 16777216 +
+                        eventData[i + EVENT_DATA_OFFSET + 14] * 65536 +
+                        eventData[i + EVENT_DATA_OFFSET + 15] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 16];
+                    
+                    parsedData.seed =
+                        eventData[i + EVENT_DATA_OFFSET + 17] * 16777216 +
+                        eventData[i + EVENT_DATA_OFFSET + 18] * 65536 +
+                        eventData[i + EVENT_DATA_OFFSET + 19] * 256 +
+                        eventData[i + EVENT_DATA_OFFSET + 20];
+
+                    parsedData.seeded = eventData[i + EVENT_DATA_OFFSET + 21];
+
+                    var message1Start = i + EVENT_DATA_OFFSET + 22;
+                    var eventEnd = i + protocolVersion1EventDataLength;
+
+                    for(var j = message1Start; j < eventEnd; j++) {
+                        if(eventData[j] == 0) {
+                            break;
+                        }
+                    }
+
+                    var message1End = j;
+
+                    var message2Start = i + EVENT_DATA_OFFSET + 68;
+                    for(var k = message2Start; k < eventEnd; k++) {
+                        if(eventData[k] == 0) {
+                            break;
+                        }
+                    }
+
+                    var message2End = k;
+
+                    parsedData.eventStr1 = eventData.slice(message1Start, message1End).toString('utf8');
+                    parsedData.eventStr2 = eventData.slice(message2Start, message2End).toString('utf8');
+
+                    return parsedData;
+                };
+
+                var parsedEventData;
+
+                //Protocol v0
+                if (protocolVersionId == 0) {
+                    parsedEventData = parseProtocolVersion0(self.dataAccumulator);
+                }
+                //Protocol v1
+                else {
+                    parsedEventData = parseProtocolVersion1(self.dataAccumulator);
+                }
                 
                 //Process and emit specific events
 
@@ -392,15 +503,17 @@ BrogueInterface.prototype.attachChildEvents = function () {
                     
                     var eventData = {
                         date: Date.now(),
-                        eventId: eventId,
-                        data1: eventData1,
+                        eventId: parsedEventData.eventId,
+                        data1: parsedEventData.eventData1,
                         data2: 0,
-                        gold: gold,
-                        level: level,
-                        seed: seed,
-                        easyMode: easyMode,
-                        message: eventStr1,
-                        recording: makePathForRecording(eventStr2)
+                        gold: parsedEventData.gold,
+                        level: parsedEventData.level,
+                        seed: parsedEventData.seed,
+                        seedHigh: parsedEventData.seedHigh,
+                        seeded: parsedEventData.seeded,
+                        easyMode: parsedEventData.easyMode,
+                        message: parsedEventData.eventStr1,
+                        recording: makePathForRecording(parsedEventData.eventStr2)
                     };
 
                     self.brogueEvents.emit('event', eventData);

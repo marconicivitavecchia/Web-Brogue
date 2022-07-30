@@ -115,6 +115,7 @@ _.extend(BrogueController.prototype, {
                 date: event.date,
                 score: event.data1,
                 seed: event.seed,
+                seedHigh: event.seedHigh,
                 level: event.level,
                 result: event.eventId,
                 easyMode: Boolean(event.easyMode),
