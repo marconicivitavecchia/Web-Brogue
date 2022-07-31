@@ -279,7 +279,22 @@ describe("api/games supporting 64-bit seeds", function(){
             seeded: true
         };
 
-        gameRecord.create([gameRecord1], function() {
+        var gameRecord2 = {
+            username: "flend",
+            date: new Date("2012-05-26T07:56:00.124Z"),
+            score: 100,
+            seed: 0xFFFFFFFF,
+            seedHigh: 0x7FFFFFFF,
+            level: 4,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly on depth 3.",
+            recording: "file2",
+            variant: "GBROGUE",
+            seeded: true
+        };
+
+        gameRecord.create([gameRecord1, gameRecord2], function() {
             done();
         });
     });
@@ -299,8 +314,22 @@ describe("api/games supporting 64-bit seeds", function(){
             .end(function(err, res) {
                 var resText = JSON.parse(res.text);
                 var gameData = resText.data;
-                expect(gameData).to.have.length.of(1);
-                expect(gameData[0]).to.have.deep.property('seed', '858993459300');
+                expect(gameData).to.have.length.of(2);
+                expect(gameData[1]).to.have.deep.property('seed', '858993459300');
+                done();
+            });
+    });
+
+    it("supports 64-bit seeds up to 9223372036854775807", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .query({ variant: 'GBROGUE' })
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                expect(gameData).to.have.length.of(2);
+                expect(gameData[0]).to.have.deep.property('seed', '9223372036854775807');
                 done();
             });
     });
