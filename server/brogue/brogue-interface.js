@@ -483,10 +483,12 @@ BrogueInterface.prototype.attachChildEvents = function () {
                 //Protocol v0
                 if (protocolVersionId == 0) {
                     parsedEventData = parseProtocolVersion0(self.dataAccumulator);
+                    i += protocolVersion0EventDataLength;
                 }
                 //Protocol v1
                 else {
                     parsedEventData = parseProtocolVersion1(self.dataAccumulator);
+                    i += protocolVersion1EventDataLength;
                 }
                 
                 //Process and emit specific events
@@ -525,14 +527,12 @@ BrogueInterface.prototype.attachChildEvents = function () {
                     var eventData = {
                         date: Date.now(),
                         eventId: eventId,
-                        data1: eventData1
+                        data1: parsedEventData.eventData1
                     };
 
                     self.brogueEvents.emit('event', eventData);
                     self.processBrogueEvents(self, eventData);
                 }
-
-                i += EVENT_DATA_LENGTH;
             }
             else {
                 self.dataAccumulator.copy(self.dataToSend, dataToSendPos, i, i + CELL_MESSAGE_SIZE);
