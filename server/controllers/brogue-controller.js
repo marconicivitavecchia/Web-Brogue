@@ -310,21 +310,12 @@ _.extend(BrogueController.prototype, {
 
                 //Check seed and abort on error
                 if (data && data.seed) {
-                    try {
-                        var seed = Integer.fromString(data.seed);
+                    var seed = Integer.fromString(data.seed);
 
-                        if (isNaN(seed) || seed.lessThan(1)) {
-                            this.sendMessage("seed", {
-                                result: "fail",
-                                data: "Please enter a numerical seed between 1 and " + Integer.MAX_VALUE
-                            });
-                            return;
-                        }
-                    }
-                    catch (RangeError) {
+                    if (seed.lessThan(1)) {
                         this.sendMessage("seed", {
                             result: "fail",
-                            data: "Please enter a numerical seed between 1 and " + Integer.MAX_VALUE
+                            data: "Please enter a numerical seed between 1 and " + Integer.MAX_VALUE.toString()
                         });
                         return;
                     }
@@ -333,9 +324,6 @@ _.extend(BrogueController.prototype, {
                 this.brogueCurrentGamesId = currentGames.addUser(username, data.variant);
                 this.startBrogueSession(username, data.variant, data, mode);
                 this.variant = data.variant;
-                //Trusting the FE to tell us whether a game is seeded only works the first time - if you restart a non-seeded game as a seeded game (clicking seed)
-                //the server will then think the game is seeded.
-                //Should instead pull this data from the status update of the binary
                 this.tournamentMode = data.tournament;
                 currentGames.initialiseLobbyStatus(this.brogueCurrentGamesId, data.variant);
             }
@@ -391,11 +379,21 @@ _.extend(BrogueController.prototype, {
             }
         }
         catch (e) {
-            //Failed to start game
-            this.sendFailedToStartGameMessage("Failed to start game: " + e.message);
-            console.error("Failed to start game;");
-            console.error(e.stack || e);
-            this.endBrogueSession();
+            if (e instanceof RangeError) {
+                //RangeError occurs before game is setup
+                console.log("catching range error: " + e)
+                this.sendMessage("seed", {
+                    result: "fail",
+                    data: "Please enter a numerical seed between 1 and " + Integer.MAX_VALUE.toString()
+                });
+            }
+            else {
+                //Failed to start game
+                this.sendFailedToStartGameMessage("Failed to start game: " + e.message);
+                console.error("Failed to start game;");
+                console.error(e.stack || e);
+                this.endBrogueSession();
+            }
         }
     },
 

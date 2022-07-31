@@ -213,10 +213,9 @@ BrogueInterface.prototype.newBrogueProcess = function(data, mode) {
 
         if (data) {
             if (data.seed || data.seed === "") {
-                var seed = parseInt(data.seed, 10);
 
                 args.push("-s");
-                args.push(seed);
+                args.push(data.seed);
             }
 
             if (data.tournament) {
