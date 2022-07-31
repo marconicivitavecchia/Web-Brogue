@@ -15,7 +15,7 @@ define([
             prettyVariant: "",
             formattedIdle : "",
             deepestLevel : 0,
-            seed : 0,
+            seed : false,
             gold : 0,
             easyMode : false,
             gameName: ""
