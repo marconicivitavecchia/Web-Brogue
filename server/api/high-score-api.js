@@ -4,6 +4,7 @@ var paginate = require("express-paginate");
 var sanitize = require('mongo-sanitize');
 var _ = require("underscore");
 var stats = require('../stats/stats.js');
+var Integer = require('integer');
 
 module.exports = function(app, config) {
 
@@ -30,7 +31,7 @@ module.exports = function(app, config) {
 
             var filteredRecord =
                 _.pick(gameRecord,
-                    '_id', 'username', 'score', 'seed', 'level', 'result', 'easyMode', 'description', 'date', 'variant');
+                    '_id', 'username', 'score', 'level', 'result', 'easyMode', 'description', 'date', 'variant');
 
             if('recording' in gameRecord && gameRecord.recording != undefined) {
                 filteredRecord.recording = 'recording-' + gameRecord._id;
@@ -39,6 +40,18 @@ module.exports = function(app, config) {
 
             if('recording' in gameRecord && stats.doesVariantSupportRecordingDownloads(config, gameRecord.variant)) {
                 filteredRecord.download = 'recordings/' + gameRecord._id;
+            }
+
+            // Compose 64-bit seeds
+            if (gameRecord.seedHigh) {
+                console.log(gameRecord.seedHigh)
+                var seed64 = Integer.fromNumber(gameRecord.seedHigh);
+                seed64 = seed64.shiftLeft(32).add(gameRecord.seed);
+                filteredRecord.seed = seed64.toString();
+            }
+            else {
+                // No 64-bit seed for old game records, use 32-bit part
+                filteredRecord.seed = gameRecord.seed.toString();
             }
 
             // Seeded may not be set for earlier records in the database

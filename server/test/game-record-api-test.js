@@ -143,7 +143,7 @@ describe("api/games", function(){
                         expect(gameData[0]).to.have.property('date', "2012-05-26T07:56:00.123Z");
                         expect(gameData[0]).to.have.property('username', 'flend');
                         expect(gameData[0]).to.have.property('score', 100);
-                        expect(gameData[0]).to.have.property('seed', 200);
+                        expect(gameData[0]).to.have.property('seed', '200');
                         expect(gameData[0]).to.have.property('level', 3);
                         expect(gameData[0]).to.have.property('result', brogueConstants.notifyEvents.GAMEOVER_DEATH);
                         expect(gameData[0]).to.have.property('easyMode', false);
@@ -255,6 +255,53 @@ describe("api/games filtering by variant", function(){
                 var gameData = resText.data;
                 expect(gameData).to.have.length.of(1);
                 expect(gameData[0]).to.have.deep.property('variant', "GBROGUE");
+                done();
+            });
+    });
+});
+
+describe("api/games supporting 64-bit seeds", function(){
+
+    beforeEach(function(done) {
+
+        var gameRecord1 = {
+            username: "flend",
+            date: new Date("2012-05-26T07:56:00.123Z"),
+            score: 100,
+            seed: 100,
+            seedHigh: 200,
+            level: 3,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly on depth 3.",
+            recording: "file1",
+            variant: "GBROGUE",
+            seeded: true
+        };
+
+        gameRecord.create([gameRecord1], function() {
+            done();
+        });
+    });
+
+    afterEach(function(done) {
+
+        gameRecord.remove({}, function() {
+            done();
+        });
+    });
+
+    it("correctly composes 64-bit seeds", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .query({ variant: 'GBROGUE' })
+            .end(function(err, res) {
+                console.log(res.text);
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                expect(gameData).to.have.length.of(1);
+                expect(gameData[0]).to.have.deep.property('seed', '858993459300');
                 done();
             });
     });
@@ -555,8 +602,8 @@ describe("api/games filtering by variant and username", function(){
                 var resText = JSON.parse(res.text);
                 var gameData = resText.data;
                 expect(gameData).to.have.length.of(2);
-                expect(gameData[0]).to.have.deep.property('seed', 200);
-                expect(gameData[1]).to.have.deep.property('seed', 2004);
+                expect(gameData[0]).to.have.deep.property('seed', '200');
+                expect(gameData[1]).to.have.deep.property('seed', '2004');
                 done();
             });
     });
@@ -570,7 +617,7 @@ describe("api/games filtering by variant and username", function(){
                 var resText = JSON.parse(res.text);
                 var gameData = resText.data;
                 expect(gameData).to.have.length.of(1);
-                expect(gameData[0]).to.have.deep.property('seed', 2004);
+                expect(gameData[0]).to.have.deep.property('seed', '2004');
                 done();
             });
     });
