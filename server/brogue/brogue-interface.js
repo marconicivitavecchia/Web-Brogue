@@ -505,7 +505,7 @@ BrogueInterface.prototype.attachChildEvents = function () {
                     
                     var eventData = {
                         date: Date.now(),
-                        eventId: parsedEventData.eventId,
+                        eventId: eventId,
                         data1: parsedEventData.eventData1,
                         data2: 0,
                         gold: parsedEventData.gold,

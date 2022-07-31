@@ -297,7 +297,6 @@ describe("api/games supporting 64-bit seeds", function(){
             .set('Accept', 'application/json')
             .query({ variant: 'GBROGUE' })
             .end(function(err, res) {
-                console.log(res.text);
                 var resText = JSON.parse(res.text);
                 var gameData = resText.data;
                 expect(gameData).to.have.length.of(1);

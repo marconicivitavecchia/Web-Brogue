@@ -12,6 +12,7 @@ var brogueComms = require('../brogue/brogue-comms');
 var gameRecord = require('../database/game-record-model');
 var brogueConstants = require('../brogue/brogue-constants.js');
 var brogueStatus = require('../enum/brogue-status-types');
+var Integer = require('integer');
 
 var KEYPRESS_EVENT_CHAR = 0;
 
@@ -309,12 +310,21 @@ _.extend(BrogueController.prototype, {
 
                 //Check seed and abort on error
                 if (data && data.seed) {
-                    var seed = parseInt(data.seed, 10);
+                    try {
+                        var seed = Integer.fromString(data.seed);
 
-                    if (isNaN(seed) || seed < 1 || seed > 4294967295) {
+                        if (isNaN(seed) || seed.lessThan(1)) {
+                            this.sendMessage("seed", {
+                                result: "fail",
+                                data: "Please enter a numerical seed between 1 and " + Integer.MAX_VALUE
+                            });
+                            return;
+                        }
+                    }
+                    catch (RangeError) {
                         this.sendMessage("seed", {
                             result: "fail",
-                            data: "Please enter a numerical seed between 1 and 4294967295"
+                            data: "Please enter a numerical seed between 1 and " + Integer.MAX_VALUE
                         });
                         return;
                     }
