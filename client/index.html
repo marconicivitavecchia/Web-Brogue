@@ -231,7 +231,7 @@
             <th>Player</th>
             <th>Seed</th>
             <th>Version</th>
-            <th>Level</th>
+            <th>Depth</th>
             <th>Gold</th>
             <th>Idle</th>
             <th></th>
@@ -242,7 +242,7 @@
 
 <script id="current-games-row" type="text/template">
     <td><%= userName %></td>
-    <td><%= seed %></td>
+    <td><%= prettySeeded %></td>
     <td><%= prettyVariant %></td>
     <td><% if (easyMode) { %>&<% } %><%= deepestLevel %></td>
     <td><%= prettyScore %></td>

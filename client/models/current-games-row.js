@@ -25,6 +25,10 @@ define([
             this.set({prettyScore : this.get("gold").toLocaleString()});
         },
 
+        setPrettySeeded : function() {
+            this.set({prettySeeded : this.get("seed") ? "Seeded" : "Random"});
+        },
+
         setPrettyVariant: function() {
             if(this.get("variant") in VariantLookup.variants) {
                 this.set({prettyVariant : VariantLookup.variants[this.get("variant")].display});
