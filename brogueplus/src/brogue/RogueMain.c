@@ -230,7 +230,7 @@ void generateFontFiles() {
 void initializeRogue(unsigned long seed) {
 	short i, j, k;
 	item *theItem;
-	boolean playingback, playbackFF, playbackPaused;
+	boolean playingback, playbackFF, playbackPaused, hideSeed;
     short oldRNG;
 	
 	// generate libtcod font bitmap
@@ -242,6 +242,7 @@ void initializeRogue(unsigned long seed) {
 	playingback = rogue.playbackMode; // the only three animals that need to go on the ark
 	playbackPaused = rogue.playbackPaused;
 	playbackFF = rogue.playbackFastForward;
+	hideSeed = rogue.hideSeed;
 	memset((void *) &rogue, 0, sizeof( playerCharacter )); // the flood
 
 	rogue.warningPauseMode = true;
@@ -249,6 +250,8 @@ void initializeRogue(unsigned long seed) {
 	rogue.playbackMode = playingback;
 	rogue.playbackPaused = playbackPaused;
 	rogue.playbackFastForward = playbackFF;
+
+	rogue.hideSeed = hideSeed;
 	
 	rogue.gameHasEnded = false;
 	rogue.highScoreSaved = false;

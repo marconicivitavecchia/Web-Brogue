@@ -62,6 +62,7 @@ static void printCommandlineHelp() {
 	"--no-scores                never display high scores\n"
 	"--no-recording             never prompt to save recording\n"
 	"--no-saves                 disable saving\n"
+	"--hide-seed                disable seed display in game\n"
 #ifdef BROGUE_CURSES
 	"--term         -t          run in ncurses-based terminal mode\n"
 #endif
@@ -141,6 +142,11 @@ int main(int argc, char *argv[])
     if(strcmp(argv[i], "--no-saves") == 0) {
       noSaves = true;
       continue;
+    }
+
+    if (strcmp(argv[i], "--hide-seed") == 0) {
+        rogue.hideSeed = true;
+		continue;
     }
 
 		if(strcmp(argv[i], "--noteye-hack") == 0) {
