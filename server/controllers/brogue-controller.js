@@ -154,10 +154,6 @@ _.extend(BrogueController.prototype, {
             //We may have a different state due to logging in again in a different window, but ACTIVE should take priority
             this.setState(brogueState.ACTIVE);
 
-            //Don't send the seed for tournament games
-            if(this.tournamentMode && status.flag == brogueStatus.SEED) {
-                return;
-            }
             currentGames.updateLobbyStatus(
                 this.brogueCurrentGamesId,
                 status.flag,
@@ -324,7 +320,6 @@ _.extend(BrogueController.prototype, {
                 this.brogueCurrentGamesId = currentGames.addUser(username, data.variant);
                 this.startBrogueSession(username, data.variant, data, mode);
                 this.variant = data.variant;
-                this.tournamentMode = data.tournament;
                 currentGames.initialiseLobbyStatus(this.brogueCurrentGamesId, data.variant);
             }
             else {

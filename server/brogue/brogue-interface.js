@@ -209,6 +209,8 @@ BrogueInterface.prototype.newBrogueProcess = function(data, mode) {
             args = ["--server-mode"];
         }
 
+        args.push("--hide-seed");
+
         //Input has been sanity checked in the controller. Any errors from brogue should be caught by the usual handlers
 
         if (data) {
