@@ -102,6 +102,11 @@ int main(int argc, char *argv[])
 		  noSaves = true;
 		  continue;
 		}
+
+		if (strcmp(argv[i], "--hide-seed") == 0) {
+            rogue.hideSeed = true;
+            continue;
+        }
 		
 		if(strcmp(argv[i], "--noteye-hack") == 0) {
 			serverMode = true;

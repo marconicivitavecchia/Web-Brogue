@@ -150,7 +150,7 @@ void initializeRogue(unsigned long seed) {
 	short i, j;
 	item *theItem;
 	uchar k;
-	boolean playingback, playbackFF, playbackPaused;
+	boolean playingback, playbackFF, playbackPaused, hideSeed;
 	
 	// generate libtcod font bitmap
 	// add any new unicode characters here to include them
@@ -220,11 +220,13 @@ void initializeRogue(unsigned long seed) {
 	playingback = rogue.playbackMode; // the only three animals that need to go on the ark
 	playbackPaused = rogue.playbackPaused;
 	playbackFF = rogue.playbackFastForward;
+	hideSeed = rogue.hideSeed;
 	memset((void *) &rogue, 0, sizeof( playerCharacter )); // the flood
 
 	rogue.playbackMode = playingback;
 	rogue.playbackPaused = playbackPaused;
 	rogue.playbackFastForward = playbackFF;
+	rogue.hideSeed = hideSeed;
 	
 	rogue.gameHasEnded = false;
 	rogue.highScoreSaved = false;

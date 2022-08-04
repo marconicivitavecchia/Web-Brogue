@@ -3623,7 +3623,12 @@ void displayMap(short **map) {
 
 void printSeed() {
 	char buf[COLS];
-	sprintf(buf, "Dungeon seed #%lu; turn #%lu", rogue.seed, rogue.turnNumber);
+	if (rogue.hideSeed) {
+		sprintf(buf, "Dungeon seed HIDDEN; turn #%lu", rogue.turnNumber);
+	}
+	else {
+		sprintf(buf, "Dungeon seed #%lu; turn #%lu", rogue.seed, rogue.turnNumber);
+	}
 	message(buf, false);	
 }
 
