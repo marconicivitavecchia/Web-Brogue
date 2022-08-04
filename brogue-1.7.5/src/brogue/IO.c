@@ -4059,7 +4059,12 @@ void displayGrid(short **map) {
 
 void printSeed() {
 	char buf[COLS];
-	sprintf(buf, "Dungeon seed #%lu; turn #%lu; version %s", rogue.seed, rogue.playerTurnNumber, BROGUE_VERSION_STRING);
+    if (rogue.hideSeed) {
+        snprintf(buf, COLS, "Dungeon seed HIDDEN; turn #%lu; version %s", rogue.playerTurnNumber, BROGUE_VERSION_STRING);
+    }
+    else {
+        snprintf(buf, COLS, "Dungeon seed #%lu; turn #%lu; version %s", rogue.seed, rogue.playerTurnNumber, BROGUE_VERSION_STRING);
+    }
 	message(buf, false);	
 }
 
