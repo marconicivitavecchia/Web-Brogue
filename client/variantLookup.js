@@ -79,7 +79,8 @@ define([
                 consoleRows: 34,
                 remapGlyphs: true,
                 tiles: true,
-                highlight: false
+                highlight: false,
+                disabled: true
             },
             "RAPIDBROGUEV110": {
                 code: "RAPIDBROGUEV110",
