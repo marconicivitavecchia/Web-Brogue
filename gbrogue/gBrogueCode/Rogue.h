@@ -2441,6 +2441,7 @@ typedef struct playerCharacter {
 	boolean trueColorMode;				// whether lighting effects are disabled
     boolean displayAggroRangeMode;      // whether your stealth range is displayed
     boolean warningPauseMode;			// whether to pause (MORE) when a hitpoint warning occurs
+	boolean hideSeed;                   // whether seed is hidden when pressing SEED_KEY
 	boolean quit;						// to skip the typical end-game theatrics when the player quits
 	unsigned long seed;					// the master seed for generating the entire dungeon
 	short RNG;							// which RNG are we currently using?
