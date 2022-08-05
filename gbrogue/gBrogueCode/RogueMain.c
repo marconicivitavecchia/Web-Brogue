@@ -255,6 +255,10 @@ void initializeRogue(unsigned long seed) {
 	rogue.cautiousMode = false;
 	rogue.milliseconds = 0;
 
+	if (seed != 0) {
+    	rogue.seededGame = true;
+	}
+
 	rogue.RNG = RNG_SUBSTANTIVE;
 	if (!rogue.playbackMode) {
 		rogue.seed = seedRandomGenerator(seed);

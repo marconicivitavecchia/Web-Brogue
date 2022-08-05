@@ -21,6 +21,11 @@
 #define KEY_INPUT_SIZE          4
 #define OUTPUT_BUFFER_SIZE      1000
 
+#define EVENT_MESSAGE1_START 24
+#define EVENT_MESSAGE2_START 75
+#define EVENT_MESSAGE1_SIZE 51
+#define EVENT_MESSAGE2_SIZE 30
+
 //Custom events
 #define REFRESH_SCREEN          50
 
@@ -48,7 +53,7 @@ static void close_logfile();
 static void write_to_log(const char *msg);
 static void setup_sockets();
 static int read_from_socket(char *buf, int size);
-static void write_to_socket(char *buf, int size);
+static void write_to_socket(unsigned char *buf, int size);
 static void flush_output_buffer();
 
 static void gameLoop()
@@ -132,7 +137,7 @@ static void flush_output_buffer() {
   output_buffer_pos = 0;
 }
 
-static void write_to_socket(char *buf, int size) {
+static void write_to_socket(unsigned char *buf, int size) {
 
   if(output_buffer_pos + size > OUTPUT_BUFFER_SIZE) {
     flush_output_buffer();
@@ -153,7 +158,7 @@ static void web_plotChar(uchar inputChar,
 			  short backRed, short backGreen, short backBlue) {
 
     // just pack up the output and ship it off to the webserver
-    char outputBuffer[OUTPUT_SIZE];
+    unsigned char outputBuffer[OUTPUT_SIZE];
     
     char firstCharByte = inputChar >> 8 & 0xff;
     char secondCharByte = inputChar;
@@ -174,12 +179,12 @@ static void web_plotChar(uchar inputChar,
 
 static void sendStatusUpdate() {
     
-    char statusOutputBuffer[OUTPUT_SIZE];
+    unsigned char statusOutputBuffer[OUTPUT_SIZE];
     
     unsigned long statusValues[STATUS_TYPES_NUMBER]; 
     statusValues[DEEPEST_LEVEL_STATUS] = rogue.deepestLevel;
     statusValues[GOLD_STATUS] = rogue.gold;
-    statusValues[SEED_STATUS] = rogue.seed;
+    statusValues[SEED_STATUS] = rogue.seededGame;
     statusValues[EASY_MODE_STATUS] = rogue.easyMode;
     
     int i;
@@ -290,20 +295,13 @@ static boolean modifier_held(int modifier) {
 
 static void notify_event(short eventId, int data1, int data2, const char *str1, const char *str2) {
 
-  char statusOutputBuffer[EVENT_SIZE];
-  char msg[100];
+  unsigned char statusOutputBuffer[EVENT_SIZE];
+  // Coordinates of (254, 253) identifies an event update v1 (254 - V)
+  statusOutputBuffer[0] = 254;
+  statusOutputBuffer[1] = 253;
 
-  snprintf(msg, 100, "event: %i d1: %i d2: %i s1: %s s2: %s\n", eventId, data1, data2, str1, str2);
-  write_to_log(msg);
-
-  // Coordinates of (254, 254) will let the server and client know that this is a event notification update rather than a cell update
-  statusOutputBuffer[0] = (char)254;
-  statusOutputBuffer[1] = (char)254;
-
-  // The event id
   statusOutputBuffer[2] = eventId;
 
-  // I am just going to explicitly send the status big-endian so we can be consistent on the client and server
   statusOutputBuffer[3] = data1 >> 24 & 0xff;
   statusOutputBuffer[4] = data1 >> 16 & 0xff;
   statusOutputBuffer[5] = data1 >> 8 & 0xff;
@@ -316,31 +314,21 @@ static void notify_event(short eventId, int data1, int data2, const char *str1, 
   statusOutputBuffer[12] = rogue.gold >> 16 & 0xff;
   statusOutputBuffer[13] = rogue.gold >> 8 & 0xff;
   statusOutputBuffer[14] = rogue.gold;
-  statusOutputBuffer[15] = rogue.seed >> 24 & 0xff;
-  statusOutputBuffer[16] = rogue.seed >> 16 & 0xff;
-  statusOutputBuffer[17] = rogue.seed >> 8 & 0xff;
-  statusOutputBuffer[18] = rogue.seed;
+  statusOutputBuffer[15] = rogue.seed >> 56 & 0xff;
+  statusOutputBuffer[16] = rogue.seed >> 48 & 0xff;
+  statusOutputBuffer[17] = rogue.seed >> 40 & 0xff;
+  statusOutputBuffer[18] = rogue.seed >> 32 & 0xff;
+  statusOutputBuffer[19] = rogue.seed >> 24 & 0xff;
+  statusOutputBuffer[20] = rogue.seed >> 16 & 0xff;
+  statusOutputBuffer[21] = rogue.seed >> 8 & 0xff;
+  statusOutputBuffer[22] = rogue.seed;
+  statusOutputBuffer[23] = rogue.seededGame;
 
-  // Copy str1 (death message)
-
-  int j;
-  int msg1_start = 19;
-  int msg1_end = 70;
-  for (j = msg1_start; j < msg1_end; j++){
-      statusOutputBuffer[j] = str1[j - msg1_start];
-      if(!str1[j - msg1_start])
-        break;
-  }
-  if(j == msg1_end) {
-    statusOutputBuffer[msg1_end - 1] = 0;
-  }
-
-  int msg2_end = EVENT_SIZE;
-  for (j = msg1_end; j < msg2_end; j++){
-      statusOutputBuffer[j] = str2[j - msg1_end];
-      if(!str2[j - msg1_end])
-        break;
-  }
+  // str1 is the death / victory message
+  memcpy(statusOutputBuffer + EVENT_MESSAGE1_START, str1, EVENT_MESSAGE1_SIZE);
+  statusOutputBuffer[EVENT_MESSAGE2_START - 1] = 0;
+  // str2 is unused
+  memcpy(statusOutputBuffer + EVENT_MESSAGE1_START + EVENT_MESSAGE1_SIZE, str2, EVENT_MESSAGE2_SIZE);
   statusOutputBuffer[EVENT_SIZE - 1] = 0;
 
   write_to_socket(statusOutputBuffer, EVENT_SIZE);
