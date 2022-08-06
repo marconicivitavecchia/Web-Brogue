@@ -130,8 +130,10 @@ _.extend(BrogueController.prototype, {
                 if (err) {
                     if(!(err.code && err.code == 11000)) {
                         self.controllers.error.send(JSON.stringify(err));
+                        console.log(JSON.stringify(err));
                         //Ignore duplicate record fail (occurs when 2 windows logged into the same game)
                     }
+                    console.log(JSON.stringify(err));
                     return;
                 }
             });

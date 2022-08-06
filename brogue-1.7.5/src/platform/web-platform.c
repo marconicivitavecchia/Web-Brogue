@@ -15,7 +15,7 @@
 #define CLIENT_SOCKET "client-socket"
 
 #define OUTPUT_SIZE             10
-#define EVENT_SIZE              100
+#define EVENT_SIZE              105
 #define MAX_INPUT_SIZE          5
 #define MOUSE_INPUT_SIZE        4
 #define KEY_INPUT_SIZE          4
