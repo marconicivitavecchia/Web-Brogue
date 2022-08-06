@@ -45,6 +45,12 @@ define([
                         sortable: true,
                         editable: false
                     }, {
+                        name: "seeded",
+                        label: "Seeded",
+                        cell: "boolean",
+                        sortable: false,
+                        editable: false
+                    }, {
                         name: "prettyVariant",
                         label: "Version",
                         cell: "string",
