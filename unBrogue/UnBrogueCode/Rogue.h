@@ -2748,6 +2748,7 @@ typedef struct playerCharacter {
 	boolean eligibleToUseStairs;		// so the player uses stairs only when he steps onto them
 	boolean trueColorMode;				// when activated via tab, monsters and items will display their original colors.
 	boolean hideSeed;                   // whether seed is hidden when pressing SEED_KEY
+	boolean seededGame;                 // whether the game used a specified seed (true) or clock-based seed (false)
 	boolean quit;						// to skip the typical end-game theatrics when the player quits
 	unsigned long seed;					// the master seed for generating the entire dungeon
 	short RNG;							// which RNG are we currently using?
