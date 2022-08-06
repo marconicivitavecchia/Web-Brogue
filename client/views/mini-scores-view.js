@@ -39,9 +39,9 @@ define([
                         sortable: true,
                         editable: false
                     }, {
-                        name: "seeded",
+                        name: "prettySeeded",
                         label: "Seeded",
-                        cell: "boolean",
+                        cell: "string",
                         sortable: false,
                         editable: false
                     }, {

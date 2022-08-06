@@ -27,6 +27,10 @@ define([
             pageSize: "limit"
         },
 
+        formatSeeded: function(seeded) {
+            return seeded ? "Seeded" : "Random"
+        },
+
         formatDate: function(date) {
             var d0 = Moment();
             var d1 = Moment(date);
@@ -61,6 +65,7 @@ define([
             _.each(records, function(element, index, list) {
                 element.prettyDate = this.formatDate(element.date);
                 element.prettyVariant = this.lookupVariant(element.variant);
+                element.prettySeeded = this.formatSeeded(element.seeded);
             }, this);
 
             return resp.data;
