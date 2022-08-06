@@ -279,6 +279,15 @@ _.extend(BrogueController.prototype, {
         return _.contains(_.keys(config.brogueVariants), variant);
     },
 
+    maxSeedForVariant: function(variant) {
+        if (config.brogueVariants[variant].supports64bitSeeds) {
+            return "Please enter a numerical seed between 1 and " + Integer.MAX_VALUE.toString();
+        }
+        else {
+            return "Please enter a numerical seed between 1 and 4294967295";
+        }
+    },
+
     startGameOrObserve: function (data, observing) {
 
         var mode = brogueMode.OBSERVE;
@@ -313,7 +322,7 @@ _.extend(BrogueController.prototype, {
                     if (seed.lessThan(1)) {
                         this.sendMessage("seed", {
                             result: "fail",
-                            data: "Please enter a numerical seed between 1 and " + Integer.MAX_VALUE.toString()
+                            data: this.maxSeedForVariant(data.variant)
                         });
                         return;
                     }
@@ -381,7 +390,7 @@ _.extend(BrogueController.prototype, {
                 console.log("catching range error: " + e)
                 this.sendMessage("seed", {
                     result: "fail",
-                    data: "Please enter a numerical seed between 1 and " + Integer.MAX_VALUE.toString()
+                    data: this.maxSeedForVariant(data.variant)
                 });
             }
             else {

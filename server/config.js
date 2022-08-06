@@ -19,7 +19,8 @@ var config = {
             version: "1.11.1",
             versionGroup: "1.10.x",
             modernCmdLine: true,    //Uses v1.8.x+ standard command line
-            supportsDownloads: true //Replays should work with desktop version
+            supportsDownloads: true, //Replays should work with desktop version
+            supports64bitSeeds: true
         },
         "BROGUECEV110": {
             binaryPath: "binaries/brogue-ce110",
@@ -103,7 +104,8 @@ var config = {
             version: "1.3.0",
             versionGroup: "1.3.x",
             modernCmdLine: true,    //Uses v1.8.x+ standard command line
-            supportsDownloads: true //Replays should work with desktop version
+            supportsDownloads: true, //Replays should work with desktop version
+            supports64bitSeeds: true
         },
     },
     defaultBrogueVariant: "BROGUECEV18",
