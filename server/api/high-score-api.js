@@ -44,7 +44,6 @@ module.exports = function(app, config) {
 
             // Compose 64-bit seeds
             if (gameRecord.seedHigh) {
-                console.log(gameRecord.seedHigh)
                 var seed64 = Integer.fromNumber(gameRecord.seedHigh);
                 seed64 = seed64.shiftLeft(32).add(gameRecord.seed);
                 filteredRecord.seed = seed64.toString();
