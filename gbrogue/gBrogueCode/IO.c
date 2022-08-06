@@ -4022,7 +4022,12 @@ void printGameInfoScreen()
         y++;
         printString("-- Playthrough info --", mapToWindowX(2), y, &itemMessageColor, &black, dbuf);
         y+=2;
-        sprintf(buf, "Seed: %lu", rogue.seed);
+		if (rogue.hideSeed) {
+			sprintf(buf, "Seed: HIDDEN");
+		}
+		else {
+        	sprintf(buf, "Seed: %lu", rogue.seed);
+		}
         printString(buf, mapToWindowX(2), y++, &white, &black, dbuf);
         sprintf(buf, "Turns: %lu", rogue.playerTurnNumber);
         printString(buf, mapToWindowX(2), y++, &white, &black, dbuf);
