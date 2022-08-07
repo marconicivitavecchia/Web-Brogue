@@ -734,3 +734,101 @@ describe("api/games filtering by previousdays", function(){
             });
     });
 });
+
+describe("api/games filtering by result", function(){
+
+    beforeEach(function(done) {
+
+        var gameRecord1 = {
+            username: "flend",
+            date: new Date("2012-05-26T07:56:00.123Z"),
+            score: 100,
+            seed: 1,
+            level: 3,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly on depth 3.",
+            recording: "file1",
+            variant: "GBROGUE"
+        };
+
+        var gameRecord2 = {
+            username: "ccc",
+            date: new Date("2011-05-27T07:56:00.123Z"),
+            score: 1003,
+            seed: 2,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "BROGUE"
+        };
+
+        var gameRecord3 = {
+            username: "flend",
+            date: new Date("2011-05-28T07:56:00.123Z"),
+            score: 1004,
+            seed: 3,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_QUIT,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file3",
+            variant: "BROGUE"
+        };
+
+        var gameRecord4 = {
+            username: "flend",
+            date: new Date("2011-06-28T07:56:00.123Z"),
+            score: 1004,
+            seed: 4,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file3",
+            variant: "BROGUE"
+        };
+
+        var gameRecord5 = {
+            username: "flend",
+            date: new Date("2011-07-28T07:56:00.123Z"),
+            score: 1004,
+            seed: 5,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file3",
+            variant: "BROGUE"
+        };
+
+        gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4, gameRecord5], function() {
+            done();
+        });
+    });
+
+    afterEach(function(done) {
+
+        gameRecord.remove({}, function() {
+            done();
+        });
+    });
+
+    it("filters games based on result", function(done) {
+        request(server)
+            .get("/api/games")
+            .set('Accept', 'application/json')
+            .query({ result: 2, sort: 'date', order: 'desc'})
+            .end(function(err, res) {
+                var resText = JSON.parse(res.text);
+                var gameData = resText.data;
+                console.log(JSON.stringify(resText.data, null, '\t'))
+                expect(gameData).to.have.length.of(2);
+                expect(gameData[0]).to.have.deep.property('seed', '5');
+                expect(gameData[1]).to.have.deep.property('seed', '2');
+                done();
+            });
+    });
+});
