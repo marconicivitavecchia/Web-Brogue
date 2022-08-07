@@ -52,6 +52,7 @@ require([
     "models/dpad-button",
     "models/auth",
     "models/user-details",
+    "models/last-wins-scores",
     "services/recordings",
     "services/observing",
     "views/view-activation-helpers",
@@ -63,6 +64,7 @@ require([
     "views/current-games-view",
     "views/mini-scores-view",
     "views/all-scores-view",
+    "views/last-wins-scores-view",
     "views/site-news-view",
     "views/console-view",
     "views/popups/seed-popup-view",
@@ -78,8 +80,8 @@ require([
     "views/users-page-selected-user-view",
     "views/users-page-scores-view"
 ], function( $, _, Backbone, BackbonePaginator, Backgrid, BackgridPaginator, dispatcher, debugMode, socket, router, pageRouter,
-     HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, AuthenticationModel, UserDetailsCollection, recordings, observing,
-     activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, SiteNewsView,
+     HighScoresModel, ChatModel, SiteNewsModel, CauseStatsModel, LevelStatsModel, GeneralStatsModel, LevelProbabilityModel, DPadButtonModel, AuthenticationModel, UserDetailsCollection, LastWinsScoresModel, recordings, observing,
+     activate, AuthView, ChatView, ConsoleChatView, PlayView, HeaderView, CurrentGamesView, HighScoresView, AllScoresView, LastWinsScoresView, SiteNewsView,
      ConsoleView, SeedPopupView, StatisticsView, LevelStatsView, GeneralStatsView, CauseStatsView, LevelProbabilityView,
      DPadButtonView, DPadButtonVisibilityView, UsersPageView, UsersPageSelectView, UserPageSelectedUserView, UsersPageScoresView){
     
@@ -131,6 +133,11 @@ require([
     setInterval(function() { allScoresModel.fetch(); }, 5 * 60 * 1000);
     var allScoresView = new AllScoresView({model: allScoresModel});
 
+    var lastWinsScoresModel = new LastWinsScoresModel();
+    lastWinsScoresModel.fetch();
+    setInterval(function() { lastWinsScoresModel.fetch(); }, 5 * 60 * 1000);
+    var lastWinsScoresView = new LastWinsScoresView({model: lastWinsScoresModel});
+
     //Console
     var consoleView = new ConsoleView();
     var consoleChatView = new ConsoleChatView({el: "#console-chat", model: new ChatModel()});
@@ -167,7 +174,7 @@ require([
 
     dispatcher.on("login", headerView.login, headerView);
     dispatcher.on("login", highScoresView.login, highScoresView);
-    dispatcher.on("login", allScoresView.login, allScoresView);
+    dispatcher.on("login", lastWinsScoresView.login, lastWinsScoresView);
     dispatcher.on("login", chatView.login, chatView);
     dispatcher.on("login", consoleChatView.login, consoleChatView);
     dispatcher.on("login", playView.login, playView);

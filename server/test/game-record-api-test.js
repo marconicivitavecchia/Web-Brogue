@@ -200,6 +200,186 @@ describe("api/games", function(){
     });
 });
 
+describe("api/games/lastwins", function(){
+
+    beforeEach(function(done) {
+
+        var gameRecord1 = {
+            username: "aaa",
+            date: new Date("2013-05-29T07:56:00.123Z"),
+            score: 100,
+            seed: 201,
+            level: 3,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a pink jelly on depth 3.",
+            recording: "file1",
+            variant: "BROGUE",
+            seeded: true
+        };
+
+        var gameRecord2 = {
+            username: "bbb",
+            date: new Date("2011-05-26T09:56:00.123Z"),
+            score: 1003,
+            seed: 202,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "GBROGUE"
+        };
+
+        var gameRecord3 = {
+            username: "ddd",
+            date: new Date("2011-05-26T08:56:00.123Z"),
+            score: 1003,
+            seed: 203,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "GBROGUE"
+        };
+
+        var gameRecord4 = {
+            username: "eee",
+            date: new Date("2013-05-27T08:56:00.123Z"),
+            score: 1003,
+            seed: 204,
+            level: 20,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "BROGUE"
+        };
+
+        var gameRecord5 = {
+            username: "fff",
+            date: new Date("2012-05-27T08:56:00.123Z"),
+            score: 1003,
+            seed: 205,
+            level: 20,
+            result: brogueConstants.notifyEvents.GAMEOVER_QUIT,
+            easyMode: false,
+            description: "Quit.",
+            recording: "file2",
+            variant: "BROGUEPLUS"
+        };
+
+        var gameRecord6 = {
+            username: "ggg",
+            date: new Date("2013-05-28T08:56:00.123Z"),
+            score: 1003,
+            seed: 206,
+            level: 20,
+            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Win.",
+            recording: "file2",
+            variant: "BROGUE"
+        };
+
+        var gameRecord7 = {
+            username: "hhh",
+            date: new Date("2011-05-26T10:56:00.123Z"),
+            score: 1003,
+            seed: 207,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_QUIT,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "GBROGUE"
+        };
+
+        var gameRecord8 = {
+            username: "hhh",
+            date: new Date("2011-05-26T11:56:00.123Z"),
+            score: 1003,
+            seed: 207,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: true,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "GBROGUE"
+        };
+
+        var gameRecord9 = {
+            username: "hhh",
+            date: new Date("2014-05-26T11:56:00.123Z"),
+            score: 1003,
+            seed: 208,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped.",
+            recording: "file2",
+            variant: "RAPIDBROGUE"
+        };
+
+        gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4, gameRecord5, gameRecord6, gameRecord7, gameRecord8, gameRecord9], function() {
+            done();
+        });
+    });
+
+    afterEach(function(done) {
+
+        gameRecord.remove({}, function() {
+            done();
+        });
+    });
+
+    it("returns status 200", function(done) {
+        request(server)
+            .get("/api/games/lastwins")
+            .set('Accept', 'application/json')
+            .expect('Content-Type', /json/)
+            .expect(200, done)
+    });
+
+    it("returns most recent wins for each variant, sorted by variant", function(done) {
+        request(server)
+            .get("/api/games/lastwins")
+            .set('Accept', 'application/json')
+            .end(function(err, res) {
+                var gameData = JSON.parse(res.text);
+
+                assert.lengthOf(gameData, 3);
+                //Most recent BROGUE is a SUPERVICTORY (but DEATH not included)
+                const brogueRecord = gameData.find(record => record.variant === 'BROGUE');
+                expect(brogueRecord).to.have.property('seed', '206');
+                //Most recent GBROGUE is a VICTORY (but QUIT and EASYMODE not included)
+                const gbrogueRecord = gameData.find(record => record.variant === 'GBROGUE');
+                expect(gbrogueRecord).to.have.property('seed', '202');
+                //Most recent RAPIDBROGUE is a VICTORY
+                const rapidbrogueRecord = gameData.find(record => record.variant === 'RAPIDBROGUE');
+                expect(rapidbrogueRecord).to.have.property('seed', '208');
+                done();
+        });
+    });
+
+    it("returns most recent wins for each variant, filtered and sorted by variant", function(done) {
+        request(server)
+            .get("/api/games/lastwins")
+            .set('Accept', 'application/json')
+            .query({ variant: "GBROGUE,RAPIDBROGUE" })
+            .end(function(err, res) {
+                var gameData = JSON.parse(res.text);
+
+                assert.lengthOf(gameData, 2);
+                const gbrogueRecord = gameData.find(record => record.variant === 'GBROGUE');
+                expect(gbrogueRecord).to.have.property('seed', '202');
+                const rapidbrogueRecord = gameData.find(record => record.variant === 'RAPIDBROGUE');
+                expect(rapidbrogueRecord).to.have.property('seed', '208');
+                done();
+        });
+    });
+});
 
 describe("api/games filtering by variant", function(){
 
@@ -824,7 +1004,6 @@ describe("api/games filtering by result", function(){
             .end(function(err, res) {
                 var resText = JSON.parse(res.text);
                 var gameData = resText.data;
-                console.log(JSON.stringify(resText.data, null, '\t'))
                 expect(gameData).to.have.length.of(2);
                 expect(gameData[0]).to.have.deep.property('seed', '5');
                 expect(gameData[1]).to.have.deep.property('seed', '2');
