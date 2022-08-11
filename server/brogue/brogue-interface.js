@@ -464,7 +464,7 @@ BrogueInterface.prototype.attachChildEvents = function () {
 
                     var message1End = j;
 
-                    var message2Start = i + EVENT_DATA_OFFSET + 68;
+                    var message2Start = i + EVENT_DATA_OFFSET + 73;
                     for(var k = message2Start; k < eventEnd; k++) {
                         if(eventData[k] == 0) {
                             break;
