@@ -39,11 +39,25 @@ describe("api/recordings", function(){
             variant: "GBROGUE"
         };
 
+        var gameRecord3 = {
+            username: "flend",
+            date: new Date("2013-05-27T07:56:00.123Z"),
+            score: 100,
+            seed: 200,
+            level: 5,
+            result: brogueConstants.notifyEvents.GAMEOVER_DEATH,
+            easyMode: false,
+            description: "Killed by a goblin on depth 5.",
+            recording: "test/testfile2.broguerec",
+            variant: "BROGUE"
+        };
+
         var self = this;
 
-        gameRecord.create([gameRecord1, gameRecord2], function(err, doc) {
+        gameRecord.create([gameRecord1, gameRecord2, gameRecord3], function(err, doc) {
             self.currentTest.gameId1 = doc[0]._id;
             self.currentTest.gameId2 = doc[1]._id;
+            self.currentTest.gameId3 = doc[2]._id;
             done();
         });
     });
@@ -78,6 +92,13 @@ describe("api/recordings", function(){
         
         request(server)
             .get("/api/recordings/" + this.test.gameId2)
+            .expect(404, done);
+    });
+
+    it("returns for 404 for missing recording files", function(done) {
+        
+        request(server)
+            .get("/api/recordings/" + this.test.gameId3)
             .expect(404, done);
     });
 

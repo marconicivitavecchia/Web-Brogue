@@ -38,7 +38,15 @@ module.exports = function(app, config) {
             res.setHeader('Content-type', mimetype);
 
             var filestream = fs.createReadStream(file);
-            filestream.pipe(res);
+
+            filestream.on('open', function () {
+                filestream.pipe(res);
+            });
+            
+            filestream.on('error', function(err) {
+                console.error("Can't find recording: " + file, err);
+                res.status(404).send('Not found');
+            });
         });
     });
 };
