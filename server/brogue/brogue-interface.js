@@ -497,8 +497,7 @@ BrogueInterface.prototype.attachChildEvents = function () {
                 if(eventId === brogueConstants.notifyEvents.GAMEOVER_QUIT ||
                     eventId === brogueConstants.notifyEvents.GAMEOVER_DEATH ||
                     eventId === brogueConstants.notifyEvents.GAMEOVER_VICTORY ||
-                    eventId === brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY ||
-                    eventId === brogueConstants.notifyEvents.GAMEOVER_RECORDING) {
+                    eventId === brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY) {
 
                     var makePathForRecording = function(recordingFilename) {
                         return self.getChildWorkingDir() + "/" + recordingFilename;
@@ -518,6 +517,12 @@ BrogueInterface.prototype.attachChildEvents = function () {
                         message: parsedEventData.eventStr1,
                         recording: makePathForRecording(parsedEventData.eventStr2)
                     };
+
+                    self.brogueEvents.emit('event', eventData);
+                    self.processBrogueEvents(self, eventData);
+                }
+                else if(eventId == brogueConstants.notifyEvents.GAME_EXIT) {
+                    var eventData = {}
 
                     self.brogueEvents.emit('event', eventData);
                     self.processBrogueEvents(self, eventData);
@@ -642,11 +647,7 @@ BrogueInterface.prototype.processBrogueEvents = function(self, eventData) {
     //Analyse brogue messages and do suitable processing, before passing back to the controller
 
     //Kill the brogue process on quit (save a keypress and make sure it dies)
-    if(eventData.eventId === brogueConstants.notifyEvents.GAMEOVER_QUIT ||
-        eventData.eventId === brogueConstants.notifyEvents.GAMEOVER_DEATH ||
-        eventData.eventId === brogueConstants.notifyEvents.GAMEOVER_VICTORY ||
-        eventData.eventId === brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY ||
-        eventData.eventId === brogueConstants.notifyEvents.GAMEOVER_RECORDING) {
+    if(eventData.eventId === brogueConstants.notifyEvents.GAME_EXIT) {
 
         self.killBrogue(self);
         self.brogueEvents.emit('quit');
