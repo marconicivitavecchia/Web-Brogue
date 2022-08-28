@@ -374,7 +374,7 @@ enum notificationEventTypes {
 	GAMEOVER_DEATH,
 	GAMEOVER_VICTORY,
 	GAMEOVER_SUPERVICTORY,
-	GAMEOVER_RECORDING
+	GAME_EXIT
 };
 
 typedef struct rogueEvent {
