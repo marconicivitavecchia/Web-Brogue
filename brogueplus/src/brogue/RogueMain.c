@@ -1157,12 +1157,13 @@ void freeEverything() {
 
 void gameOver(char *killedBy, boolean useCustomPhrasing) {
     short i, y;
-	char buf[200], highScoreText[200], buf2[200];
+	char buf[200], highScoreText[200], fullEndingText[200], buf2[200];
 	rogueHighScoresEntry theEntry;
 	cellDisplayBuffer dbuf[COLS][ROWS];
 	boolean playback;
 	rogueEvent theEvent;
     item *theItem;
+	char recordingFilename[BROGUE_FILENAME_MAX] = {0};
     
     if (player.bookkeepingFlags & MB_IS_DYING) {
         // we've already been through this once; let's avoid overkill.
@@ -1175,14 +1176,44 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 	
 	flushBufferToFile();
 	
+	if (useCustomPhrasing) {
+		sprintf(highScoreText, "%s on depth %i", killedBy, rogue.depthLevel);
+	} else {
+	    boolean unique = (killedBy[0] == 'W');
+		sprintf(highScoreText, "Killed by %s %s on depth %i", (unique?"the":(isVowelish(killedBy) ? "an" : "a")), killedBy,
+				rogue.depthLevel);
+	}
+    theEntry.score = rogue.gold;
+	if (rogue.easyMode) {
+		theEntry.score /= 10;
+	}
+    strcpy(fullEndingText, highScoreText);
+    if (theEntry.score > 0) {
+        sprintf(buf2, " with %li gold", theEntry.score);
+        strcat(fullEndingText, buf2);
+    }
+    if (numberOfMatchingPackItems(AMULET, 0, 0, false) > 0) {
+        strcat(fullEndingText, ", amulet in hand");
+    }
+    strcat(fullEndingText, ".");
+    strcat(highScoreText, ".");
+	
+	strcpy(theEntry.description, highScoreText);
+	
 	if (rogue.quit) {
 		if (rogue.playbackMode) {
 			playback = rogue.playbackMode;
 			rogue.playbackMode = false;
 			message("(The player quit at this point.)", true);
 			rogue.playbackMode = playback;
-		}
+		} else {
+            notifyEvent(GAMEOVER_QUIT, theEntry.score, 0, theEntry.description, recordingFilename);
+        }
 	} else {
+		
+		if (!rogue.playbackMode && !D_IMMORTAL) {
+            notifyEvent(GAMEOVER_DEATH, theEntry.score, 0, theEntry.description, recordingFilename);
+        }
 		playback = rogue.playbackMode;
 		if (!D_IMMORTAL) {
 			rogue.playbackMode = false;
@@ -1245,32 +1276,8 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 		funkyFade(dbuf, &black, 0, 30, mapToWindowX(player.xLoc), mapToWindowY(player.yLoc), false);
 	}
 	
-	if (useCustomPhrasing) {
-		sprintf(buf, "%s on depth %i", killedBy, rogue.depthLevel);
-	} else {
-	    boolean unique = (killedBy[0] == 'W');
-		sprintf(buf, "Killed by %s %s on depth %i", (unique?"the":(isVowelish(killedBy) ? "an" : "a")), killedBy,
-				rogue.depthLevel);
-	}
-    theEntry.score = rogue.gold;
-	if (rogue.easyMode) {
-		theEntry.score /= 10;
-	}
-    strcpy(highScoreText, buf);
-    if (theEntry.score > 0) {
-        sprintf(buf2, " with %li gold", theEntry.score);
-        strcat(buf, buf2);
-    }
-    if (numberOfMatchingPackItems(AMULET, 0, 0, false) > 0) {
-        strcat(buf, ", amulet in hand");
-    }
-    strcat(buf, ".");
-    strcat(highScoreText, ".");
-	
-	strcpy(theEntry.description, highScoreText);
-	
 	if (!rogue.quit) {
-        printString(buf, (COLS - strLenWithoutEscapes(buf)) / 2, ROWS / 2, &gray, &black, 0);
+        printString(fullEndingText, (COLS - strLenWithoutEscapes(buf)) / 2, ROWS / 2, &gray, &black, 0);
         
         y = ROWS / 2 + 3;
         for (i = 0; i < FEAT_COUNT; i++) {
@@ -1287,8 +1294,6 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 		displayMoreSign();
 	}
 
-	char recordingFilename[BROGUE_FILENAME_MAX] = {0};
-
 	if (!rogue.playbackMode) {
 		if (saveHighScore(theEntry) && !noScores) {
 			printHighScores(true);
@@ -1300,17 +1305,9 @@ void gameOver(char *killedBy, boolean useCustomPhrasing) {
 		else {
 			saveRecordingNoPrompt(recordingFilename);
 		}
+	}
 
-	if(!rogue.quit) {
-			notifyEvent(GAMEOVER_DEATH, theEntry.score, 0, theEntry.description, recordingFilename);
-		}
-		else {
-			notifyEvent(GAMEOVER_QUIT, theEntry.score, 0, theEntry.description, recordingFilename);
-  	}
-	}
-	else {
-		notifyEvent(GAMEOVER_RECORDING, 0, 0, "recording ended", "none");
-	}
+	notifyEvent(GAME_EXIT, 0, 0, "death_quit_exit", "");
 
 	rogue.gameHasEnded = true;
 }
@@ -1323,6 +1320,7 @@ void victory(boolean superVictory) {
 	rogueHighScoresEntry theEntry;
 	boolean qualified, isPlayback;
 	cellDisplayBuffer dbuf[COLS][ROWS];
+	char recordingFilename[BROGUE_FILENAME_MAX] = {0};
 	
 	flushBufferToFile();
 	
@@ -1414,12 +1412,19 @@ void victory(boolean superVictory) {
 		qualified = false;
 	}
 	
+	if (!rogue.playbackMode) {
+		if(superVictory) {
+			notifyEvent(GAMEOVER_SUPERVICTORY, theEntry.score, 0, theEntry.description, recordingFilename);
+		}
+		else {
+			notifyEvent(GAMEOVER_VICTORY, theEntry.score, 0, theEntry.description, recordingFilename);
+		}
+	}
+
 	isPlayback = rogue.playbackMode;
 	rogue.playbackMode = false;
 	displayMoreSign();
 	rogue.playbackMode = isPlayback;
-
-	char recordingFilename[BROGUE_FILENAME_MAX] = {0};
 
 	if(!noRecording) {
 		saveRecording();
@@ -1432,17 +1437,7 @@ void victory(boolean superVictory) {
 		printHighScores(qualified);
 	}
 
-	if (!rogue.playbackMode) {
-		if(superVictory) {
-			notifyEvent(GAMEOVER_SUPERVICTORY, theEntry.score, 0, theEntry.description, recordingFilename);
-		}
-		else {
-			notifyEvent(GAMEOVER_VICTORY, theEntry.score, 0, theEntry.description, recordingFilename);
-		}
-	}
-	else {
-		notifyEvent(GAMEOVER_RECORDING, 0, 0, "recording ended", "none");
-	}
+	notifyEvent(GAME_EXIT, 0, 0, "victory_exit", "");
 
 	rogue.gameHasEnded = true;
 }

@@ -1196,6 +1196,7 @@ void victory() {
 	rogueHighScoresEntry theEntry;
 	boolean qualified, isPlayback;
 	cellDisplayBuffer dbuf[COLS][ROWS];
+	char recordingFilename[BROGUE_FILENAME_MAX] = {0};
 	
 	flushBufferToFile();
 	
@@ -1260,14 +1261,16 @@ void victory() {
 	} else {
 		qualified = false;
 	}
-	
+	  
+ 	if (!rogue.playbackMode) {
+ 		notifyEvent(GAMEOVER_VICTORY, theEntry.score, 0, theEntry.description, recordingFilename);
+ 	}
+
 	isPlayback = rogue.playbackMode;
 	rogue.playbackMode = false;
 	displayMoreSign();
 	rogue.playbackMode = isPlayback;
-	
- 	char recordingFilename[BROGUE_FILENAME_MAX] = {0};
- 
+	 
  	if(!noRecording) {
  		saveRecording();
  	}
@@ -1278,10 +1281,7 @@ void victory() {
  	if(!noScores) {
  		printHighScores(qualified);
  	}
-  
- 	if (!rogue.playbackMode) {
- 		notifyEvent(GAMEOVER_VICTORY, theEntry.score, 0, theEntry.description, recordingFilename);
- 	}
+
 	notifyEvent(GAME_EXIT, 0, 0, "victory_exit", "");
 	
 	rogue.gameHasEnded = true;
