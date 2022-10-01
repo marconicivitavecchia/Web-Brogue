@@ -915,7 +915,7 @@ boolean executePlaybackInput(rogueEvent *recordingInput) {
 				rogue.playbackOOS = false;
                 rogue.creaturesWillFlashThisTurn = false;
 		//Notify the platform that the recording is over
-		notifyEvent(GAME_EXIT, 0, 0, "recording ended", "none");
+		notifyEvent(GAMEOVER_RECORDING, 0, 0, "recording ended", "none");
 		return true;
 
             case TRUE_COLORS_KEY:
