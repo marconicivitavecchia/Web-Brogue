@@ -16,10 +16,18 @@ var config = {
             supportsDownloads: true, //Replays should work with desktop version
             maxSeed: Integer(4294967295)
         },
+        "BROGUECEV120": {
+            binaryPath: "binaries/brogue-ce120",
+            version: "1.12",
+            versionGroup: "1.11.x",
+            modernCmdLine: true,    //Uses v1.8.x+ standard command line
+            supportsDownloads: true, //Replays should work with desktop version
+            maxSeed: Integer.MAX_VALUE
+        },
         "BROGUECEV111": {
             binaryPath: "binaries/brogue-ce111",
             version: "1.11.1",
-            versionGroup: "1.10.x",
+            versionGroup: "1.11.x",
             modernCmdLine: true,    //Uses v1.8.x+ standard command line
             supportsDownloads: true, //Replays should work with desktop version
             maxSeed: Integer.MAX_VALUE
@@ -120,6 +128,14 @@ var config = {
             supportsDownloads: true, //Replays should work with desktop version
             maxSeed: Integer.MAX_VALUE
         },
+        "RAPIDBROGUEV140": {
+            binaryPath: "binaries/rapid-brogue-v140",
+            version: "1.4.0",
+            versionGroup: "1.4.x",
+            modernCmdLine: true,    //Uses v1.8.x+ standard command line
+            supportsDownloads: true, //Replays should work with desktop version
+            maxSeed: Integer.MAX_VALUE
+        }
     },
     defaultBrogueVariant: "BROGUECEV18",
     path : {
