@@ -282,6 +282,111 @@ describe("stats/general filters by variant and user", function() {
     });
 });
 
+describe("stats/general calculates total lumenstones correctly", function() {
+
+    beforeEach(function (done) {
+
+        var gameRecord1 = {
+            username: "ccc",
+            date: new Date("2013-06-27T07:56:01.123Z"),
+            score: 150,
+            seed: 203,
+            level: 26,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped the Dungeons of Doom with 3 lumenstones!",
+            recording: "file1",
+            variant: "BROGUE"
+        };
+
+        var gameRecord2 = {
+            username: "ccc",
+            date: new Date("2013-06-28T07:56:01.123Z"),
+            score: 151,
+            seed: 204,
+            level: 27,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped the Dungeons of Doom with a lumenstone!",
+            recording: "file32",
+            variant: "GBROGUE"
+        };
+
+        var gameRecord3 = {
+            username: "ccb",
+            date: new Date("2013-06-29T07:56:01.123Z"),
+            score: 152,
+            seed: 205,
+            level: 27,
+            result: brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY,
+            easyMode: false,
+            description: "Escaped the Dungeons of Doom with 4 lumenstones!",
+            recording: "file35",
+            variant: "BROGUE"
+        };
+
+        var gameRecord4 = {
+            username: "ccd",
+            date: new Date("2013-06-30T07:56:01.123Z"),
+            score: 153,
+            seed: 206,
+            level: 27,
+            result: brogueConstants.notifyEvents.GAMEOVER_VICTORY,
+            easyMode: false,
+            description: "Escaped the Dungeons of Doom with a lumenstone!",
+            recording: "file38",
+            variant: "GBROGUE"
+        };
+
+        gameRecord.create([gameRecord1, gameRecord2, gameRecord3, gameRecord4], function () {
+            done();
+        });
+    });
+
+    afterEach(function (done) {
+
+        gameRecord.remove({}, function () {
+            done();
+        });
+    });
+
+    it("totalLumenstones is calculated correctly for numeric lumenstones", function (done) {
+        request(server)
+            .get("/api/stats/general")
+            .set('Accept', 'application/json')
+            .query({ variant: 'BROGUE' })
+            .end(function (err, res) {
+                var bodyObj = JSON.parse(res.text);
+                expect(bodyObj).to.have.property('totalLumenstones', 7);
+                done();
+            });
+    });
+
+    it("totalLumenstones is calculated correctly for 'a lumenstone'", function (done) {
+        request(server)
+            .get("/api/stats/general")
+            .set('Accept', 'application/json')
+            .query({ variant: 'GBROGUE' })
+            .end(function (err, res) {
+                var bodyObj = JSON.parse(res.text);
+                expect(bodyObj).to.have.property('totalLumenstones', 2);
+                done();
+            });
+    });
+
+    it("totalLumenstones is calculated correctly sum of both numeric and 'a lumenstone'", function (done) {
+        request(server)
+            .get("/api/stats/general")
+            .set('Accept', 'application/json')
+            .end(function (err, res) {
+                var bodyObj = JSON.parse(res.text);
+                expect(bodyObj).to.have.property('totalLumenstones', 9);
+                done();
+            });
+    });
+
+});
+
 describe("stats/general", function(){
 
     beforeEach(function(done) {

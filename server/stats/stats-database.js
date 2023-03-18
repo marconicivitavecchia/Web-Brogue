@@ -70,7 +70,9 @@ module.exports = {
                     return parseInt(descriptionMatch[1]) || 0;
                 }
                 else {
-                    return 0;
+                    var lumenSingle = new RegExp("with a lumenstone");
+                    const singleLumenstone = lumenSingle.test(game.description);
+                    return singleLumenstone ? 1 : 0;
                 }
 
                 return game;
