@@ -72,6 +72,15 @@ define([
                 consoleRows: 34,
                 disabled: true
             },
+            "BULLETBROGUEV100": {
+                code: "BULLETBROGUEV100",
+                display: "Bullet Brogue v1.0",
+                consoleColumns: 100,
+                consoleRows: 34,
+                remapGlyphs: true,
+                tiles: true,
+                highlight: true
+            },
             "RAPIDBROGUEV140": {
                 code: "RAPIDBROGUEV140",
                 display: "Rapid Brogue v1.4.0",
