@@ -19,7 +19,7 @@ var config = {
         "BROGUECEV120": {
             binaryPath: "binaries/brogue-ce120",
             version: "1.12",
-            versionGroup: "1.11.x",
+            versionGroup: "1.12.x",
             modernCmdLine: true,    //Uses v1.8.x+ standard command line
             supportsDownloads: true, //Replays should work with desktop version
             maxSeed: Integer.MAX_VALUE
