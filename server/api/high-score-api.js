@@ -5,6 +5,7 @@ var sanitize = require('mongo-sanitize');
 var _ = require("underscore");
 var stats = require('../stats/stats.js');
 var Integer = require('integer');
+const brogueConstants = require('../brogue/brogue-constants');
 
 module.exports = function(app, config) {
 
@@ -50,7 +51,9 @@ module.exports = function(app, config) {
             }
             else {
                 // No 64-bit seed for old game records, use 32-bit part
-                filteredRecord.seed = gameRecord.seed.toString();
+                if (gameRecord.seed) {
+                    filteredRecord.seed = gameRecord.seed.toString();
+                }
             }
 
             // Seeded may not be set for earlier records in the database
@@ -125,6 +128,66 @@ module.exports = function(app, config) {
                     });
                 }
             });
+        });
+    });
+
+    app.get("/api/games/lastwins", function (req, res, next) {
+
+        var filterVariants = null;
+        if (req.query.variant) {
+            const sanitizedQuery = sanitize(req.query.variant);
+            const splitVariants = sanitizedQuery.split(',');
+            filterVariants = splitVariants.map(item => item.trim());
+        }
+ 
+        var aggregateQuery = 
+            [ 
+              { 
+              $match: { easyMode: { $ne: true },
+                          variant: [],
+                          result: { $in: [brogueConstants.notifyEvents.GAMEOVER_SUPERVICTORY, brogueConstants.notifyEvents.GAMEOVER_VICTORY] } } 
+              },
+              {
+                $sort: { date: -1 }
+              },
+              {
+              $group : { _id: '$variant',
+                        recordId: { $first: "$_id" },
+                        maxDate: { $first : "$date" } }
+              },
+              {
+                $lookup: {
+                  from: "gamerecords",
+                  localField: "recordId",
+                  foreignField: "_id",
+                  as: "record"
+                },
+              },
+              {
+                $sort: { variant: 1 }
+              }
+            ];
+
+        if (filterVariants) {
+            aggregateQuery[0].$match.variant = { $in: filterVariants };
+        }
+        else {
+            delete aggregateQuery[0].$match.variant;
+        }
+        
+        res.format({
+            json: function () {
+
+                GameRecord.aggregate(aggregateQuery).exec(function (err, games) {
+
+                    if (err) return next(err);
+
+                    const gameRecordList = games.reduce((result, { record }) => result.concat(record), []);
+                    var gameRecordsFiltered = filterGameRecords(gameRecordList);
+
+                    res.json(gameRecordsFiltered);
+                });
+            }
         });
     });
 
