@@ -85,7 +85,7 @@ define([
 
             this.$el.html(this.headingTemplate());
 
-            this.grid.render().sort("prettyDate", null);
+            this.grid.render().sort("prettyDate", "descending");
 
             $("#last-wins-scores-grid").append(this.grid.$el);
 
