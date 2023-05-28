@@ -85,7 +85,9 @@ define([
 
             this.$el.html(this.headingTemplate());
 
-            $("#last-wins-scores-grid").append(this.grid.render().$el);
+            this.grid.render().sort("prettyDate", null);
+
+            $("#last-wins-scores-grid").append(this.grid.$el);
 
             return this;
         },
