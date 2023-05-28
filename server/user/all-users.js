@@ -11,7 +11,7 @@ brogueStatusMap[brogueStatus.SEED] = "seed";
 brogueStatusMap[brogueStatus.EASY_MODE] = "easyMode";
 
 var IDLE_TICKER_INTERVAL_MS = 1 * 1000;
-var IDLE_TIME_MAXIMUM_SECONDS = 48 * 60 * 60;
+var IDLE_TIME_MAXIMUM_SECONDS = 24 * 60 * 60;
 
 module.exports = {
     users : {},
