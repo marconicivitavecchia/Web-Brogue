@@ -24,6 +24,12 @@ define([
             return d1.format('ll');
         },
 
+        formatDateFull: function(date) {
+            var d1 = Moment(date);
+            // show localised date in sortable format
+            return d1.format('YY-MM-DD');
+        },
+
         lookupVariant: function(variant) {
             if(variant in VariantLookup.variants) {
                 return VariantLookup.variants[variant].display;

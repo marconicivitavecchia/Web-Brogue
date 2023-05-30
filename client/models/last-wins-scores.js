@@ -13,7 +13,7 @@ define([
 
         parse: function (resp) {
             _.each(resp, function(element, index, list) {
-                element.prettyDate = ScoresParser.formatDate(element.date);
+                element.prettyDate = ScoresParser.formatDateFull(element.date);
                 element.prettyVariant = ScoresParser.lookupVariant(element.variant);
                 element.prettySeeded = ScoresParser.formatSeeded(element.seeded);
             });
