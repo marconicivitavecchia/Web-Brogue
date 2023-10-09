@@ -26,8 +26,8 @@ The lineage of each brogue version and build instructions is given below. You sh
 * Brogue CE (1.8): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue`. `make bin/brogue` then copy binary to `binaries/brogue-ce18`
 * Brogue CE (1.9): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v193`. `make bin/brogue` then copy binary to `binaries/brogue-ce19-c813284` (or similar filename)
 * Brogue CE (1.10): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v110`. `make bin/brogue` then copy binary to `binaries/brogue-ce110` (or similar filename)
-* Brogue CE (1.11+): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v111`. `make bin/brogue` then copy binary to `binaries/brogue-ce111` (or similar filename)
-* Rapid Brogue: Clone `https://github.com/flend/rapidbrogue` and checkout branch `tracking/rapid-brogue-vXXX`. `make bin/brogue` then copy binary to `binaries/rapid-brogue-vXXX` (or similar filename)
+* Brogue CE (1.11+): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v1XX`. `make bin/brogue` then copy binary to `binaries/brogue-ce111` (or similar filename). This binary also includes RapidBrogue from v1.5+
+* Rapid Brogue (v1.4 and earlier): Clone `https://github.com/flend/rapidbrogue` and checkout branch `tracking/rapid-brogue-vXXX`. `make bin/brogue` then copy binary to `binaries/rapid-brogue-vXXX` (or similar filename)
 
 Starting the Server
 ----------------------------

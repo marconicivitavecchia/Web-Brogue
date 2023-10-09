@@ -149,7 +149,7 @@ var config = {
             version: "1.5.0",
             versionGroup: "1.5.x",
             modernCmdLine: true,    //Uses v1.8.x+ standard command line
-            customCmdLine: "--variant rapid_brogue",
+            customCmdLine: ["--variant", "rapid_brogue"],
             supportsDownloads: true, //Replays should work with desktop version
             maxSeed: Integer.MAX_VALUE
         },

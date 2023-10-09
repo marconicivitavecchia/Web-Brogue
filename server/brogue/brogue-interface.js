@@ -186,6 +186,15 @@ BrogueInterface.prototype.start = function (data, mode) {
     });
 };
 
+BrogueInterface.prototype.addStandardCmdLineArgs = function(args) {
+    
+    if(config.brogueVariants[this.variant].customCmdLine) {
+        args = args.concat(config.brogueVariants[this.variant].customCmdLine);
+    }
+
+    return args;
+}
+
 BrogueInterface.prototype.newBrogueProcess = function(data, mode) {
 
     var childWorkingDir = this.getChildWorkingDir();
@@ -193,26 +202,28 @@ BrogueInterface.prototype.newBrogueProcess = function(data, mode) {
     var args = "";
 
     if(mode == brogueMode.RECORDING) {
-        args = ["--no-menu", "--no-saves"];
-
+        
         if(config.brogueVariants[this.variant].modernCmdLine) {
             args = ["--server-mode"];
         }
-
-        if(config.brogueVariants[this.variant].customCmdLine) {
-            args.push(config.brogueVariants[this.variant].customCmdLine);
+        else {
+            args = ["--no-menu", "--no-saves"];
         }
 
+        args = this.addStandardCmdLineArgs(args);
+        
         args.push("-v");
         args.push(data.recordingPath);
     }
     else {
-        args = ["--no-menu", "--no-recording", "--no-scores", "--no-saves"];
-
         if(config.brogueVariants[this.variant].modernCmdLine) {
             args = ["--server-mode"];
         }
+        else {
+            args = ["--no-menu", "--no-recording", "--no-scores", "--no-saves"];
+        }
 
+        args = this.addStandardCmdLineArgs(args);
         args.push("--hide-seed");
 
         //Input has been sanity checked in the controller. Any errors from brogue should be caught by the usual handlers
