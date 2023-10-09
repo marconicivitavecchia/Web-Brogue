@@ -199,6 +199,10 @@ BrogueInterface.prototype.newBrogueProcess = function(data, mode) {
             args = ["--server-mode"];
         }
 
+        if(config.brogueVariants[this.variant].customCmdLine) {
+            args.push(config.brogueVariants[this.variant].customCmdLine);
+        }
+
         args.push("-v");
         args.push(data.recordingPath);
     }
