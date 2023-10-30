@@ -22,7 +22,8 @@ define([
                 consoleColumns: 100,
                 consoleRows: 34,
                 remapGlyphs: true,
-                tiles: true
+                tiles: true,
+                disabled: true
             },
             "BROGUECEV111": {
                 code: "BROGUECEV111",
@@ -105,7 +106,8 @@ define([
                 consoleRows: 34,
                 remapGlyphs: true,
                 tiles: true,
-                highlight: false
+                highlight: false,
+                disabled: true
             },
             "RAPIDBROGUEV130": {
                 code: "RAPIDBROGUEV130",
