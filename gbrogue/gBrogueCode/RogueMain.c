@@ -1401,8 +1401,11 @@ void victory(boolean superVictory, boolean hasAmulet) {
 		if(superVictory) {
 			notifyEvent(GAMEOVER_SUPERVICTORY, theEntry.score, 0, theEntry.description, recordingFilename);
 		}
-		else {
+		else if (hasAmulet) {
 			notifyEvent(GAMEOVER_VICTORY, theEntry.score, 0, theEntry.description, recordingFilename);
+		}
+		else {
+			notifyEvent(GAMEOVER_QUIT, theEntry.score, 0, theEntry.description, recordingFilename);
 		}
 	}
 	else {
