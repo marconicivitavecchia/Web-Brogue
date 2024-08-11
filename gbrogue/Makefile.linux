@@ -1,5 +1,5 @@
 
-SDL_FLAGS = `sdl-config --cflags` `sdl-config --libs`
+SDL_FLAGS = `sdl2-config --cflags` `sdl2-config --libs`
 LIBTCODDIR=src/libtcod-1.5.2
 CFLAGS=-IgBrogueCode -IPlatformCode -Wall -Wno-parentheses ${DEFINES}
 RELEASENAME=brogue-1.7.4

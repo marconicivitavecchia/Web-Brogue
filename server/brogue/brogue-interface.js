@@ -534,6 +534,8 @@ BrogueInterface.prototype.attachChildEvents = function () {
                         recording: makePathForRecording(parsedEventData.eventStr2)
                     };
 
+                    //console.log("event type: " + eventId);
+
                     self.brogueEvents.emit('event', eventData);
                     self.processBrogueEvents(self, eventData);
                 }
