@@ -177,6 +177,15 @@ var config = {
             modernCmdLine: true,    //Uses v1.8.x+ standard command line
             supportsDownloads: true, //Replays should work with desktop version
             maxSeed: Integer.MAX_VALUE
+        },
+        "BULLETBROGUEV110": {
+            binaryPath: "binaries/bullet-brogue-v110",
+            version: "1.1.0",
+            versionGroup: "1.1.x",
+            modernCmdLine: true,    //Uses v1.8.x+ standard command line
+            customCmdLine: ["--variant", "bullet_brogue"],
+            supportsDownloads: true, //Replays should work with desktop version
+            maxSeed: Integer.MAX_VALUE
         }
     },
     defaultBrogueVariant: "BROGUECEV18",
