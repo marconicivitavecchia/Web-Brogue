@@ -40,7 +40,7 @@
                     </li>
                     <li><a href="https://github.com/tmewett/BrogueCE/releases">Brogue CE</a> is a community-lead effort to keep improving Brogue.</li>
                     <li><a href="https://github.com/tmewett/BrogueCE/releases">Rapid Brogue</a> is a coffee-break brogue variant now included with Brogue CE.</li>
-                    <li><a href="https://github.com/flend/RapidBrogue">Bullet Brogue</a> is an even-shorter take on Brogue. Download version also available for <a href="https://github.com/flend/RapidBrogue/releases">Windows, macOS and Linux</a>.</li>
+                    <li><a href="https://github.com/flend/RapidBrogue">Bullet Brogue</a> is an even-shorter take on Brogue. Download version also available for <a href="https://github.com/flend/BrogueCE/releases/tag/bb-v1.1.0">Windows, macOS and Linux</a>.</li>
                     <li><a href="https://github.com/gbelo/gBrogue">gBrogue</a> is a fork of Brogue 1.7.4 by Greg Reed.</li>
                     <li><a href="http://roguelikedeveloper.blogspot.com/search/label/unbrogue">unBrogue</a> is a fork of Brogue 1.7.1 by Andrew Doull.</li>
                     <li><a href="https://github.com/bleakley/brogue/">brogue+</a> is a fork of Brogue 1.7.4 by bleakley.</li>
@@ -108,7 +108,7 @@
             </li>
         <%}})%>
         </ul>
-        
+
         <p>Need help? Have a look at the <a href="https://brogue.fandom.com/wiki/Brogue_Wiki" alt="Brogue Wiki" target="_blank">Wiki</a>.</p>
     <%}%>
     <h2>Statistics</h2>
@@ -314,7 +314,7 @@
 <script id="general-statistics-template" type="text/template">
     <h3>General Statistics</h3>
     <p id="general-stats-by-level-list">
-        <a id="general-stats-by-level-variant-all" href="#deaths-probability-by-level-variant-all">All games</a></li>    
+        <a id="general-stats-by-level-variant-all" href="#deaths-probability-by-level-variant-all">All games</a></li>
         <%_.forEach(variants, function (i) {%> &bull;
             <a id="general-stats-by-level-variant-<%=i.code%>" href="#general-stats-by-level-variant-<%=i.code%>"><%=i.display%></a>
         <%})%>

@@ -106,6 +106,7 @@ define([
                 consoleRows: 34,
                 remapGlyphs: true,
                 tiles: true,
+                disabled: true
             },
             "RAPIDBROGUEV160": {
                 code: "RAPIDBROGUEV160",
