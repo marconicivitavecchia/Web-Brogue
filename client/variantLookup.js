@@ -193,6 +193,12 @@ define([
                 consoleColumns: 100,
                 consoleRows: 34
             },
+            "BROGUEMARCONI": {
+                code: "BROGUEMARCONI",
+                display: "Brogue Marconi (test)",
+                consoleColumns: 100,
+                consoleRows: 34
+            },
         }
     };
     return VariantLookup;
