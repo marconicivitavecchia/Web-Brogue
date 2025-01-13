@@ -5,7 +5,7 @@ var path = require('path');
 
 var config = {
     port : {
-        HTTP : 8080
+        HTTP : 80
     },
     brogueVariants : {
         "BROGUEPLUSV1741": {
@@ -23,6 +23,14 @@ var config = {
             modernCmdLine: true,    //Uses v1.8.x+ standard command line
             supportsDownloads: true, //Replays should work with desktop version
             maxSeed: Integer.MAX_VALUE
+        },
+        "BROGUEMARCONI": {
+            binaryPath: "binaries/brogue-marconi",
+            version: "1.0.0",
+            versionGroup: "1.0.x",
+            modernCmdLine: false,
+            supportsDownloads: false,
+            maxSeed: Integer(4294967295)
         },
         "BROGUECEV130": {
             binaryPath: "binaries/brogue-ce130",

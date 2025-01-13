@@ -3,7 +3,7 @@ define([
 ], function($) {
 
     var Config = {
-        websocketPort: 8080
+        websocketPort: 80
     };
 
     return Config;
