@@ -71,12 +71,64 @@ npm start
 Se tutto va bene, il server è up and running!
 
 ## Lanciare il gioco dopo un riavvio
+### Riavvio manuale
 Dopo il riavvio, se la macchina già non parte automaticamente, collegarsi nuovamente in ssh ed eseguire i seguenti comandi:
 
 ```sh
 cd ~/web-brogue/server
 nvm install 18 && npm start
 ```
+
+### Avvio automatico
+Per avviare automaticamente l'applicazione all'avvio della macchina, per prima cosa creare un file di servizio systemd:
+
+```sh
+sudo nano /etc/systemd/system/nodeapp.service
+```
+
+Inserisci questo contenuto nel file:
+
+```config
+[Unit]
+Description=Node.js Web Server Brogue
+After=network.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/web-brogue/server
+ExecStart=npm start
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Dopo aver salvato il file, esegui questi comandi:
+
+```sh
+# Ricarica la configurazione di systemd
+sudo systemctl daemon-reload
+
+# Abilita il servizio all'avvio
+sudo systemctl enable nodeapp
+
+# Avvia il servizio
+sudo systemctl start nodeapp
+```
+
+Per vericare lo stato dell'app:
+
+```sh
+sudo systemctl status nodeapp
+```
+
+Per riavviare l'app:
+
+```sh
+sudo systemctl restart nodeapp
+```
+
 
 ## Modificare i file C
 Per creare una versione custom del gioco, bisogna ricompilare gli eseguibili. Io ho usato la versione Brogue 1.7.5.
