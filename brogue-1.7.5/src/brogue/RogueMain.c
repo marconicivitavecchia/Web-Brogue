@@ -127,7 +127,7 @@ void benchmark() {
 
 void welcome() {
     char buf[DCOLS*3], buf2[DCOLS*3];
-	message("Hello and welcome, adventurer, to the Dungeons of Doom!", false);
+	message("Hello and welcome, student, to the Dungeons of Marconi!", false);
     strcpy(buf, "Retrieve the ");
     encodeMessageColor(buf, strlen(buf), &itemMessageColor);
     strcat(buf, "Amulet of Yendor");
