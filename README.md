@@ -7,6 +7,8 @@ I passi che abbiamo seguito per arrivare a questa versione customizzata dall'ori
 
 Di seguito le istruzioni per eseguire questo repo di Web Brogue.
 
+**NOTA**: c'è una versione live di questo repo al link [http://broguestars.online/](http://broguestars.online/). Per motivi di costi del dominio e della macchina EC2, comunque, non è garantito che la versione sia live dopo luglio 2025.
+
 ## Creazione macchina EC2
 Andare su AWS Academy Login (https://www.awsacademy.com/SiteLogin), creare una macchina EC2 con le seguenti caratteristiche (per tutto il resto lasciare il default):
 
