@@ -1,62 +1,124 @@
 Web Brogue
 ==========
 
-A web[sockets] server for playing the Brogue over the internet.  Brogue is a game for Mac OS X, Windows, and Linux by Brian Walker.  For more information go https://sites.google.com/site/broguegame/.  The server only can be run on a POSIX environment at the moment.
+Per il README originale, cliccare [qui](README-orig.md).
 
-Build Instructions
------------------------
+Di seguito le istruzioni che abbiamo usato nella nostra scuola.
 
-### Step 1: Get Dependencies ###
-Get the latest stable version of node.js and mongoDB. (Or whatever mongoDB comes with your distro which should be fine.)
+## Creazione macchina EC2
+Andare su AWS Academy Login (https://www.awsacademy.com/SiteLogin), creare una macchina EC2 con le seguenti caratteristiche (per tutto il resto lasciare il default):
 
-### Step 2: Get node packages
-Navigate to the `server` directory and run `npm install` to get the node dependencies. You'll need a C++ compiler to compile the datagrams module.
+- Ubuntu 64 bit
+- usare la chiave vockey.pem
+- aprire le porte 80 (HTTP), 443 (HTTPS), 8080
 
-### Step 3: Build Brogue Executables ##
-The paths to the binaries is stored in `server/config.js`.
-Brogue binaries are stored in the `binaries/` directory. Linux ELF binaries are included in the distribution for all supported brogue versions. If there's a new version of a brogue variant, or a replay-breaking change is added to a brogue version without changing the version, create a new variant and add a new brogue binary. This allows old recordings to still work. (Note that a new variant means separate high scores for now.)
+Una volta fatta partire la macchina EC2, collegatevi via SSH come abbiamo visto in classe.
 
-The lineage of each brogue version and build instructions is given below. You shouldn't need to follow these unless you're building for a different platform.
+Da qui, i comandi sono più o meno quelli della guida ufficiale (https://github.com/flend/web-brogue). Di seguito il dettaglio
 
-* Brogue (1.7.4): `cd brogue` `make web`
-* Brogue (1.7.5): `cd brogue-1.7.5` `make web`
-* gBrogue: `cd gbrogue` `make -f Makefile.linux web`
-* unBrogue: `cd unBrogue` `make web`
-* broguePlus: `cd brogueplus` `make web`
-* Brogue CE (1.8): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue`. `make bin/brogue` then copy binary to `binaries/brogue-ce18`
-* Brogue CE (1.9): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v193`. `make bin/brogue` then copy binary to `binaries/brogue-ce19-c813284` (or similar filename)
-* Brogue CE (1.10): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v110`. `make bin/brogue` then copy binary to `binaries/brogue-ce110` (or similar filename)
-* Brogue CE (1.11+): Clone `https://github.com/flend/BrogueCE` and checkout branch `tracking/web-brogue-v1XX`. `make bin/brogue` then copy binary to `binaries/brogue-ce111` (or similar filename). This binary also includes RapidBrogue from v1.5+
-* Rapid Brogue (v1.4 and earlier): Clone `https://github.com/flend/rapidbrogue` and checkout branch `tracking/rapid-brogue-vXXX`. `make bin/brogue` then copy binary to `binaries/rapid-brogue-vXXX` (or similar filename)
+## Configurazione macchina EC2
 
-Starting the Server
-----------------------------
+Collegarsi via terminale ed eseguire i seguenti comandi:
 
-Starting the server should be as simple as starting up mongoDB and starting the node process.
+```sh
+# Installare mongodb
+sudo apt-get install gnupg curl
 
-1. To start the mongodb daemon type `mongod` (this should be started at system init in most cases)
-2. To start the server type `npm start` in the `server` directory.
+curl -fsSL https://www.mongodb.org/static/pgp/server-8.0.asc | \
+   sudo gpg -o /usr/share/keyrings/mongodb-server-8.0.gpg \
+   --dearmor
 
-You will probably want to edit `server/config.js` and `client/config.js` to set the ports and the server secret.
+echo "deb [ arch=amd64,arm64 signed-by=/usr/share/keyrings/mongodb-server-8.0.gpg ] https://repo.mongodb.org/apt/ubuntu noble/mongodb-org/8.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-8.0.list
 
-If everything is running correctly it should say "Server listening on port XXXX"
+sudo apt-get update
+sudo apt-get upgrade
+sudo apt-get install -y mongodb-org
+```
+A questo punto riavviare la macchina, quindi:
 
-Note that you might need root access if you are running on a privileged port (e.g. 80).
+```sh
+# Avviamo MongoDB
+sudo systemctl start mongod
+sudo systemctl enable mongod
 
-Configuration
---------------------------------
-Server global configuration variables are defined in `server/config.js`.
-Client configuration variables are defined in `client/config.js`.
+# installs nvm (Node Version Manager)
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
 
-In particular, make sure to get the client and server to agree on the websocketPort.
+# download and install Node.js (you may need to restart the terminal)
+nvm install 18
 
-Restarting the server
---------------------------------
-When you restart (kill and run again) the server to start running a new version, games in progress are not affected.
-However, the server will forget about its registry of games that it uses to kill inactive games from over 2 weeks ago.
-Therefore you probably want to kill old games.
-A good command is `killall --older-than 1M -r ".*brogue.*"` which kills all brogue process started more than 1 month ago.
+# verifies the right Node.js version is in the environment
+node -v # should print `v18.20.5`
 
-Tests
-----------------------------
-An API test suite can be run using `npm test` in the `server` directory.
+# verifies the right npm version is in the environment
+npm -v # should print `10.8.2`
+
+# Installare il compilatore C++
+sudo apt-get install build-essential
+gcc -v # l'output dovrebbe finire con la riga "gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04)" o qualcosa di simile
+
+# Scaricare web-brogue
+git clone https://github.com/flend/web-brogue.git
+
+# Installare le dipendenze
+cd web-brogue/server
+npm install
+
+# Far partire il web server
+npm start
+```
+
+Se tutto va bene, il server è up and running!
+
+## Lanciare il gioco dopo un riavvio
+Dopo il riavvio, se la macchina già non parte automaticamente, collegarsi nuovamente in ssh ed eseguire i seguenti comandi:
+
+```sh
+cd ~/web-brogue/server
+nvm install 18 && npm start
+```
+
+## Modificare i file C
+Per creare una versione custom del gioco, bisogna ricompilare gli eseguibili. Io ho usato la versione Brogue 1.7.5.
+
+Per prima cosa aggiungere la variante a `client/variantLookup.js`, alla fine della lista:
+
+```js
+           "BROGUEMARCONI": {
+                code: "BROGUEMARCONI",
+                display: "Brogue Marconi (test)",
+                consoleColumns: 100,
+                consoleRows: 34
+            },
+```
+
+Aggiungere il corrispettivo su `server/config.js`:
+
+```js
+       "BROGUEMARCONI": {
+            binaryPath: "binaries/brogue-marconi",
+            version: "1.0.0",
+            versionGroup: "1.0.x",
+            modernCmdLine: false,
+            supportsDownloads: false,
+            maxSeed: Integer(4294967295)
+        },
+```
+
+Per creare l'esegubile, bisogna correggere un bug negli include.
+
+Navigare in `brogue-1.7.5/` e modificare il file `src/brogue/IncludeGlobals.h` nelle righe 50-51 come segue:
+
+```h
+extern short messageArchivePosition; // Aggiungere extern
+extern char messageArchive[MESSAGE_ARCHIVE_LINES][COLS*2]; // Aggiungere extern
+```
+
+A questo punto, possiamo compilare. Sempre dalla cartella `brogue-1.7.5/` e mettere l'eseguibile nella cartella dei binari:
+
+```sh
+make web
+cp bin/brogue ../binaries/brogue-marconi
+```
+
+Per finire, riavviamo il web server, tutto dovrebbe funzionare correttamente!
