@@ -3,7 +3,9 @@ Web Brogue
 
 Per il README originale, cliccare [qui](README-orig.md).
 
-Di seguito le istruzioni che abbiamo usato nella nostra scuola.
+I passi che abbiamo seguito per arrivare a questa versione customizzata dall'originale sono [qui](README-marconi.md).
+
+Di seguito le istruzioni per eseguire questo repo di Web Brogue.
 
 ## Creazione macchina EC2
 Andare su AWS Academy Login (https://www.awsacademy.com/SiteLogin), creare una macchina EC2 con le seguenti caratteristiche (per tutto il resto lasciare il default):
@@ -128,49 +130,3 @@ Per riavviare l'app:
 ```sh
 sudo systemctl restart nodeapp
 ```
-
-
-## Modificare i file C
-Per creare una versione custom del gioco, bisogna ricompilare gli eseguibili. Io ho usato la versione Brogue 1.7.5.
-
-Per prima cosa aggiungere la variante a `client/variantLookup.js`, alla fine della lista:
-
-```js
-           "BROGUEMARCONI": {
-                code: "BROGUEMARCONI",
-                display: "Brogue Marconi (test)",
-                consoleColumns: 100,
-                consoleRows: 34
-            },
-```
-
-Aggiungere il corrispettivo su `server/config.js`:
-
-```js
-       "BROGUEMARCONI": {
-            binaryPath: "binaries/brogue-marconi",
-            version: "1.0.0",
-            versionGroup: "1.0.x",
-            modernCmdLine: false,
-            supportsDownloads: false,
-            maxSeed: Integer(4294967295)
-        },
-```
-
-Per creare l'esegubile, bisogna correggere un bug negli include.
-
-Navigare in `brogue-1.7.5/` e modificare il file `src/brogue/IncludeGlobals.h` nelle righe 50-51 come segue:
-
-```h
-extern short messageArchivePosition; // Aggiungere extern
-extern char messageArchive[MESSAGE_ARCHIVE_LINES][COLS*2]; // Aggiungere extern
-```
-
-A questo punto, possiamo compilare. Sempre dalla cartella `brogue-1.7.5/` e mettere l'eseguibile nella cartella dei binari:
-
-```sh
-make web
-cp bin/brogue ../binaries/brogue-marconi
-```
-
-Per finire, riavviamo il web server, tutto dovrebbe funzionare correttamente!
