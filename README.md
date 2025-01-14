@@ -90,7 +90,7 @@ sudo nano /etc/systemd/system/nodeapp.service
 
 Inserisci questo contenuto nel file:
 
-```config
+```ini
 [Unit]
 Description=Node.js Web Server Brogue
 After=network.target
@@ -130,3 +130,33 @@ Per riavviare l'app:
 ```sh
 sudo systemctl restart nodeapp
 ```
+
+## Usare la porta 80
+
+Per usare la porta standard HTTP, bisogna cambiare i file di configurazione sia lato server (`server/config.js`) che lato client (`client/config.js`) impostando la porta 80.
+
+Con la porta 80 bisognerebbe eseguire npm con i permessi di amministratore, il che però è sconsigliato. Si consiglia invece di usare `authbind`:
+
+```sh
+# Installa authbind
+sudo apt-get install authbind
+
+# Permetti l'uso della porta 80
+sudo touch /etc/authbind/byport/80
+sudo chmod 500 /etc/authbind/byport/80
+sudo chown ubuntu /etc/authbind/byport/80
+```
+
+Modifica il file del servizio per usare authbind:
+
+```ini
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/web-brogue/server
+ExecStart=/usr/bin/authbind --deep npm start
+Restart=on-failure
+```
+
+
+
